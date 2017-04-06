@@ -1,0 +1,1 @@
+Change secondsSince in updateStreak and checkStreak to daysSince
