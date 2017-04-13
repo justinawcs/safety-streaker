@@ -2,7 +2,7 @@
 # Compares current time since last injury to last best streak
 
 ## Note
-running=$(./secondsSince.sh)
+running=$(./daysSince.sh)
 best=$(cat bestStreak)
 echo  "Running Streak:" $running "Best Streak:" $best
 

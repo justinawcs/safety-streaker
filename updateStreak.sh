@@ -10,8 +10,8 @@ then
   exit
 fi
 
-running=$(./secondsSince.sh)
-best=$(cat bestStreak)
+running="$(./secondsSince.sh)"
+best="$(cat bestStreak)"
 #echo "Current streak information:"
 #echo -e "New:" $running "Best:" $best "\n"
 
