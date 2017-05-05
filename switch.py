@@ -7,10 +7,11 @@ GPIO.setmode(GPIO.BCM)
 
 GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-print "[switch.py]\t Waiting to 'Injury Now' Button to be pressed..."
+print "[switch.py]  Waiting for 'Injury Now' Button to be pressed..."
 while True:
     input_state = GPIO.input(23)
+    time.sleep(.3)
     if input_state == False:
         print('Injury Now Button Pressed!')
-        print os.popen("./injuryNow.sh").read()
-        time.sleep(.6)
+        print os.popen("/home/pi/info-beamer/injuryNow.sh").read()
+        time.sleep(1)

@@ -27,8 +27,8 @@ while running == True:
     print " 6 Set System Time..."
     print " 7 Change Best Streak"
     print " 8 Restart / Shutdown"
-    option = str(input("Enter option> "))
-    sel = int(option)
+    option = str(raw_input("Enter option> "))
+    sel = int(option.lower())
     if sel == 8:
         print "Are you sure you want to restart/shutdown?"
         print " 0 Go Back"

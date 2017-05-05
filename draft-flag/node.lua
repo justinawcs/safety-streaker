@@ -19,18 +19,18 @@ function trim(s)
     return s:match "^%s*(.-)%s*$"
 end
 
-function checkFiles()
+--function checkFiles()
 --watch bestStreak file
-  util.file_watch("bestStreak", function(content)
+util.file_watch("bestStreak", function(content)
       bestStreak = trim(content)
   end)
 --watch lastInjury file and calc timeSince
-  util.file_watch("lastInjury", function(content)
+util.file_watch("lastInjury", function(content)
       injuryFile = trim(content)
       position = string.find(injuryFile, "\n")
       injurySec = injuryFile:sub(1, position - 1)
   end)
-end
+--end
 
 function align_right(font, str, size)
     -- aligns text on right of screen with given marginX
@@ -39,7 +39,7 @@ function align_right(font, str, size)
 end
 
 function node.render()
-    checkFiles()
+    --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
     --background:draw(0, 0, WIDTH, HEIGHT, .6)
     usa:draw(0, 0, WIDTH, HEIGHT, .6)
