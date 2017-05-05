@@ -4,9 +4,9 @@
 # May need backspace key to be user friendly
 #title          : ControlMenu.py
 #description    : see above
-#author         : Justin A. Williams 
+#author         : Justin A. Williams
 #date           : 20170502
-#version        : 0.8    
+#version        : 0.8
 #usage          : bash ControlMenu.py
 #notes          : .
 #bash_version   : ???
@@ -36,7 +36,7 @@ def pickTarget():
             #print linelist[sel2 + 1]
             if(sel2 != 0):
                 #ends function if yes
-                target = linelist[sel2 - 1] 
+                target = linelist[sel2 - 1]
                 pwd = os.popen("pwd").read().rstrip()
                 tgt = target.replace(".", pwd, 1).rstrip("/node.lua")
                 print "Target updated: " + tgt
@@ -74,14 +74,14 @@ while running == True:
     print "Chose a option from below:"
     print " 1 Start Info-Beamer"
     print " 2 Choose default visual"
-    print " 3 Show Full Status: Last Injury, Best Streak, Time/Days Since"
+    print " 3 Show System Status: Last Injury, Best Streak, Time/Days Since"
     print " 4 Reset Last Injury to right now"
     print " 5 Reset Last Injury to custom time"
     print " 6 Set System Time..."
     print " 7 Change Best Streak"
     print " 8 Restart / Shutdown / Exit"
     sel = ""
-    try: 
+    try:
         option = str(input("Enter an option> "))
         sel = int(option)
     except NameError:
@@ -133,9 +133,17 @@ while running == True:
         last = last[index+1:]
         best = os.popen("cat bestStreak").read().rstrip()
         days = os.popen("./daysSince.sh").read().rstrip()
+        secs = int(os.popen("./secondsSince.sh").read().rstrip())
+        hours = (secs / 3600) - int(days)
+        temp = os.popen("cat /sys/class/thermal/thermal_zone0/temp") \
+                .read().rstrip()
+        uptm = os.popen("uptime -p").read().rstrip()
         print "Current Status:\nCurrent Time:\t\t", curr
+        print "System Uptime:\t\t", uptm
+        print "CPU Temp:    \t\t", temp
         print "Last Injury: \t\t", last
-        print "Since Injury:\t\t", days, "days"
+        print "Since Injury:\t\t", days, "days ",hours, "hours"
+        print "             \t\t", secs, "total seconds"
         print "Best Streak: \t\t", best, "days"
         raw_input("Press Enter to continue...")
         # print ""
@@ -180,11 +188,11 @@ while running == True:
         if sel2 == 1:
             # print os.popen("./injuryTime.sh").read()
             # rebuilt from injuryTime.sh
-            print "Enter Date of injury in MM/DD/YYYY then press [ENTER]"  
+            print "Enter Date of injury in MM/DD/YYYY then press [ENTER]"
             print "example: 02/14/2001"
             day  = str(raw_input("Enter Date > "))
             print "Enter Time of injury, example: 1340 OR 1:40pm " + \
-                    "then press [ENTER]" 
+                    "then press [ENTER]"
             time = str(raw_input("Enter Time > "))
             print os.popen("./updateStreak.sh").read()
             cmd1 = "date -d '" + day +" "+ time + "' +%s > lastInjury"
@@ -210,10 +218,10 @@ while running == True:
         except Exception:
             print "General Exepected Error, try again.\n"
         if sel2 == 1:
-            print "Enter Correct Date in MM/DD/YYYY then press [ENTER]"  
+            print "Enter Correct Date in MM/DD/YYYY then press [ENTER]"
             print "example: 02/14/2001"
             day  = str(raw_input("Enter Date > "))
-            print "Enter Time, example: 1:40pm OR 1340 then press [ENTER]" 
+            print "Enter Time, example: 1:40pm OR 1340 then press [ENTER]"
             time = str(raw_input("Enter Time > "))
             # print os.popen("date -s '", day, time, "'").read()
             cmd1 = "date -s '" + day +" "+ time + "'"
