@@ -1,16 +1,25 @@
 #!/bin/bash
 # Updates best streak. 
 # takes first number as the number of days in new steak
+#title          : updateStreak.sh
+#description    : see above
+#author         : Justin A. Williams 
+#date           : 20170504
+#version        : 0.8    
+#usage          : bash updateStreak [set streak]
+#notes          : .
+#bash_version   : ???
+#==============================================================================
 
 ## if custom streak number is entered, set it and exit
-if [ $# -ge 1 ] && [ "$1" -gt "0" ] 
+if [ $# -ge 1 ] && [ "$1" -ge "0" ] 
 then
   echo "Custom set best streak: " $1
   echo $1 > bestStreak
   exit
 fi
 
-running="$(./secondsSince.sh)"
+running="$(./daysSince.sh)"
 best="$(cat bestStreak)"
 #echo "Current streak information:"
 #echo -e "New:" $running "Best:" $best "\n"

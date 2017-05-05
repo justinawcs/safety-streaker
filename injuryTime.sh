@@ -1,10 +1,16 @@
 #!/bin/bash
-# Sets time injury took place from given
-
-## Note
+# Replaces time of last injury with time given by prompts.
+#title          : injuryTime.sh
+#description    : see above
+#author         : Justin A. Williams 
+#date           : 20170501
+#version        : 0.8    
+#usage          : bash injuryTime.sh
+#notes          : see below ##
+#bash_version   : ???
+#==============================================================================
 ## date -d "11/20/2003 12:48:00"
 ## would display date  November 20, 2003, 12:48 PM
-
 
 echo "Enter Date of injury in MM/DD/YYYY format, then press [ENTER]"  
 echo "example: 02/14/2001"
@@ -17,3 +23,5 @@ date -d "$day $time" +%s > lastInjury
 date -d "$day $time" >> lastInjury
 
 cat lastInjury
+# update all other lastInjury files
+find . -name lastInjury | xargs touch -c 
