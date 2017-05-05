@@ -65,10 +65,11 @@ def pickTarget():
 # 5 Change Best Streak
 # 6 Shutdown
 
-os.popen("./startShow")
+print os.popen("./startShow.sh").read()
+raw_input("Press Enter to continue...")
 running = True
 while running == True:
-    print "\nDigital Safety Signage Controller Main Menu"
+    print "\n\nDigital Safety Signage Controller Main Menu"
     h_date = os.popen("date").read().rstrip()
     print "Current Time is " + h_date
     print "Chose a option from below:"
@@ -121,6 +122,7 @@ while running == True:
         # Info-beamer block
         print "Starting Info-Beamer"
         print os.popen("./startShow.sh").read()
+        raw_input("Press Enter to return to menu...")
         #print "contro
     elif sel == 2:
         # default visual block
@@ -137,10 +139,11 @@ while running == True:
         hours = (secs / 3600) - int(days)
         temp = os.popen("cat /sys/class/thermal/thermal_zone0/temp") \
                 .read().rstrip()
+        temp2 = float(temp) / 1000
         uptm = os.popen("uptime -p").read().rstrip()
         print "Current Status:\nCurrent Time:\t\t", curr
         print "System Uptime:\t\t", uptm
-        print "CPU Temp:    \t\t", temp
+        print "CPU Temp:    \t\t", temp2, "degrees Celcius"
         print "Last Injury: \t\t", last
         print "Since Injury:\t\t", days, "days ",hours, "hours"
         print "             \t\t", secs, "total seconds"
