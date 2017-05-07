@@ -62,9 +62,10 @@ function node.render()
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
     xx = align_right(black, perr.."%", 180)
     black:write(xx+4, 404, perr.."%", 180, 0,1,0,.6)
-    black:write(xx, 400, perr.."%", 180, 0,.3,0,.95)
+    black:write(xx, 400, perr.."%", 180, 0,.3,0,.5)
     impact:write(224, 804, "CONGRATULATIONS! WE DID IT!", 100, 0,0,0,.6)
     impact:write(220, 800, "CONGRATULATIONS! WE DID IT!", 100, 1,1,1,1)
+
 
     --resource.render_child(""):draw(50, 200, 300, 400)
 
