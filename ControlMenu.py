@@ -26,7 +26,7 @@ def pickTarget():
         #print linelist
         #print linelist[0]
         print "\nChoose default visual from below."
-        print "0 Go back..."
+        print " 0 Go back..."
         for index in range(len(linelist)):
             s = linelist[index].replace("/node.lua", "").lstrip("./")
             print " " + str(index+1) +" "+ s
@@ -80,7 +80,8 @@ while running == True:
     print " 5 Reset Last Injury to custom time"
     print " 6 Set System Time..."
     print " 7 Change Best Streak"
-    print " 8 Restart / Shutdown / Exit"
+    print " 8 Set ForEvergreen/Kermit Percent"
+    print " 9 Restart / Shutdown / Exit"
     sel = ""
     try:
         option = str(input("Enter an option> "))
@@ -91,7 +92,7 @@ while running == True:
         print "Bad input, try again.\n"
     except Exception:
         print "General Exepected Error, try again.\n"
-    if sel == 8:
+    if sel == 9:
         print "Are you sure you want to restart/shutdown?"
         print " 0 Go Back"
         print " 1 Restart"
@@ -141,6 +142,7 @@ while running == True:
                 .read().rstrip()
         temp2 = float(temp) / 1000
         uptm = os.popen("uptime -p").read().rstrip()
+        perc = os.popen("cat kermit/percent").read().rstrip()
         print "Current Status:\nCurrent Time:\t\t", curr
         print "System Uptime:\t\t", uptm
         print "CPU Temp:    \t\t", temp2, "degrees Celcius"
@@ -148,6 +150,7 @@ while running == True:
         print "Since Injury:\t\t", days, "days ",hours, "hours"
         print "             \t\t", secs, "total seconds"
         print "Best Streak: \t\t", best, "days"
+        print "ForEvergreen %:\t\t", perc, "%"
         raw_input("Press Enter to continue...")
         # print ""
     elif sel == 4:
@@ -238,7 +241,7 @@ while running == True:
         print "Best Streak: ", best
         print "Enter New Best Streak Without Injury"
         try:
-            newBest  = int(input("Enter  > "))
+            newBest  = int(input("Enter > "))
         except NameError:
             print "Bad input, try again.\n"
         except SyntaxError:
@@ -251,6 +254,24 @@ while running == True:
             # print "set streak"
         else:
             print "Number must be positive!"
+    elif sel ==8:
+        #set ForEvergreen/Kermit Percent
+        old = os.popen("cat kermit/percent").read().rstrip()
+        print "Old Percent: " + old
+        print "Enter New Percent(program will add % symbol): "
+        try:
+            perc = input("Enter > ")
+        except NameError:
+            print "Bad input, try again.\n"
+        except SyntaxError:
+            print "Bad input, try again.\n"
+        except Exception:
+            print "General Exepected Error, try again.\n"
+        if perc >= 0:
+            cmd1 = "echo '" + str(perc) + "' > kermit/percent"
+            os.popen(cmd1).read().rstrip()
+            print "New ForEvergreen percent set: ", perc, "%"
+            print os.popen("cat kermit/percent").read().rstrip()
     else:
         print "Unknown option. Please try again "
 print "Goodbye. \nPro-tip: typing 00 at command line will open Control Menu"
