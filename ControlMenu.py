@@ -20,9 +20,9 @@ def pickTarget():
     looking = True
     while looking:
         run = "find . -name node.lua"
-        list = os.popen(run).read()
+        lis = os.popen(run).read()
         #print list
-        linelist = list.splitlines()
+        linelist = lis.splitlines()
         #print linelist
         #print linelist[0]
         print "\nChoose default visual from below."
@@ -38,7 +38,7 @@ def pickTarget():
                 #ends function if yes
                 target = linelist[sel2 - 1]
                 pwd = os.popen("pwd").read().rstrip()
-                tgt = target.replace(".", pwd, 1).rstrip("/node.lua")
+                tgt = target.replace(".", pwd, 1).replace("/node.lua", "")
                 print "Target updated: " + tgt
                 os.popen("echo " + tgt + " > target")
                 print os.popen("cat target").read().rstrip()
