@@ -3,10 +3,10 @@
 #title          : injuryTime.sh
 #description    : see above
 #author         : Justin A. Williams
-#date           : 20170501
+#date           : 20170527
 #version        : 0.8
 #usage          : bash injuryTime.sh
-#notes          : see below ##
+#notes          : see below -> ##
 #bash_version   : ???
 #==============================================================================
 ## date -d "11/20/2003 12:48:00"
@@ -17,8 +17,8 @@ echo "Enter Date of injury in MM/DD/YYYY format, then press [ENTER]"
 echo "example: 02/14/12"
 read day
 echo "Enter Time of injury, example: 1:40pm OR 1340, then press [ENTER]"
-echo "   1   2   3   4   5   6   7   8   9   10   11  12"
-echo "   13  14  15  16  17  18  19  20  21  22   23  24"
+echo "AM: 00  1   2   3   4   5   6   7   8   9   10   11"
+echo "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
 read timer
 
 ./updateStreak.sh

@@ -1,18 +1,17 @@
 #!/bin/bash
-# Updates best streak.
-# takes first number as the number of days in new steak
+# Updates best streak. takes first number as the number of days in new steak
 #title          : updateStreak.sh
 #description    : see above
 #author         : Justin A. Williams
-#date           : 20170504
+#date           : 20170527
 #version        : 0.8
 #usage          : bash updateStreak [set streak]
-#notes          : .
+#notes          : see below -> ##
 #bash_version   : ???
 #==============================================================================
-
 ## if custom streak number is entered, set it and exit
 #cd $WORK
+
 cd /home/pi/info-beamer/
 if [ $# -ge 1 ] && [ "$1" -ge "0" ]
 then
