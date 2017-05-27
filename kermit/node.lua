@@ -12,7 +12,7 @@ local type = resource.load_font("silkscreen.ttf")
 -- local file = resource.load_file(filename)
 local background = resource.load_image("flag.jpg")
 local usa = resource.load_video{
-    file = "flail.mp4";
+    file = "redance.mp4";
     looped = true;}
 
 function trim(s)
@@ -63,6 +63,7 @@ function node.render()
     xx = align_right(black, perr.."%", 180)
     black:write(xx+4, 404, perr.."%", 180, 0,1,0,.6)
     black:write(xx, 400, perr.."%", 180, 0,.3,0,.5)
+    --black:write(xx-4, 396, perr.."%", 180, .1,.5,.1,.3)
     impact:write(224, 804, "CONGRATULATIONS! WE DID IT!", 100, 0,0,0,.6)
     impact:write(220, 800, "CONGRATULATIONS! WE DID IT!", 100, 1,1,1,1)
 
