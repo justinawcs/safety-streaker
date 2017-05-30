@@ -69,17 +69,18 @@ print os.popen("./startShow.sh").read()
 raw_input("Press Enter to continue...")
 running = True
 while running == True:
-    print "\n\nDigital Safety Signage Controller Main Menu"
+    print "\n\nSafety-Streaker"
+    print "Digital Signage Controller Main Menu"
     h_date = os.popen("date").read().rstrip()
     print "Current Time is " + h_date
     print "Chose a option from below:"
-    print " 1 Start Info-Beamer"
-    print " 2 Choose default visual"
+    print " 1 Start the visual"
+    print " 2 Choose which visual"
     print " 3 Show System Status: Last Injury, Best Streak, Time/Days Since"
     print " 4 Reset Last Injury to right now"
-    print " 5 Reset Last Injury to custom time"
+    print " 5 Reset Last Injury to another date/time"
     print " 6 Set System Time..."
-    print " 7 Change Best Streak"
+    print " 7 Set Best Streak"
     print " 8 Set ForEvergreen/Kermit Percent"
     print " 9 Restart / Shutdown / Exit"
     sel = ""
