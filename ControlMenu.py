@@ -65,6 +65,8 @@ def pickTarget():
 # 5 Change Best Streak
 # 6 Shutdown
 
+os.chdir('/home/pi/safety-streaker')
+print os.getcwd()
 print os.popen("./startShow.sh").read()
 raw_input("Press Enter to continue...")
 running = True
