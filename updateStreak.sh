@@ -12,7 +12,7 @@
 ## if custom streak number is entered, set it and exit
 #cd $WORK
 
-cd /home/pi/info-beamer/
+cd /home/pi/safety-streaker/
 if [ $# -ge 1 ] && [ "$1" -ge "0" ]
 then
   echo "Custom set best streak: " $1

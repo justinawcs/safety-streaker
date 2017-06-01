@@ -10,5 +10,5 @@
 #bash_version   : ???
 #==============================================================================
 
-tgt=$(cat /home/pi/info-beamer/target)
-sudo /home/pi/info-beamer/info-beamer $tgt
+tgt=$(cat /home/pi/safety-streaker/target)
+sudo info-beamer $tgt

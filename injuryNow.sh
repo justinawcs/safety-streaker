@@ -12,7 +12,7 @@
 ## date -d "11/20/2003 12:48:00"
 ## would display date  November 20, 2003, 12:48 PM
 
-cd /home/pi/info-beamer/
+cd /home/pi/safety-streaker/
 ./updateStreak.sh
 date +%s > lastInjury
 date >> lastInjury
