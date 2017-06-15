@@ -13,5 +13,5 @@ while True:
     time.sleep(.1)
     if input_state == False:
         print('Injury Now Button Pressed!')
-        print os.popen("/home/pi/info-beamer/injuryNow.sh").read()
+        print os.popen("/home/pi/safety-streaker/injuryNow.sh").read()
         time.sleep(1)
