@@ -40,8 +40,8 @@ def pickTarget():
                 pwd = os.popen("pwd").read().rstrip()
                 tgt = target.replace(".", pwd, 1).replace("/node.lua", "")
                 print "Target updated: " + tgt
-                os.popen("echo " + tgt + " > target")
-                print os.popen("cat target").read().rstrip()
+                os.popen("echo " + tgt + " > target.data")
+                print os.popen("cat target.data").read().rstrip()
                 looking = False
             else:
                 print "Going back to Control Menu..."
