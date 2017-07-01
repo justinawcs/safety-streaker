@@ -134,7 +134,7 @@ while running == True:
     elif sel == 3:
         # Status block
         curr = os.popen("date").read().rstrip()
-        last = os.popen("cat lastInjury").read().rstrip()
+        last = os.popen("cat lastInjury.data").read().rstrip()
         index = last.find("\n")
         last = last[index+1:]
         best = os.popen("cat bestStreak").read().rstrip()
@@ -178,7 +178,7 @@ while running == True:
         # print "injury now"
     elif sel == 5:
         # reset injury custom time
-        last = os.popen("cat lastInjury").read().rstrip()
+        last = os.popen("cat lastInjury.data").read().rstrip()
         index = last.find("\n")
         last = last[index+1:]
         print "Last Injury: ", last
@@ -206,13 +206,13 @@ while running == True:
             print "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
             time = str(raw_input("Enter Time > "))
             print os.popen("./updateStreak.sh").read()
-            cmd1 = "date -d '" + day +" "+ time + "' +%s > lastInjury"
-            cmd2 = "date -d '" + day +" "+ time + "' >> lastInjury"
+            cmd1 = "date -d '" + day +" "+ time + "' +%s > lastInjury.data"
+            cmd2 = "date -d '" + day +" "+ time + "' >> lastInjury.data"
             #print cmd1, cmd2
             os.popen(cmd1).read()
             os.popen(cmd2).read()
-            print os.popen("cat lastInjury").read().rstrip()
-            print os.popen("find . -name lastInjury | xargs touch").read()
+            print os.popen("cat lastInjury.data").read().rstrip()
+            print os.popen("find . -name lastInjury.data | xargs touch").read()
         # print "custom time"
     elif sel == 6:
         # set system time

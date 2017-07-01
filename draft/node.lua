@@ -21,8 +21,8 @@ end
 util.file_watch("bestStreak", function(content)
       bestStreak = trim(content)
   end)
---watch lastInjury file and calc timeSince
-util.file_watch("lastInjury", function(content)
+--watch lastInjury.data file and calc timeSince
+util.file_watch("lastInjury.data", function(content)
       injuryFile = trim(content)
       position = string.find(injuryFile, "\n")
       injurySec = injuryFile:sub(1, position - 1)

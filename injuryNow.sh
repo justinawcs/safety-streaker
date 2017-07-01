@@ -14,9 +14,9 @@
 
 cd /home/pi/safety-streaker/
 ./updateStreak.sh
-date +%s > lastInjury
-date >> lastInjury
+date +%s > lastInjury.data
+date >> lastInjury.data
 
-cat lastInjury
-# update all other lastInjury files
-find . -name lastInjury | xargs touch
+cat lastInjury.data
+# update all other lastInjury.data files
+find . -name lastInjury.data | xargs touch

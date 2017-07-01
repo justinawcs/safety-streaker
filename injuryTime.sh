@@ -22,9 +22,9 @@ echo "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
 read timer
 
 ./updateStreak.sh
-date -d "$day $timer" +%s > lastInjury
-date -d "$day $timer" >> lastInjury
+date -d "$day $timer" +%s > lastInjury.data
+date -d "$day $timer" >> lastInjury.data
 
-cat lastInjury
-# update all other lastInjury files
-find . -name lastInjury | xargs touch
+cat lastInjury.data
+# update all other lastInjury.data files
+find . -name lastInjury.data | xargs touch

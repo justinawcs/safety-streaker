@@ -13,7 +13,7 @@
 ## sed 'NUMq;d' file
 ## returns the Num-th line of the file
 
-time=$(sed '1q;d' lastInjury)
+time=$(sed '1q;d' lastInjury.data)
 #echo $time
 now=$(date +%s)
 expr $now - $time
