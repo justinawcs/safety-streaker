@@ -3,11 +3,11 @@
 #title          : checkStreak.sh
 #description    : see above
 #author         : Justin A. Williams
-#date           : 20170527
-#version        : 0.8
+#date           : 20170701
+#version        : 0.9
 #usage          : bash checkStreak.sh
 #notes          : .
-#bash_version   : ???
+#bash_version   : 4.3.30(1)-release
 #==============================================================================
 
 running=$(./daysSince.sh)

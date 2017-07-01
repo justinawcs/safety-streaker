@@ -1,4 +1,16 @@
 #!/usr/bin/python
+# Calls injuryNow.sh when external button is pressed, resets injury time to now.
+#title          : switch.py
+#description    : see above
+#author         : Justin A. Williams
+#date           : 20170701
+#version        : 0.9
+#usage          : bash switch.py
+#notes          : see below -> ##
+#bash_version   : 4.3.30(1)-release
+#===============================================================================
+## Runs at boot, place reference to this file in ~/.bashrc
+## External button is connected to pin 23 on this machine.
 import RPi.GPIO as GPIO
 import os
 import time

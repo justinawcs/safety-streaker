@@ -1,16 +1,17 @@
 #!/usr/bin/python
-# Assists in control over info-beamer, injury times, and streak count.
-# Useable with only numerical keypad.
-# May need backspace key to be user friendly
+# Main Control Menu for info-beamer & safety-streaker.
 #title          : ControlMenu.py
 #description    : see above
 #author         : Justin A. Williams
-#date           : 20170502
-#version        : 0.8
+#date           : 20170701
+#version        : 0.9
 #usage          : bash ControlMenu.py
-#notes          : .
-#bash_version   : ???
-#==============================================================================
+#notes          : see below -> ##
+#bash_version   : 4.3.30(1)-release
+#===============================================================================
+## Assists in viewing and changing injury times, and streak count, system status
+## Useable with only numerical keypad.
+## May need backspace key to be user friendly
 import os
 import subprocess
 #import pickTarget

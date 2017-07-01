@@ -1,14 +1,13 @@
 #!/bin/bash
 # One-Time Setup of Safety-Streaker Boot script, in ~.bashrc
-# Sets up environment for info-beamer, safety-streaker.
 #title          : init.sh
 #description    : see above
 #author         : Justin A. Williams
-#date           : 20170528
-#version        : 0.8
+#date           : 20170701
+#version        : 0.9
 #usage          : bash init.sh
-#notes          : see below -> ##
-#bash_version   : ???
+#notes          : Sets up environment for info-beamer, safety-streaker.
+#bash_version   : 4.3.30(1)-release
 #==============================================================================
 # echo ~
 
