@@ -145,7 +145,7 @@ while running == True:
                 .read().rstrip()
         temp2 = float(temp) / 1000
         uptm = os.popen("uptime -p").read().rstrip()
-        perc = os.popen("cat kermit/percent").read().rstrip()
+        perc = os.popen("cat kermit/percent.data").read().rstrip()
         print "Current Status:\nCurrent Time:\t\t", curr
         print "System Uptime:\t\t", uptm
         print "CPU Temp:    \t\t", temp2, "degrees Celcius"
@@ -262,7 +262,7 @@ while running == True:
             print "Number must be positive!"
     elif sel ==8:
         #set ForEvergreen/Kermit Percent
-        old = os.popen("cat kermit/percent").read().rstrip()
+        old = os.popen("cat kermit/percent.data").read().rstrip()
         print "Old Percent: " + old
         print "Enter New Percent(program will add % symbol): "
         try:
@@ -274,10 +274,10 @@ while running == True:
         except Exception:
             print "General Exepected Error, try again.\n"
         if perc >= 0:
-            cmd1 = "echo '" + str(perc) + "' > kermit/percent"
+            cmd1 = "echo '" + str(perc) + "' > kermit/percent.data"
             os.popen(cmd1).read().rstrip()
             print "New ForEvergreen percent set: ", perc, "%"
-            print os.popen("cat kermit/percent").read().rstrip()
+            print os.popen("cat kermit/percent.data").read().rstrip()
     else:
         print "Unknown option. Please try again "
 print "Goodbye. \nPro-tip: typing 00 at command line will open Control Menu"

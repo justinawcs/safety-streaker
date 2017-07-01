@@ -30,7 +30,7 @@ util.file_watch("lastInjury.data", function(content)
       position = string.find(injuryFile, "\n")
       injurySec = injuryFile:sub(1, position - 1)
   end)
-util.file_watch("percent", function(content)
+util.file_watch("percent.data", function(content)
       perr = trim(content)
   end)
 --end
