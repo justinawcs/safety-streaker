@@ -11,7 +11,7 @@
 #==============================================================================
 
 running=$(./daysSince.sh)
-best=$(cat bestStreak)
+best=$(cat bestStreak.data)
 echo  "Running Streak:" $running "Best Streak:" $best
 
  ## if running is greater than best

@@ -16,21 +16,21 @@ cd /home/pi/safety-streaker/
 if [ $# -ge 1 ] && [ "$1" -ge "0" ]
 then
   echo "Custom set best streak: " $1
-  echo $1 > bestStreak
+  echo $1 > bestStreak.data
   exit
 fi
 
 running="$(./daysSince.sh)"
-best="$(cat bestStreak)"
+best="$(cat bestStreak.data)"
 #echo "Current streak information:"
 #echo -e "New:" $running "Best:" $best "\n"
 
 if [ $running -gt $best ]
   then
-    # write running to bestStreak file
+    # write running to bestStreak.data file
     echo "New Best Streak! Updated record!" $running "days."
-    echo $running > bestStreak
-    find . -name bestStreak | xargs touch
+    echo $running > bestStreak.data
+    find . -name bestStreak.data | xargs touch
   else
     echo "Days since last injury is shorter than Best streak."
 fi

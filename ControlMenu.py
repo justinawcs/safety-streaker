@@ -137,7 +137,7 @@ while running == True:
         last = os.popen("cat lastInjury.data").read().rstrip()
         index = last.find("\n")
         last = last[index+1:]
-        best = os.popen("cat bestStreak").read().rstrip()
+        best = os.popen("cat bestStreak.data").read().rstrip()
         days = os.popen("./daysSince.sh").read().rstrip()
         secs = int(os.popen("./secondsSince.sh").read().rstrip())
         hours = (secs / 3600) - int(days)
@@ -243,7 +243,7 @@ while running == True:
         # print "new time"
     elif sel == 7:
         # set streak
-        best = os.popen("cat bestStreak").read().rstrip()
+        best = os.popen("cat bestStreak.data").read().rstrip()
         print "Best Streak: ", best
         print "Enter New Best Streak Without Injury"
         try:

@@ -20,9 +20,9 @@ function trim(s)
 end
 
 --function checkFiles()
---watch bestStreak file
-util.file_watch("bestStreak", function(content)
-      bestStreak = trim(content)
+--watch bestStreak.data file
+util.file_watch("bestStreak.data", function(content)
+      streak = trim(content)
   end)
 --watch lastInjury.data file and calc timeSince
 util.file_watch("lastInjury.data", function(content)

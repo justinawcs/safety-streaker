@@ -20,9 +20,9 @@ function trim(s)
 end
 
 --function checkFiles()
---watch bestStreak file
-util.file_watch("bestStreak", function(content)
-      bestStreak = trim(content)
+--watch bestStreak.data file
+util.file_watch("bestStreak.data", function(content)
+      streak = trim(content)
   end)
 --watch lastInjury.data file and calc timeSince
 util.file_watch("lastInjury.data", function(content)
@@ -57,9 +57,9 @@ function node.render()
     arial:write(600, 400, "without a lost time accident.", 80, .7,.7,.7,1)
     arial:write(25, 500, "The best previous record was:", 80, .7,.7,.7,1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
-    xx = align_right(black, bestStreak.." days", 180)
-    black:write(xx+4, 604, bestStreak.." Days", 180, 1,0,0,.6)
-    black:write(xx, 600, bestStreak.." Days", 180, .3,0,0,.95)
+    xx = align_right(black, streak.." days", 180)
+    black:write(xx+4, 604, streak.." Days", 180, 1,0,0,.6)
+    black:write(xx, 600, streak.." Days", 180, .3,0,0,.95)
     impact:write(324, 804, "STAY SAFE. THINK SAFETY!", 100, 0,0,0,.6)
     impact:write(320, 800, "STAY SAFE. THINK SAFETY!", 100, 1,1,1,1)
 
