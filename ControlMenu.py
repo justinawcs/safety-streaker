@@ -202,6 +202,8 @@ while running == True:
             day  = str(raw_input("Enter Date > "))
             print "Enter Time of injury, example: 1340 OR 1:40pm " + \
                     "then press [ENTER]"
+            print "AM: 00  1   2   3   4   5   6   7   8   9   10   11"
+            print "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
             time = str(raw_input("Enter Time > "))
             print os.popen("./updateStreak.sh").read()
             cmd1 = "date -d '" + day +" "+ time + "' +%s > lastInjury"
@@ -210,6 +212,7 @@ while running == True:
             os.popen(cmd1).read()
             os.popen(cmd2).read()
             print os.popen("cat lastInjury").read().rstrip()
+            print os.popen("find . -name lastInjury | xargs touch").read()
         # print "custom time"
     elif sel == 6:
         # set system time
