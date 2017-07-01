@@ -235,6 +235,8 @@ while running == True:
             print "example: 02/14/2001"
             day  = str(raw_input("Enter Date > "))
             print "Enter Time, example: 1:40pm OR 1340 then press [ENTER]"
+            print "AM: 00  1   2   3   4   5   6   7   8   9   10   11"
+            print "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
             time = str(raw_input("Enter Time > "))
             # print os.popen("date -s '", day, time, "'").read()
             cmd1 = "date -s '" + day +" "+ time + "'"
