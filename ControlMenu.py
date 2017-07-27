@@ -14,6 +14,7 @@
 ## May need backspace key to be user friendly
 import os
 import subprocess
+import sys
 #import pickTarget
 
 
@@ -67,7 +68,12 @@ def pickTarget():
 # 6 Shutdown
 
 ## Startup
-os.chdir('/home/pi/safety-streaker')
+if(len(sys.argv) > 1 and sys.argv[1] == "--test"):
+    print "Testing Directory in use!"
+else:
+    print "Using standard directory:"
+    os.chdir('/home/pi/safety-streaker')
+
 print os.getcwd()
 #start dataLink cascade on: lastInjury.dat, bestStreak
 print os.popen("./linkData.sh lastInjury.data").read()
