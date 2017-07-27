@@ -66,11 +66,20 @@ def pickTarget():
 # 5 Change Best Streak
 # 6 Shutdown
 
+## Startup
 os.chdir('/home/pi/safety-streaker')
 print os.getcwd()
+#start dataLink cascade on: lastInjury.dat, bestStreak
+print os.popen("./linkData.sh lastInjury.data").read()
+print os.popen("./linkData.sh bestStreak.data").read()
+#start visual
 print os.popen("./startShow.sh").read()
+#after visual
+## this promt is needed to clear the input line for the menu, [bug]
 raw_input("Press Enter to continue...")
 running = True
+
+## Loop
 while running == True:
     print "\n\nSafety-Streaker"
     print "Digital Signage Controller Main Menu"
