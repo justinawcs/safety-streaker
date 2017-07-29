@@ -38,6 +38,12 @@ function align_right(font, str, size)
     return WIDTH - marginX - wide
 end
 
+function align_center(font, str, size)
+    -- aligns text on the center of screen with given marginX
+    wide = font:width(str, size)
+    return ( WIDTH - wide ) / 2
+end
+
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green

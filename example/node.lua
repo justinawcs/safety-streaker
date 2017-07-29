@@ -35,19 +35,28 @@ function align_right(font, str, size)
     return WIDTH - marginX - wide
 end
 
+function align_center(font, str, size)
+    -- aligns text on the center of screen with given marginX
+    wide = font:width(str, size)
+    return ( WIDTH - wide ) / 2
+end
+
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
     background:draw(0, 0, WIDTH, HEIGHT, .6)
     timeNow = math.floor(os.time())
-    timeSince = timeNow - injurySec
+    secondsSince = timeNow - injurySec
+    daysSince = math.floor((timeNow - injurySec) / 86400 )
+    hoursSince = math.floor(((timeNow - injurySec) % 86400) / 3600)
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
     black:write(24, 54, "SAFETY STARTS WITH YOU!", 100, 0,0,0,.4)
     black:write(20, 50, "SAFETY STARTS WITH YOU!", 100, 1,1,1,1)
-    arial:write(25, 160, "The Marriott Evergreen Family has enjoyed", 80, .7,.75,.7,1)
-    black:write(32, 242, timeSince.." DAYS", 180, 1,0,0,1)
-    black:write(30, 240, timeSince.." DAYS", 180, .3,0,0,1)
+    linex = align_center(arial, "This Property has enjoyed", 80)
+    arial:write(linex, 160, "This Property has enjoyed", 80, .7,.75,.7,1)
+    black:write(32, 252, daysSince.." Days, "..hoursSince.." Hours", 150, 1,0,0,1)
+    black:write(30, 250, daysSince.." Days, "..hoursSince.." Hours", 150, .3,0,0,1)
     arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
     arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
