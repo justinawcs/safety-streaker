@@ -17,7 +17,6 @@ import subprocess
 import sys
 #import pickTarget
 
-
 def pickTarget():
     looking = True
     while looking:
@@ -58,14 +57,18 @@ def pickTarget():
                 print "General Exepected Error, try again.\n"
 #end pickTarget
 
-def color(col, str):
+def color(col, string):
     start = '\033['
     end = '\033[0m'
     colors = {'head':'4;91m', 'subhead':'31m', 'desc':'33m',
     'num':'1;32m', 'prompt':'1;30;42m'}
     ## head, sub header, desc, num, prompt
-    return (start + colors[col] + str + end)
+    return (start + colors[col] + string + end)
 #end color()
+
+def printOption(index, string):
+    print " " + color('num', str(index)) +" "+ string
+#end option
 
 ##Main Menu
 # 1 Control Info-beamer ->
@@ -100,16 +103,16 @@ while running == True:
     h_date = os.popen("date").read().rstrip()
     print color('subhead', "Current Time is: ") + h_date
     print color('desc', "Choose a option from below:")
-    print color('num', " 1 ") +"Start the visual"
-    print color('num', " 2 ") +"Choose which visual"
-    print color('num', " 3 ") +"Show System Status: Last Injury, Best Streak,"\
-        + " Time/Days Since"
-    print color('num', " 4 ") +"Reset Last Injury to right now"
-    print color('num', " 5 ") +"Reset Last Injury to another date/time"
-    print color('num', " 6 ") +"Set System Time..."
-    print color('num', " 7 ") +"Set Best Streak"
-    print color('num', " 8 ") +"Set ForEvergreen/Kermit Percent"
-    print color('num', " 9 ") +"Restart / Shutdown / Exit"
+    printOption(1, "Start the visual")
+    printOption(2, "Choose which visual")
+    printOption(3, "Show System Status: Last Injury, Best Streak,"\
+        + " Time/Days Since")
+    printOption(4, "Reset Last Injury to right now")
+    printOption(5, "Reset Last Injury to another date/time")
+    printOption(6, "Set System Time...")
+    printOption(7, "Set Best Streak")
+    printOption(8, "Set ForEvergreen/Kermit Percent")
+    printOption(9,  "Restart / Shutdown / Exit")
     sel = ""
     try:
         option = str(input(color('prompt', "Enter an option> ")+" "))
