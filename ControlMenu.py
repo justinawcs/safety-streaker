@@ -112,7 +112,7 @@ while running == True:
     printOption(6, "Set System Time...")
     printOption(7, "Set Best Streak")
     printOption(8, "Set ForEvergreen/Kermit Percent")
-    printOption(9,  "Restart / Shutdown / Exit")
+    printOption(9, "Exit / Restart / Shutdown")
     sel = ""
     try:
         option = str(input(color('prompt', "Enter an option> ")+" "))
@@ -124,21 +124,21 @@ while running == True:
     except Exception:
         print "General Exepected Error, try again.\n"
     if sel == 9:
-        print "Are you sure you want to restart/shutdown?"
+        print "Are you sure you want to exit/restart/shutdown?"
         print " 0 Go Back"
-        print " 1 Restart"
-        print " 2 Exit, (close Control Menu, Expert users only!!)"
+        print " 1 Exit, (close Control Menu, Expert users only!!)"
+        print " 2 Restart"
         print " 9 Shutdown, (need power cycle to turn back on)"
         opt = input("Enter option> ")
         sel2 = int(opt)
         if sel2 == 1:
-            print "Restarting system now..."
-            running = False
-            os.popen("sudo shutdown -r now")
-        elif sel2 == 2:
             print "Exiting..."
             running = False
             # should close
+        elif sel2 == 2:
+            print "Restarting system now..."
+            running = False
+            os.popen("sudo shutdown -r now")
         elif sel2 == 9:
             print "WARNING - Shutdown for this device means that the device"
             print "must be DISCONNECTED from power and THEN RECONNNECTED to "
