@@ -70,6 +70,10 @@ def printOption(index, string):
     print " " + color('num', str(index)) +" "+ string
 #end option
 
+def printPrompt():
+    return color('prompt', "Enter an option> ") + " "
+#end prompt
+
 ##Main Menu
 # 1 Control Info-beamer ->
 # 2 Show Status: last injury, best streak, days since
@@ -96,7 +100,7 @@ print os.popen("./startShow.sh").read()
 raw_input("Press Enter to continue...")
 running = True
 
-## Loop
+## Loop -- Main Menu
 while running == True:
     print "\n\n" + color('head', "Safety-Streaker")
     print color('subhead',"Digital Signage Controller Main Menu")
@@ -115,7 +119,7 @@ while running == True:
     printOption(9, "Exit / Restart / Shutdown")
     sel = ""
     try:
-        option = str(input(color('prompt', "Enter an option> ")+" "))
+        option = str(input(printPrompt()))
         sel = int(option)
     except NameError:
         print "Bad input, try again.\n"
@@ -142,7 +146,7 @@ while running == True:
         elif sel2 == 9:
             print "WARNING - Shutdown for this device means that the device"
             print "must be DISCONNECTED from power and THEN RECONNNECTED to "
-            print "turn on again. Are you sure you want to do this"
+            print "turn on again. Are you sure you wish to continue??"
             print " 0 Go back"
             print " 9 Shutdown"
             sel3 = int(input("Enter an option> "))
