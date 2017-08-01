@@ -58,6 +58,12 @@ def pickTarget():
                 print "General Exepected Error, try again.\n"
 #end pickTarget
 
+def color(num):
+    startc = "\e["
+    endc = "\e[0m"
+    colors = "4;91m", "31m", "33m", "1;32m", "1m", "1;30;42m"
+    ## header, sub header, desc, num, opt, prompt
+#end color()
 
 ##Main Menu
 # 1 Control Info-beamer ->
