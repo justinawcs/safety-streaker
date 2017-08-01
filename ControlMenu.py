@@ -58,11 +58,13 @@ def pickTarget():
                 print "General Exepected Error, try again.\n"
 #end pickTarget
 
-def color(num):
-    startc = "\e["
-    endc = "\e[0m"
-    colors = "4;91m", "31m", "33m", "1;32m", "1m", "1;30;42m"
-    ## header, sub header, desc, num, opt, prompt
+def color(col, str):
+    start = '\033['
+    end = '\033[0m'
+    colors = {'head':'4;91m', 'subhead':'31m', 'desc':'33m',
+    'num':'1;32m', 'prompt':'1;30;42m'}
+    ## head, sub header, desc, num, prompt
+    return (start + colors[col] + str + end)
 #end color()
 
 ##Main Menu
@@ -93,23 +95,24 @@ running = True
 
 ## Loop
 while running == True:
-    print "\n\nSafety-Streaker"
-    print "Digital Signage Controller Main Menu"
+    print "\n\n" + color('head', "Safety-Streaker")
+    print color('subhead',"Digital Signage Controller Main Menu")
     h_date = os.popen("date").read().rstrip()
-    print "Current Time is " + h_date
-    print "Chose a option from below:"
-    print " 1 Start the visual"
-    print " 2 Choose which visual"
-    print " 3 Show System Status: Last Injury, Best Streak, Time/Days Since"
-    print " 4 Reset Last Injury to right now"
-    print " 5 Reset Last Injury to another date/time"
-    print " 6 Set System Time..."
-    print " 7 Set Best Streak"
-    print " 8 Set ForEvergreen/Kermit Percent"
-    print " 9 Restart / Shutdown / Exit"
+    print color('subhead', "Current Time is: ") + h_date
+    print color('desc', "Choose a option from below:")
+    print color('num', " 1 ") +"Start the visual"
+    print color('num', " 2 ") +"Choose which visual"
+    print color('num', " 3 ") +"Show System Status: Last Injury, Best Streak,"\
+        + " Time/Days Since"
+    print color('num', " 4 ") +"Reset Last Injury to right now"
+    print color('num', " 5 ") +"Reset Last Injury to another date/time"
+    print color('num', " 6 ") +"Set System Time..."
+    print color('num', " 7 ") +"Set Best Streak"
+    print color('num', " 8 ") +"Set ForEvergreen/Kermit Percent"
+    print color('num', " 9 ") +"Restart / Shutdown / Exit"
     sel = ""
     try:
-        option = str(input("Enter an option> "))
+        option = str(input(color('prompt', "Enter an option> ")+" "))
         sel = int(option)
     except NameError:
         print "Bad input, try again.\n"
