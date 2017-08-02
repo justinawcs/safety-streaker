@@ -26,7 +26,11 @@ def pickTarget():
         linelist = lis.splitlines()
         #print linelist
         #print linelist[0]
-        print "\nChoose default visual from below."
+        print "\nChoose which visual from below."
+        visual = os.popen("cat target.data").read().rstrip()
+        ind = visual.rfind("/")
+        vis = visual[ind+1:]
+        print "Current visual: " + vis +" ( "+visual+" )"
         print " 0 Go back..."
         for index in range(len(linelist)):
             s = linelist[index].replace("/node.lua", "").lstrip("./")
@@ -171,6 +175,9 @@ while running == True:
         last = last[index+1:]
         best = os.popen("cat bestStreak.data").read().rstrip()
         days = os.popen("./daysSince.sh").read().rstrip()
+        trgt = os.popen("cat target.data").read().rstrip()
+        ind = trgt.rfind("/")
+        vis = trgt[ind+1:]
         secs = int(os.popen("./secondsSince.sh").read().rstrip())
         hours = (secs / 3600) - int(days)
         temp = os.popen("cat /sys/class/thermal/thermal_zone0/temp") \
@@ -186,6 +193,7 @@ while running == True:
         print "             \t\t", secs, "total seconds"
         print "Best Streak: \t\t", best, "days"
         print "ForEvergreen %:\t\t", perc, "%"
+        print "Visual:      \t\t", vis , " (",trgt, ")"
         raw_input("Press Enter to continue...")
         # print ""
     elif sel == 4:
