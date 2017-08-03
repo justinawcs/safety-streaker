@@ -188,25 +188,26 @@ while running == True:
         temp2 = float(temp) / 1000
         uptm = os.popen("uptime -p").read().rstrip()
         perc = os.popen("cat kermit/percent.data").read().rstrip()
-        print "Current Status:\nCurrent Time:\t\t", curr
-        print "System Uptime:\t\t", uptm
-        print "CPU Temp:    \t\t", temp2, "degrees Celcius"
-        print "Last Injury: \t\t", last
-        print "Since Injury:\t\t", days, "days ",hours, "hours"
-        print "             \t\t", secs, "total seconds"
-        print "Best Streak: \t\t", best, "days"
-        print "ForEvergreen %:\t\t", perc, "%"
-        print "Visual:      \t\t", vis , " (",trgt, ")"
-        raw_input("Press Enter to continue...")
+        printDesc("\nCurrent System Status:")
+        print " Current Time:\t\t", curr
+        print " System Uptime:\t\t", uptm
+        print " CPU Temp:    \t\t", temp2, "degrees Celcius"
+        print " Last Injury: \t\t", last
+        print " Since Injury:\t\t", days, "days ",hours, "hours"
+        print "              \t\t", secs, "total seconds"
+        print " Best Streak: \t\t", best, "days"
+        print " ForEvergreen %:\t", perc, "%"
+        print " Visual:      \t\t", vis , " (",trgt, ")"
+        raw_input(color('prompt', "Press Enter to continue..."))
         # print ""
     elif sel == 4:
         # reset injury now
         curr = os.popen("date").read().rstrip()
-        print "Set Last Injury to current time :", curr
-        print " 0 Go Back"
-        print " 1 Set Last Injury time to now"
+        printDesc("Set Last Injury to current time: " + curr)
+        printOption(0, "Go Back")
+        printOption(1, "Set Last Injury time to now")
         try:
-            opt = input("Enter option> ")
+            opt = input(printPrompt())
             sel2 = int(opt)
         except NameError:
             print "Bad input, try again.\n"
@@ -224,12 +225,12 @@ while running == True:
         last = os.popen("cat lastInjury.data").read().rstrip()
         index = last.find("\n")
         last = last[index+1:]
-        print "Last Injury: ", last
-        print "Set Last Injury to custom time?"
-        print " 0 Go Back"
-        print " 1 Set Time"
+        printDesc("Last Injury: " + last)
+        printDesc("Set Last Injury to custom time?")
+        printOption(0, "Go Back")
+        printOption(1, "Set Time")
         try:
-            opt = input("Enter option> ")
+            opt = input(printPrompt())
             sel2 = int(opt)
         except NameError:
             print "Bad input, try again.\n"
@@ -259,12 +260,12 @@ while running == True:
         # print "custom time"
     elif sel == 6:
         # set system time
-        print "System Time ", os.popen("date").read().rstrip()
-        print "Set System clock?"
-        print " 0 Go Back"
-        print " 1 Set Time"
+        printDesc("System Time " + os.popen("date").read().rstrip())
+        printDesc("Set System clock?")
+        printOption(0, "Go Back")
+        printOption(1, "Set Time")
         try:
-            opt = input("Enter option> ")
+            opt = input(printPrompt())
             sel2 = int(opt)
         except NameError:
             print "Bad input, try again.\n"
@@ -289,10 +290,11 @@ while running == True:
     elif sel == 7:
         # set streak
         best = os.popen("cat bestStreak.data").read().rstrip()
-        print "Best Streak: ", best
-        print "Enter New Best Streak Without Injury"
+        printDesc("Best Streak: " + best)
+        printDesc("Enter New Best Streak Without Injury")
         try:
-            newBest  = int(input("Enter > "))
+            newBest = -1
+            newBest  = int(input(color('prompt', "Enter > ") +" "))
         except NameError:
             print "Bad input, try again.\n"
         except SyntaxError:
@@ -308,10 +310,11 @@ while running == True:
     elif sel ==8:
         #set ForEvergreen/Kermit Percent
         old = os.popen("cat kermit/percent.data").read().rstrip()
-        print "Old Percent: " + old
-        print "Enter New Percent(program will add % symbol): "
+        printDesc("Old Percent: " + old)
+        printDesc("Enter New Percent(program will add % symbol): ")
         try:
-            perc = input("Enter > ")
+            perc = -1
+            perc = input(color('prompt', "Enter > ") +" ")
         except NameError:
             print "Bad input, try again.\n"
         except SyntaxError:
