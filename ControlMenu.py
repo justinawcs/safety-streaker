@@ -26,18 +26,18 @@ def pickTarget():
         linelist = lis.splitlines()
         #print linelist
         #print linelist[0]
-        print "\nChoose which visual from below."
+        printDesc("\nChoose which visual from below.")
         visual = os.popen("cat target.data").read().rstrip()
         ind = visual.rfind("/")
         vis = visual[ind+1:]
-        print "Current visual: " + vis +" ( "+visual+" )"
-        print " 0 Go back..."
+        printDesc("Current visual: " + vis +" ( "+visual+" )")
+        printOption(0, "Go back...")
         for index in range(len(linelist)):
             s = linelist[index].replace("/node.lua", "").lstrip("./")
-            print " " + str(index+1) +" "+ s
+            printOption(index+1, s)
         sel2 = None
         try:
-            sel2 = int(input("Enter an option> "))
+            sel2 = int(input(printPrompt()))
             #print linelist[sel2 + 1]
             if(sel2 != 0):
                 #ends function if yes
