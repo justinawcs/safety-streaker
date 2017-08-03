@@ -134,34 +134,7 @@ while running == True:
         print "Bad input, try again.\n"
     except Exception:
         print "General Exepected Error, try again.\n"
-    if sel == 9:
-        printDesc("\nAre you sure you want to exit/restart/shutdown?")
-        printOption(0, "Go Back")
-        printOption(1, "Exit, (close Control Menu, Expert users only!!)")
-        printOption(2, "Restart")
-        printOption(9, "Shutdown, (need power cycle to turn back on)")
-        opt = input(printPrompt())
-        sel2 = int(opt)
-        if sel2 == 1:
-            print "Exiting..."
-            running = False
-            # should close
-        elif sel2 == 2:
-            print "Restarting system now..."
-            running = False
-            os.popen("sudo shutdown -r now")
-        elif sel2 == 9:
-            printDesc("\nWARNING - Shutdown for this device requires this device")
-            printDesc("be DISCONNECTED from power and THEN RECONNNECTED to ")
-            printDesc("turn on again. Are you sure you wish to continue??")
-            printOption(0, "Go back")
-            printOption(9, "Shutdown")
-            sel3 = int(input(printPrompt()))
-            if sel3 == 9:
-                print "Shutting down now..."
-                running = False
-                os.popen("sudo shutdown -H now")
-    elif sel == 1:
+    if sel == 1:
         # Info-beamer block
         print "Starting Info-Beamer"
         print os.popen("./startShow.sh").read()
@@ -326,6 +299,33 @@ while running == True:
             os.popen(cmd1).read().rstrip()
             print "New ForEvergreen percent set: ", perc, "%"
             print os.popen("cat kermit/percent.data").read().rstrip()
+    elif sel == 9:
+        printDesc("\nAre you sure you want to exit/restart/shutdown?")
+        printOption(0, "Go Back")
+        printOption(1, "Exit, (close Control Menu, Expert users only!!)")
+        printOption(2, "Restart")
+        printOption(9, "Shutdown, (need power cycle to turn back on)")
+        opt = input(printPrompt())
+        sel2 = int(opt)
+        if sel2 == 1:
+            print "Exiting..."
+            running = False
+            # should close
+        elif sel2 == 2:
+            print "Restarting system now..."
+            running = False
+            os.popen("sudo shutdown -r now")
+        elif sel2 == 9:
+            printDesc("\nWARNING - Shutdown for this device requires this device")
+            printDesc("be DISCONNECTED from power and THEN RECONNNECTED to ")
+            printDesc("turn on again. Are you sure you wish to continue??")
+            printOption(0, "Go back")
+            printOption(9, "Shutdown")
+            sel3 = int(input(printPrompt()))
+            if sel3 == 9:
+                print "Shutting down now..."
+                running = False
+                os.popen("sudo shutdown -H now")
     else:
         print "Unknown option. Please try again "
 print "Goodbye. \nPro-tip: typing 00 at command line will open Control Menu"
