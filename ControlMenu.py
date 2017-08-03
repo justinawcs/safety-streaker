@@ -78,6 +78,9 @@ def printPrompt():
     return color('prompt', "Enter an option> ") + " "
 #end prompt
 
+def printDesc(string):
+    print color('desc', string)
+
 ##Main Menu
 # 1 Control Info-beamer ->
 # 2 Show Status: last injury, best streak, days since
@@ -110,14 +113,14 @@ while running == True:
     print color('subhead',"Digital Signage Controller Main Menu")
     h_date = os.popen("date").read().rstrip()
     print color('subhead', "Current Time is: ") + h_date
-    print color('desc', "Choose a option from below:")
+    printDesc("Choose a option from below:")
     printOption(1, "Start the visual")
     printOption(2, "Choose which visual")
     printOption(3, "Show System Status: Last Injury, Best Streak,"\
         + " Time/Days Since")
     printOption(4, "Reset Last Injury to right now")
     printOption(5, "Reset Last Injury to another date/time")
-    printOption(6, "Set System Time...")
+    printOption(6, "Set System Time")
     printOption(7, "Set Best Streak")
     printOption(8, "Set ForEvergreen/Kermit Percent")
     printOption(9, "Exit / Restart / Shutdown")
@@ -132,12 +135,12 @@ while running == True:
     except Exception:
         print "General Exepected Error, try again.\n"
     if sel == 9:
-        print "Are you sure you want to exit/restart/shutdown?"
-        print " 0 Go Back"
-        print " 1 Exit, (close Control Menu, Expert users only!!)"
-        print " 2 Restart"
-        print " 9 Shutdown, (need power cycle to turn back on)"
-        opt = input("Enter option> ")
+        printDesc("\nAre you sure you want to exit/restart/shutdown?")
+        printOption(0, "Go Back")
+        printOption(1, "Exit, (close Control Menu, Expert users only!!)")
+        printOption(2, "Restart")
+        printOption(9, "Shutdown, (need power cycle to turn back on)")
+        opt = input(printPrompt())
         sel2 = int(opt)
         if sel2 == 1:
             print "Exiting..."
@@ -148,12 +151,12 @@ while running == True:
             running = False
             os.popen("sudo shutdown -r now")
         elif sel2 == 9:
-            print "WARNING - Shutdown for this device means that the device"
-            print "must be DISCONNECTED from power and THEN RECONNNECTED to "
-            print "turn on again. Are you sure you wish to continue??"
-            print " 0 Go back"
-            print " 9 Shutdown"
-            sel3 = int(input("Enter an option> "))
+            printDesc("\nWARNING - Shutdown for this device requires this device")
+            printDesc("be DISCONNECTED from power and THEN RECONNNECTED to ")
+            printDesc("turn on again. Are you sure you wish to continue??")
+            printOption(0, "Go back")
+            printOption(9, "Shutdown")
+            sel3 = int(input(printPrompt()))
             if sel3 == 9:
                 print "Shutting down now..."
                 running = False
