@@ -82,7 +82,7 @@ def printDesc(string):
     print color('desc', string)
 #end printDesc
 
-def getInput()
+def getInput():
     # asks question, takes input, checks if valid, returns int, or null
 #end getInput
 
