@@ -76,10 +76,15 @@ def printOption(index, string):
 
 def printPrompt():
     return color('prompt', "Enter an option> ") + " "
-#end prompt
+#end printPrompt
 
 def printDesc(string):
     print color('desc', string)
+#end printDesc
+
+def getInput()
+    # asks question, takes input, checks if valid, returns int, or null
+#end getInput
 
 ##Main Menu
 # 1 Control Info-beamer ->
@@ -103,7 +108,7 @@ print os.popen("./linkData.sh bestStreak.data").read()
 #start visual
 print os.popen("./startShow.sh").read()
 #after visual
-## this promt is needed to clear the input line for the menu, [bug]
+## this prompt is needed to clear the input line for the menu, [bug]
 raw_input("Press Enter to continue...")
 running = True
 
