@@ -84,6 +84,7 @@ def printDesc(string):
 
 def getInput():
     # asks question, takes input, checks if valid, returns int, or null
+    print ""
 #end getInput
 
 ##Main Menu
