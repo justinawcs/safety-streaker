@@ -1,1 +1,6 @@
+About/Credits on 0 menu
+auto resize on text in flag
+better input handling on ControlMenu
+complete buttonTest.py needs ot be able to close
+	from numpad controller
 
