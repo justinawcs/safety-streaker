@@ -1,0 +1,12 @@
+#!/bin/bash
+# [Short Description of what this file does.]
+#title          : [thisFilename.txt]
+#description    : see above
+#author         : Justin A. Williams
+#date           : 20180124 [year-month-day]
+#version        : 0.9
+#usage          : bash [How to call file]
+#notes          : [quick notes or see below ##]
+#bash_version   : 4.3.30(1)-release [bash version]
+#===============================================================================
+#code starts on this line
