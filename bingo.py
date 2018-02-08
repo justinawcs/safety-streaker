@@ -9,8 +9,10 @@
 #notes          : see below ##
 #bash_version   : 4.3.30(1)-release [bash version]
 #===============================================================================
-import os, time
+import os
+import pickle
 #from ControlMenu import printDesc, printOption, printPrompt
+## add method need to take in lists
 
 def formatBingo(number):
     if 1 <= number <= 15:
@@ -27,54 +29,116 @@ def formatBingo(number):
         return "Error. Not a bingo number"
 #end formatBingo
 
-def bingoHeader():
-    time = os.popen("date").read().rstrip()
-    return "##Bingo Game started at: " + time
-#end bingoHeader
+def tokenizer(str):
+    if str.find("+") > 0:
+        return str.split("+") #numpad implementation may use + for multi entry
+    else:
+        return str.split() #will split at whitespace chars
+#end tokenizer
 
 class BingoGame:
-    date = os.popen("date").read().rstrip()
+    date = "" ## os.popen("date").read().rstrip() ## date created
+    date_int = None ## os.popen("date +%s").read().rstrip() ##date in seconds(unix)
     pickedList = []
     
-    def add(self, *num):
-        
-        if num in self.pickedList:
-            self.pickedList.remove(num)
-            return(formatBingo(num) + " was removed from list.")
+#    def __init__(self):
+#        #self.date = date
+#        #self.date_int = date_int
+#        #self.pickedList = pickedList
+#        self.load()
+
+    def add(self, num):
+        #print(num + len(num))
+        #for i in num:
+        number = int(num)
+        if 1 <= int(number) <= 75: 
+            if number in self.pickedList: #remove if already on list
+                self.pickedList.remove(number)
+                return(formatBingo(number) + " was removed from list.")
+            else: #add to list
+                self.pickedList.append(number)  
+                return(formatBingo(number) + " was added to list.")
         else:
-            self.pickedList.append(num)
-            return(formatBingo(num) + " was added to list.")
-            
+            return "Number out of range!"
+    #end add
+
     def length(self):
         return len(self.pickedList)
-        
-    def load(self):
-        #open and read file
+    
+    def save(self):
+        save_data = { "date":self.date, \
+                    "date_int":self.date_int, \
+                    "pickedList":self.pickedList}
+        print "Save Data: ", save_data
+        pickle.dump( save_data, open( "bingo.data", "wb" ) )
+    #end save
+    
+    def load(self): #open and read file
         try:
-            bingo_file = open("bingo.data", "r+")
-            bingo_raw = bingo_file.readlines()
-            #bingo_raw
-            print bingo_raw
-            bingo = ""
+            load_data = pickle.load( open( "bingo.data", "rb" ) )
+            self.date = load_data["date"]
+            self.date_int = load_data["date_int"]
+            self.pickedList = load_data["pickedList"]
         except IOError: # file not there, so create blank
-            bingo_file = open("bingo.data", "w")
-            #pull date string and add to first line of file
-            bingo_file.write(bingoHeader())
-            bingo = ""
-        #print bingo list
-        print(bingo)
-        return(bingo)
+            self.reset()
+        #print data
+        print "Load Data: ", self.date, self.date_int, self.pickedList
+        #print self.pickedList
     #end load
     
+    def reset(self): #clears enetered data and saves new file
+        blank_date = os.popen("date").read().rstrip() #pulls current time
+        blank_date_int = os.popen("date +%s").read().rstrip() 
+        blank_list = []
+        self.date = blank_date
+        self.date_int = blank_date_int
+        self.pickedList = blank_list
+        print "Reset Data: ", blank_date, blank_date_int, blank_list
+        self.save()
+    #end reset
+    
+    def getHeader(self):
+        return "Bingo Game started at: " + self.date
+    #end bingoHeader
+    
+    def getList(self):
+        hold_string = ""
+        for i in self.pickedList:
+            hold_string += formatBingo(i) + ", "
+        return hold_string # Replace with period at end
 
-## Run Section
-#print formatBingo(1) +", "+ formatBingo(16) +", "+ formatBingo(32) \
-#        +", "+ formatBingo(47) +", "+ formatBingo(64)
-ex = BingoGame()
-print ex.date
-print ex.add(4)
-print ex.pickedList
-print ex.add(32)
-print ex.pickedList
-print ex.add(4)
-print ex.pickedList
+
+## Run/Test Section
+def testing():
+    #print formatBingo(1) +", "+ formatBingo(16) +", "+ formatBingo(32) \
+    #        +", "+ formatBingo(47) +", "+ formatBingo(64)
+    ex = BingoGame()
+#    ex.load()
+#    ex.reset()
+    print "Current Data: ",  ex.date, ex.date_int, ex.pickedList
+    
+    #print "Empty List: ",   ex.pickedList
+    print ex.add(4)
+    print ex.add(72)
+    #print ex.add(13)
+    print ex.save()
+
+    #print ex.date
+    #print ex.add(4)
+    #print ex.pickedList
+    #print ex.add(32)
+    #print ex.pickedList
+    #print ex.add("4")
+    #print ex.pickedList
+    #print ex.add("74")
+    #print ex.pickedList
+
+    #given1 = "23+45+90"
+    #given2 = "23 45 90"
+    #print tokenizer(given1)
+    #print tokenizer(given2)
+    #print add(tokenizer(given1))  #add does not currently accept lists
+
+    #ex.save()
+    #ex.load()
+#end testing
