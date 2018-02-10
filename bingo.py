@@ -11,8 +11,7 @@
 #===============================================================================
 import os
 import pickle
-#from ControlMenu import printDesc, printOption, printPrompt
-## add method need to take in lists
+
 
 def formatBingo(number):
     if 1 <= number <= 15:
@@ -29,16 +28,13 @@ def formatBingo(number):
         return "Error. Not a bingo number"
 #end formatBingo
 
-def tokenizer(str):
-    if str.find("+") > 0:
-        return str.split("+") #numpad implementation may use + for multi entry
-    else:
-        return str.split() #will split at whitespace chars
-#end tokenizer
+
 
 class BingoGame:
+    'Controller for a bingo game, does not pick  numbers'
     date = "" ## os.popen("date").read().rstrip() ## date created
-    date_int = None ## os.popen("date +%s").read().rstrip() ##date in seconds(unix)
+    date_int = None 
+    ##os.popen("date +%s").read().rstrip() ##date in seconds(unix-time)
     pickedList = []
     
 #    def __init__(self):
@@ -47,9 +43,7 @@ class BingoGame:
 #        #self.pickedList = pickedList
 #        self.load()
 
-    def add(self, num):
-        #print(num + len(num))
-        #for i in num:
+    def add_item(self, num):
         number = int(num)
         if 1 <= int(number) <= 75: 
             if number in self.pickedList: #remove if already on list
@@ -61,6 +55,17 @@ class BingoGame:
         else:
             return "Number out of range!"
     #end add
+    
+    def add(self, string):
+        if string.find("+") > 0:
+            result = string.split("+") #numpad implem. may use + for multi entry
+        else:
+            result = string.split() #will split at whitespace chars
+        for i in result: 
+            print int(i)
+            self.add_item(int(i))
+        return result
+    #end tokenizer
 
     def length(self):
         return len(self.pickedList)
@@ -105,23 +110,25 @@ class BingoGame:
         hold_string = ""
         for i in self.pickedList:
             hold_string += formatBingo(i) + ", "
-        return hold_string # Replace with period at end
+        add_period = hold_string[:-2] + "."
+        return add_period # Replace with period at end
 
 
 ## Run/Test Section
 def testing():
     #print formatBingo(1) +", "+ formatBingo(16) +", "+ formatBingo(32) \
     #        +", "+ formatBingo(47) +", "+ formatBingo(64)
-    ex = BingoGame()
+    #ex = BingoGame()
 #    ex.load()
 #    ex.reset()
-    print "Current Data: ",  ex.date, ex.date_int, ex.pickedList
+    #print "Current Data: ",  ex.date, ex.date_int, ex.pickedList
     
     #print "Empty List: ",   ex.pickedList
-    print ex.add(4)
-    print ex.add(72)
-    #print ex.add(13)
-    print ex.save()
+    #print ex.add(4)
+    #print ex.add(72)
+    #print ex.add(ex.add("16+23"))
+    #print ex.pickedList
+    #print ex.save()
 
     #print ex.date
     #print ex.add(4)
@@ -141,4 +148,22 @@ def testing():
 
     #ex.save()
     #ex.load()
+    
+    #ex = BingoGame()
+    #print ex.add("23+34+56")
+    #print ex.add(1)
+
+    one = BingoGame()
+    one.reset()
+    print one.add("23+34+56")
+    print one.add("72")
+    print one.add("")
+    print one.pickedList
+    print one.getList()
+    one.save()
+    
+    two = BingoGame()
+    two.load()
 #end testing
+
+#testing()
