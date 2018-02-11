@@ -11,6 +11,9 @@ local type = resource.load_font("silkscreen.ttf")
 -- FILES
 -- local file = resource.load_file(filename)
 local background = resource.load_image("flag.jpg")
+local safety = resource.load_image("safety.png")
+local bingo = resource.load_image("bingo.png")
+local ball = resource.load_image("ball.png")
 
 --TODO What is purpore of this function?
 function trim(s)
@@ -50,26 +53,33 @@ end
 
 function grid()
     --IDEA this layout should be sliced from image program
+    --position each element in a grid
+end
+
+function bingoNumber(xpos, ypos, num)
+    --take in a letter or number and decorate
+    black:write()
 end
 
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
-    background:draw(0, 0, WIDTH, HEIGHT, .6)
+    background:draw(0, 0, WIDTH, HEIGHT, .25)
     timeNow = math.floor(os.time())
     secondsSince = timeNow - injurySec
     daysSince = math.floor((timeNow - injurySec) / 86400 )
     hoursSince = math.floor(((timeNow - injurySec) % 86400) / 3600)
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
-    black:write(24, 54, "SAFETY STARTS WITH YOU!", 100, 0,0,0,.4)
-    black:write(20, 50, "SAFETY STARTS WITH YOU!", 100, 1,1,1,1)
-    linex = align_center(arial, "This Property has enjoyed", 80)
-    arial:write(linex, 160, "This Property has enjoyed", 80, .7,.75,.7,1)
+    --black:write(24, 54, "SAFETY STARTS WITH YOU!", 100, 0,0,0,.4)
+    --black:write(20, 50, "SAFETY STARTS WITH YOU!", 100, 1,1,1,1)
+    --linex = align_center(arial, "This Property has enjoyed", 80)
+    --arial:write(linex, 160, "This Property has enjoyed", 80, .7,.75,.7,1)
     black:write(32, 252, daysSince.." Days, "..hoursSince.." Hours", 150, 1,0,0,1)
     black:write(30, 250, daysSince.." Days, "..hoursSince.." Hours", 150, .3,0,0,1)
-    arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
-    arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
+    --arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
+    --arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
+    arial:write(325, 500, "Coming Soon...",120, .7,.75,.7,1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
     xx = align_right(black, streak.." days.", 180)
     black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
@@ -77,5 +87,12 @@ function node.render()
     impact:write(320, 800, "STAY SAFE. THINK SAFETY!", 100, 1,1,1,1)
 
     --resource.render_child(""):draw(50, 200, 300, 400)
+    --if(safety:state())
+    safeX, safeY = safety:size()
+
+    safety:draw(750, 20, 750+(.8*safeX), 20+(.8*safeY), 1)
+    bingX, bingY = bingo:size()
+    bingo:draw(680, 210, 1.50*bingX, 1.7*bingY, 1)
+
 
 end
