@@ -15,6 +15,7 @@
 import os
 import subprocess
 import sys
+import bingo
 #import pickTarget
 
 def pickTarget():
@@ -60,6 +61,57 @@ def pickTarget():
         except Exception:
                 print "General Exepected Error, try again.\n"
 #end pickTarget
+
+def controlBingo():
+    working = True
+    game = bingo.BingoGame()
+    game.load()
+    while working:
+        #  Add/Remove Bingo number
+        #  Reset/Restart Bingo Game
+        printDesc("\nSafety BINGO Controls")
+        print(game.getHeader())
+        print(color('desc', "Current Bingo Numbers: ") + game.getList())
+        printOption(0, "Go Back")
+        printOption(1, "Add/Remove Bingo number")
+        printOption(2, "Restart Bingo game")
+        #opt, sel2 = None
+        try:
+            opt = input(printPrompt())
+            sel2 = int(opt)
+            if sel2 == 1:
+                #Add Remove Bingo numbers
+                printDesc("To add Bingo number(s) only enter the number. "+ \
+                            "Example '1' For 'B-1' or '16' for 'I-16'")
+                printDesc("Speed tip: you can enter multiple numbers with " \
+                        "spaces or plus(+) Example: 12+34+56")
+                add_input = raw_input(printPrompt())
+                #game.load()
+                game.add(str(add_input))
+                print game.getList()
+            elif sel2 == 2:
+                #Restart Bingo game
+                printDesc("Reset will reset time and clear all numbers.")
+                printOption(0, "Go Back")
+                printOption(1, "Reset")
+                confirm = input(printPrompt())
+                if confirm == 1:
+                    printDesc("The game has just been reset.")
+                    game.reset()
+            elif  sel2 == 0:
+                print "Going back to main menu"
+                working = False
+            else:
+                print "Bad input, try again.\n"
+        except NameError:
+                print "Bad input, try again.\n"
+        except SyntaxError:
+                print "Bad input, try again.\n"
+        except IndexError:
+                print "That number is not valid, try again.\n"
+        except Exception:
+                print "General Exepected Error, try again.\n"
+#end control Bingo
 
 def color(col, string):
     start = '\033['
@@ -129,7 +181,8 @@ while running == True:
     printOption(6, "Set System Time")
     printOption(7, "Set Best Streak")
     printOption(8, "Set ForEvergreen/Kermit Percent")
-    printOption(9, "Exit / Restart / Shutdown")
+    printOption(9, "Show Safety BINGO Controls")
+    printOption(0, "Exit / Restart / Shutdown")
     sel = ""
     try:
         option = str(input(printPrompt()))
@@ -286,7 +339,7 @@ while running == True:
             # print "set streak"
         else:
             print "Number must be positive!"
-    elif sel ==8:
+    elif sel == 8:
         #set ForEvergreen/Kermit Percent
         old = os.popen("cat kermit/percent.data").read().rstrip()
         printDesc("Old Percent: " + old)
@@ -306,6 +359,9 @@ while running == True:
             print "New ForEvergreen percent set: ", perc, "%"
             print os.popen("cat kermit/percent.data").read().rstrip()
     elif sel == 9:
+        #Show Safety Bingo Controls
+        controlBingo()
+    elif sel == 0:
         printDesc("\nAre you sure you want to exit/restart/shutdown?")
         printOption(0, "Go Back")
         printOption(1, "Exit, (close Control Menu, Expert users only!!)")
