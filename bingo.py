@@ -62,8 +62,12 @@ class BingoGame:
         else:
             result = string.split() #will split at whitespace chars
         for i in result: 
-            print int(i)
-            self.add_item(int(i))
+            #print int(i)
+            try:
+                print self.add_item(int(i))
+            except ValueError:
+                print "Not a valid number. "
+        self.save()
         return result
     #end tokenizer
 
@@ -74,7 +78,7 @@ class BingoGame:
         save_data = { "date":self.date, \
                     "date_int":self.date_int, \
                     "pickedList":self.pickedList}
-        print "Save Data: ", save_data
+        #print "Save Data: ", save_data
         pickle.dump( save_data, open( "bingo.data", "wb" ) )
     #end save
     
@@ -111,6 +115,7 @@ class BingoGame:
         for i in self.pickedList:
             hold_string += formatBingo(i) + ", "
         add_period = hold_string[:-2] + "."
+        #print add_period
         return add_period # Replace with period at end
 
 
