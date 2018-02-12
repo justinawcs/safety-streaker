@@ -10,7 +10,8 @@
 #bash_version   : 4.3.30(1)-release [bash version]
 #===============================================================================
 import os
-import pickle
+import json
+#import pickle
 
 
 def formatBingo(number):
@@ -79,12 +80,12 @@ class BingoGame:
                     "date_int":self.date_int, \
                     "pickedList":self.pickedList}
         #print "Save Data: ", save_data
-        pickle.dump( save_data, open( "bingo.data", "wb" ) )
+        json.dump( save_data, open( "bingo.json", "wb" ) )
     #end save
     
     def load(self): #open and read file
         try:
-            load_data = pickle.load( open( "bingo.data", "rb" ) )
+            load_data = json.load( open( "bingo.json", "rb" ) )
             self.date = load_data["date"]
             self.date_int = load_data["date_int"]
             self.pickedList = load_data["pickedList"]
