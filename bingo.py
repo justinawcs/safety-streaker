@@ -35,6 +35,7 @@ class BingoGame:
     'Controller for a bingo game, does not pick  numbers'
     date = "" ## os.popen("date").read().rstrip() ## date created
     date_int = None 
+    game_count = 0
     ##os.popen("date +%s").read().rstrip() ##date in seconds(unix-time)
     pickedList = []
     
@@ -78,6 +79,7 @@ class BingoGame:
     def save(self):
         save_data = { "date":self.date, \
                     "date_int":self.date_int, \
+                    "game_count":self.game_count, \
                     "pickedList":self.pickedList}
         #print "Save Data: ", save_data
         json.dump( save_data, open( "bingo.json", "wb" ) )
@@ -88,11 +90,13 @@ class BingoGame:
             load_data = json.load( open( "bingo.json", "rb" ) )
             self.date = load_data["date"]
             self.date_int = load_data["date_int"]
+            self.game_count = load_data["game_count"]
             self.pickedList = load_data["pickedList"]
         except IOError: # file not there, so create blank
             self.reset()
         #print data
-        print "Load Data: ", self.date, self.date_int, self.pickedList
+        print "Load Data: ", self.date, self.date_int, \
+                            self.game_count, self.pickedList
         #print self.pickedList
     #end load
     
@@ -103,12 +107,22 @@ class BingoGame:
         self.date = blank_date
         self.date_int = blank_date_int
         self.pickedList = blank_list
-        print "Reset Data: ", blank_date, blank_date_int, blank_list
+        self.incr_game_count()
+        print "Reset Data: ",  blank_date, blank_date_int, \
+                            self.game_count, blank_list
         self.save()
     #end reset
     
+    def incr_game_count(self):
+        self.game_count += 1
+        self.save()
+        
+    def set_game_count(self, given):
+        self.game_count = given
+        self.save()
+    
     def getHeader(self):
-        return "Bingo Game started at: " + self.date
+        return "Bingo Game #" + str(self.game_count) + " started at: " + self.date
     #end bingoHeader
     
     def getList(self):

@@ -74,7 +74,8 @@ def controlBingo():
         print(color('desc', "Current Bingo Numbers: ") + game.getList())
         printOption(0, "Go Back")
         printOption(1, "Add/Remove Bingo number")
-        printOption(2, "Restart Bingo game")
+        printOption(2, "Restart Game")
+        printOption(3, "Set Game Count")
         #opt, sel2 = None
         try:
             opt = input(printPrompt())
@@ -91,13 +92,24 @@ def controlBingo():
                 print game.getList()
             elif sel2 == 2:
                 #Restart Bingo game
-                printDesc("Reset will reset time and clear all numbers.")
+                printDesc("Warning: Reset will reset time to present time, " +
+                    "increase the game count by 1 and clear all bingo numbers.")
                 printOption(0, "Go Back")
-                printOption(1, "Reset")
+                printOption(1, "Reset game")
                 confirm = input(printPrompt())
                 if confirm == 1:
                     printDesc("The game has just been reset.")
                     game.reset()
+            elif sel2 == 3:
+                #Set Bingo game number(count)
+                printDesc("Set Game count to different number.")
+                printOption(0, "Go back")
+                printOption('?', "New Game count number")
+                g_count = input(printPrompt())
+                if g_count > 0:
+                    game.set_game_count(g_count)
+                else: 
+                    print "Going back..."
             elif  sel2 == 0:
                 print "Going back to main menu"
                 working = False
