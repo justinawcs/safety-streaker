@@ -14,6 +14,7 @@ local background = resource.load_image("flag.jpg")
 local safety = resource.load_image("safety.png")
 local bingo = resource.load_image("bingo.png")
 local ball = resource.load_image("ball.png")
+local num = resource.load_image("numbers.png")
 
 --TODO What is purpore of this function?
 function trim(s)
@@ -142,6 +143,7 @@ function node.render()
     bingX, bingY = bingo:size()
     bingo:draw(700, 160, 700+(.93*bingX), 160+(.80*bingY), 1)
 
+    num:draw(40, 40, (40+489), (40+712), .3)
 
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
