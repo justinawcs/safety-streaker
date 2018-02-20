@@ -32,6 +32,11 @@ util.file_watch("lastInjury.data", function(content)
       injurySec = injuryFile:sub(1, position - 1)
   end)
 --end
+--watch bingo.json
+util.file_watch("bingo.json", function(content)
+      bingo_json = content
+  end)
+
 
 function align_right(font, str, size)
     -- aligns text on right of screen with given marginX
@@ -61,6 +66,32 @@ function bingoNumber(xpos, ypos, num)
     black:write()
 end
 
+
+
+function testJson()
+    local json = require('json')
+    test = {
+        one='first',two='second',three={2,3,5}
+        --12, 34, 56
+    }
+    jsonTest = json.encode(test)
+    --print('JSON encoded test is: ' .. jsonTest)
+    -- Now JSON decode the json string
+    result = json.decode(jsonTest)
+    print ("The decoded table result:")
+    table.foreach(result,print)
+    print ("The decoded table result.three")
+    table.foreach(result.three, print)
+end
+
+function readJson(key)
+    local json = require('json')
+    code = json.encode{1, 23, 34}
+    local value = json.decode(code)
+    local file = json.decode(resource.load_file("bingo.json"))
+    return file[key]
+end
+
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
@@ -69,30 +100,36 @@ function node.render()
     secondsSince = timeNow - injurySec
     daysSince = math.floor((timeNow - injurySec) / 86400 )
     hoursSince = math.floor(((timeNow - injurySec) % 86400) / 3600)
+
+    safeX, safeY = safety:size()
+    safety:draw(720, 20, 720+(.85*safeX), 20+(.85*safeY), 1)
+    bingX, bingY = bingo:size()
+    bingo:draw(700, 160, 700+(.93*bingX), 160+(.80*bingY), 1)
+
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
     --black:write(24, 54, "SAFETY STARTS WITH YOU!", 100, 0,0,0,.4)
     --black:write(20, 50, "SAFETY STARTS WITH YOU!", 100, 1,1,1,1)
     --linex = align_center(arial, "This Property has enjoyed", 80)
     --arial:write(linex, 160, "This Property has enjoyed", 80, .7,.75,.7,1)
-    black:write(32, 252, daysSince.." Days, "..hoursSince.." Hours", 150, 1,0,0,1)
-    black:write(30, 250, daysSince.." Days, "..hoursSince.." Hours", 150, .3,0,0,1)
+    --black:write(32, 252, daysSince.." Days, "..hoursSince.." Hours", 150, 1,0,0,1)
+    --black:write(30, 250, daysSince.." Days, "..hoursSince.." Hours", 150, .3,0,0,1)
     --arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
     --arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
     arial:write(325, 500, "Coming Soon...",120, .7,.75,.7,1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
-    xx = align_right(black, streak.." days.", 180)
-    black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
-    black:write(xx, 600, streak.." days.", 180, .3,0,0,.95)
-    impact:write(320, 800, "STAY SAFE. THINK SAFETY!", 100, 1,1,1,1)
+    --xx = align_right(black, streak.." days.", 180)
+    --black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
+    --black:write(xx, 600, streak.." days.", 180, .3,0,0,.95)
+    impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
+    impact:write(320, 700, "1 "..readJson("date_int"), 48, 1,1,1,1)
+    impact:write(320, 750, "2 "..readJson("game_count"), 48, 1,1,1,1)
+    local pList = readJson("pickedList")
+    local fakeList = {2, 3, 4, 12}
+    impact:write(320, 800, "3 "..fakeList[1], 48, 1,1,1,1)
 
     --resource.render_child(""):draw(50, 200, 300, 400)
     --if(safety:state())
-    safeX, safeY = safety:size()
-
-    safety:draw(750, 20, 750+(.8*safeX), 20+(.8*safeY), 1)
-    bingX, bingY = bingo:size()
-    bingo:draw(680, 210, 1.50*bingX, 1.7*bingY, 1)
 
 
 end
