@@ -59,14 +59,31 @@ end
 function grid()
     --IDEA this layout should be sliced from image program
     --position each element in a grid
+    areaX = (.40 * WIDTH) --40%
+    areaY = HEIGHT - (2 * marginY)
+    --return "Width, Height", areaX, areaY
+    eachX = (areaX / 5) - 20
+    eachY = (areaY / 16) - 10
+    print("X-space", math.floor(eachX) )
+    print("Y-space", math.floor(eachY) )
+
+    b_ = {'B',  1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15}
+    i_ = {'I', 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30}
+    n_ = {'N', 31,32,33,34,35,36,37,38,39,40,41,42,43,44,45}
+    g_ = {'G', 46,47,48,49,50,51,52,53,54,55,56,57,58,59,60}
+    o_ = {'O', 61,62,63,64,65,66,67,68,69,70,71,72,73,74,75}
+    print(listToString(b_))
+    print(listToString(i_))
+    print(listToString(n_))
+    print(listToString(g_))
+    print(listToString(o_))
+    --t = {{b_, i_, n_, g_, o_}}
 end
 
 function bingoNumber(xpos, ypos, num)
     --take in a letter or number and decorate
     black:write()
 end
-
-
 
 function testJson()
     local json = require('json')
@@ -92,6 +109,25 @@ function readJson(key)
     return file[key]
 end
 
+function listToString(list)
+    string_rep = ""
+    for i,v in ipairs(list) do
+        --print(v)
+        string_rep = string_rep.." "..v
+    end
+    return string_rep
+end
+
+function membership(list, item)
+    for i, v in ipairs(list) do
+        if item == v then
+            looking = false
+            return true
+        end
+    end
+    return false
+end
+
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
@@ -105,6 +141,7 @@ function node.render()
     safety:draw(720, 20, 720+(.85*safeX), 20+(.85*safeY), 1)
     bingX, bingY = bingo:size()
     bingo:draw(700, 160, 700+(.93*bingX), 160+(.80*bingY), 1)
+
 
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
@@ -126,8 +163,9 @@ function node.render()
     impact:write(320, 750, "2 "..readJson("game_count"), 48, 1,1,1,1)
     local pList = readJson("pickedList")
     local fakeList = {2, 3, 4, 12}
-    impact:write(320, 800, "3 "..fakeList[1], 48, 1,1,1,1)
-
+    impact:write(320, 800, "3 "..listToString(fakeList), 48, 1,1,1,1)
+    test_member = tostring(membership(fakeList, 11))
+    impact:write(320, 850, "4 "..test_member, 48, 1,1,1,1)
     --resource.render_child(""):draw(50, 200, 300, 400)
     --if(safety:state())
 
