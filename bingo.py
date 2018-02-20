@@ -82,12 +82,12 @@ class BingoGame:
                     "game_count":self.game_count, \
                     "pickedList":self.pickedList}
         #print "Save Data: ", save_data
-        json.dump( save_data, open( "bingo.json", "wb" ) )
+        json.dump( save_data, open( "bingo/bingo.json", "wb" ) )
     #end save
     
     def load(self): #open and read file
         try:
-            load_data = json.load( open( "bingo.json", "rb" ) )
+            load_data = json.load( open( "bingo/bingo.json", "rb" ) )
             self.date = load_data["date"]
             self.date_int = load_data["date_int"]
             self.game_count = load_data["game_count"]
