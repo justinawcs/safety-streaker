@@ -51,6 +51,11 @@ function align_center(font, str, size)
     return ( WIDTH - wide ) / 2
 end
 
+function align_middle(font, str, size )
+    tall = font:height(str, size)
+    wide = font:width(str, size)
+end
+
 --create vertical list of numbers from start, using fonts, sizing, spacing
 function column(font, startNum, size, spacing)
     topMargin = 60
@@ -64,26 +69,39 @@ function grid()
     areaY = HEIGHT - (2 * marginY)
     --return "Width, Height", areaX, areaY
     eachX = (areaX / 5) - 20
-    eachY = (areaY / 16) - 10
-    print("X-space", math.floor(eachX) )
-    print("Y-space", math.floor(eachY) )
+    eachY = (areaY / 16)
+    --print("X-space", math.floor(eachX) )
+    --print("Y-space", math.floor(eachY) )
 
     b_ = {'B',  1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15}
     i_ = {'I', 16,17,18,19,20,21,22,23,24,25,26,27,28,29,30}
     n_ = {'N', 31,32,33,34,35,36,37,38,39,40,41,42,43,44,45}
     g_ = {'G', 46,47,48,49,50,51,52,53,54,55,56,57,58,59,60}
     o_ = {'O', 61,62,63,64,65,66,67,68,69,70,71,72,73,74,75}
-    print(listToString(b_))
-    print(listToString(i_))
-    print(listToString(n_))
-    print(listToString(g_))
-    print(listToString(o_))
+    --print(listToString(b_))
+    --print(listToString(i_))
+    --print(listToString(n_))
+    --print(listToString(g_))
+    --print(listToString(o_))
     --t = {{b_, i_, n_, g_, o_}}
+    grid_col(marginX, marginY, eachX, eachY, b_)
 end
 
-function bingoNumber(xpos, ypos, num)
+function grid_col(start_x, start_y, each_x, each_y, array)
+    len = table.getn(array)
+    for i,v in ipairs(array) do
+        black:write(start_x, start_y, v, each_y, 1,1,1,1)
+        start_y = start_y + each_y
+        --print(v)
+        --string_rep = string_rep.." "..v
+        --grid_cell(start_x, start_y, each_x, each_y, v)
+    end
+end
+
+function grid_cell(xpos, ypos, xwide, yhigh, num)
     --take in a letter or number and decorate
-    black:write()
+    --font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
+
 end
 
 function testJson()
@@ -143,7 +161,7 @@ function node.render()
     bingX, bingY = bingo:size()
     bingo:draw(700, 160, 700+(.93*bingX), 160+(.80*bingY), 1)
 
-    num:draw(40, 40, (40+489), (40+712), .3)
+    --num:draw(40, 40, (40+489), (40+712), .3)
 
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
@@ -160,16 +178,16 @@ function node.render()
     --xx = align_right(black, streak.." days.", 180)
     --black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
     --black:write(xx, 600, streak.." days.", 180, .3,0,0,.95)
-    impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
-    impact:write(320, 700, "1 "..readJson("date_int"), 48, 1,1,1,1)
-    impact:write(320, 750, "2 "..readJson("game_count"), 48, 1,1,1,1)
-    local pList = readJson("pickedList")
-    local fakeList = {2, 3, 4, 12}
-    impact:write(320, 800, "3 "..listToString(fakeList), 48, 1,1,1,1)
-    test_member = tostring(membership(fakeList, 11))
-    impact:write(320, 850, "4 "..test_member, 48, 1,1,1,1)
+
+    ---impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
+    --impact:write(320, 700, "1 "..readJson("date_int"), 48, 1,1,1,1)
+    --impact:write(320, 750, "2 "..readJson("game_count"), 48, 1,1,1,1)
+    --local pList = readJson("pickedList")
+    --local fakeList = {2, 3, 4, 12}
+    --impact:write(320, 800, "3 "..listToString(fakeList), 48, 1,1,1,1)
+    --test_member = tostring(membership(fakeList, 11))
+    --impact:write(320, 850, "4 "..test_member, 48, 1,1,1,1)
     --resource.render_child(""):draw(50, 200, 300, 400)
     --if(safety:state())
-
-
+    grid()
 end
