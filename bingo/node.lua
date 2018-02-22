@@ -1,6 +1,6 @@
 gl.setup(1600, 900)
-marginX = 30
-marginY = 20
+marginX = 40
+marginY = 30
 
 -- FONTS
 local arial = resource.load_font("Arial.ttf")
@@ -65,10 +65,10 @@ end
 function grid()
     --IDEA this layout should be sliced from image program
     --position each element in a grid
-    areaX = (.40 * WIDTH) --40%
+    areaX = (.38 * WIDTH) --40%
     areaY = HEIGHT - (2 * marginY)
     --return "Width, Height", areaX, areaY
-    eachX = (areaX / 5) - 20
+    eachX = (areaX / 5)
     eachY = (areaY / 16)
     --print("X-space", math.floor(eachX) )
     --print("Y-space", math.floor(eachY) )
@@ -85,12 +85,16 @@ function grid()
     --print(listToString(o_))
     --t = {{b_, i_, n_, g_, o_}}
     grid_col(marginX, marginY, eachX, eachY, b_)
+    grid_col(marginX+1*(eachX), marginY, eachX, eachY, i_)
+    grid_col(marginX+2*(eachX), marginY, eachX, eachY, n_)
+    grid_col(marginX+3*(eachX), marginY, eachX, eachY, g_)
+    grid_col(marginX+4*(eachX), marginY, eachX, eachY, o_)
 end
 
 function grid_col(start_x, start_y, each_x, each_y, array)
     len = table.getn(array)
     for i,v in ipairs(array) do
-        black:write(start_x, start_y, v, each_y, 1,1,1,1)
+        grid_cell(start_x, start_y, each_x, each_y, v)
         start_y = start_y + each_y
         --print(v)
         --string_rep = string_rep.." "..v
@@ -100,8 +104,9 @@ end
 
 function grid_cell(xpos, ypos, xwide, yhigh, num)
     --take in a letter or number and decorate
+    --needs center align, colors, dim,
     --font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
-
+    black:write(xpos, ypos, num, yhigh, 1,1,1,.20)
 end
 
 function testJson()
@@ -156,6 +161,7 @@ function node.render()
     daysSince = math.floor((timeNow - injurySec) / 86400 )
     hoursSince = math.floor(((timeNow - injurySec) % 86400) / 3600)
 
+    --Add percentage width fixed from right side to size
     safeX, safeY = safety:size()
     safety:draw(720, 20, 720+(.85*safeX), 20+(.85*safeY), 1)
     bingX, bingY = bingo:size()
@@ -173,13 +179,13 @@ function node.render()
     --black:write(30, 250, daysSince.." Days, "..hoursSince.." Hours", 150, .3,0,0,1)
     --arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
     --arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
-    arial:write(325, 500, "Coming Soon...",120, .7,.75,.7,1)
+    arial:write(750, 500, "Coming Soon...",120, .7,.75,.7,1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
     --xx = align_right(black, streak.." days.", 180)
     --black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
     --black:write(xx, 600, streak.." days.", 180, .3,0,0,.95)
 
-    ---impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
+    --impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
     --impact:write(320, 700, "1 "..readJson("date_int"), 48, 1,1,1,1)
     --impact:write(320, 750, "2 "..readJson("game_count"), 48, 1,1,1,1)
     --local pList = readJson("pickedList")
