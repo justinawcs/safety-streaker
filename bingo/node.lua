@@ -1,6 +1,6 @@
 gl.setup(1600, 900)
-marginX = 40
-marginY = 30
+marginX = 30
+marginY = 20
 
 -- FONTS
 local arial = resource.load_font("Arial.ttf")
@@ -11,6 +11,7 @@ local type = resource.load_font("silkscreen.ttf")
 -- FILES
 -- local file = resource.load_file(filename)
 local background = resource.load_image("flag.jpg")
+local grid_lines = resource.load_image("grid-lines.png")
 local safety = resource.load_image("safety.png")
 local bingo = resource.load_image("bingo.png")
 local ball = resource.load_image("ball.png")
@@ -51,21 +52,23 @@ function align_center(font, str, size)
     return ( WIDTH - wide ) / 2
 end
 
-function align_middle(font, str, size )
-    tall = font:height(str, size)
+function align_center_cell(font, str, size, cell_width)
+    --aligns text on center of the cell given
     wide = font:width(str, size)
+    return (cell_width - wide ) / 2
 end
 
---create vertical list of numbers from start, using fonts, sizing, spacing
-function column(font, startNum, size, spacing)
-    topMargin = 60
-    high = font:height(startNum, size)
+function outline(font,offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
+    --draws in all four corners of outline
+    font:draw(xpos-offset, ypos-offset, text, font_size, red, grn, blu, alpha)
+    font:draw(xpos+offset, ypos-offset, text, font_size, red, grn, blu, alpha)
+    font:draw(xpos-offset, ypos+offset, text, font_size, red, grn, blu, alpha)
+    font:draw(xpos+offset, ypos+offset, text, font_size, red, grn, blu, alpha)
 end
-
 function grid()
     --IDEA this layout should be sliced from image program
     --position each element in a grid
-    areaX = (.38 * WIDTH) --40%
+    areaX = (.36 * WIDTH) --40%
     areaY = HEIGHT - (2 * marginY)
     --return "Width, Height", areaX, areaY
     eachX = (areaX / 5)
@@ -106,7 +109,14 @@ function grid_cell(xpos, ypos, xwide, yhigh, num)
     --take in a letter or number and decorate
     --needs center align, colors, dim,
     --font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
-    black:write(xpos, ypos, num, yhigh, 1,1,1,.20)
+    header = {'B', 'I', 'N', 'G', 'O'}
+    called = readJson("pickedList")
+    spacing = align_center_cell(black, num, yhigh, xwide)
+    if membership(header, num) or membership(called, tonumber(num)) then
+        black:write(xpos+spacing, ypos, num, yhigh, 1,1,1,1)
+    else
+        black:write(xpos+spacing, ypos, num, yhigh, 1,1,1,.20)
+    end
 end
 
 function testJson()
@@ -156,6 +166,7 @@ function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
     background:draw(0, 0, WIDTH, HEIGHT, .25)
+    --grid_lines:draw(0, 0, WIDTH, HEIGHT, .5)
     timeNow = math.floor(os.time())
     secondsSince = timeNow - injurySec
     daysSince = math.floor((timeNow - injurySec) / 86400 )
