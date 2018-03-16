@@ -7,6 +7,7 @@ local arial = resource.load_font("Arial.ttf")
 local black = resource.load_font("Arial_Black.ttf")
 local impact = resource.load_font("Impact.ttf")
 local type = resource.load_font("silkscreen.ttf")
+local shadow = resource.create_colored_texture(0,0,0,1)
 
 -- FILES
 -- local file = resource.load_file(filename)
@@ -44,6 +45,13 @@ function align_center(font, str, size)
     return ( WIDTH - wide ) / 2
 end
 
+function banner(tall, secondsSince)
+    start_bottom = HEIGHT - tall
+    shadow:draw(0, start_bottom, WIDTH, start_bottom+tall, .80)
+    black:write(marginX, start_bottom, "0101", tall*.85, 1,1,1,1)
+
+end
+
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
@@ -68,7 +76,7 @@ function node.render()
     black:write(xx, 600, streak.." Days", 180, .3,0,0,.95)
     impact:write(324, 804, "STAY SAFE. THINK SAFETY!", 100, 0,0,0,.6)
     impact:write(320, 800, "STAY SAFE. THINK SAFETY!", 100, 1,1,1,1)
-
+    --banner(120, secondsSince)
     --resource.render_child(""):draw(50, 200, 300, 400)
 
 end
