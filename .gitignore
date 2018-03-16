@@ -2,3 +2,4 @@
 *.json
 *.old
 *.mp4
+*.pyc
