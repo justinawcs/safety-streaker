@@ -6,7 +6,7 @@ marginY = 20
 local arial = resource.load_font("Arial.ttf")
 local black = resource.load_font("Arial_Black.ttf")
 local impact = resource.load_font("Impact.ttf")
-local type = resource.load_font("silkscreen.ttf")
+local typer = resource.load_font("silkscreen.ttf")
 local shadow = resource.create_colored_texture(0,0,0,1)
 
 -- FILES
@@ -45,11 +45,65 @@ function align_center(font, str, size)
     return ( WIDTH - wide ) / 2
 end
 
-function banner(tall, secondsSince)
+function banner(tall, daysSinceDecimal)
     start_bottom = HEIGHT - tall
-    shadow:draw(0, start_bottom, WIDTH, start_bottom+tall, .80)
-    black:write(marginX, start_bottom, "0101", tall*.85, 1,1,1,1)
+    text_height = tall * 0.85
+    text_padding = (tall * 0.15)
+    start_y = start_bottom + text_padding
+    split_lines = text_height / 2.3
 
+    shadow:draw(0, start_bottom, WIDTH, start_bottom+tall, .80)
+    --days
+    black:write(marginX, start_y, daysSince, text_height,.8,.8,.8,1 )
+    nextX = black:width(daysSince, text_height) + 20+ marginX
+    daysVertical(nextX, start_bottom, black, tall/4, 0.85, 1, 1, 1, 1)
+    nextX = black:width("_", text_height/4) + 40 + nextX
+    --hours
+    black:write(nextX, start_y, hoursSince, text_height,.8,.8,.8,1 )
+    nextX = black:width(hoursSince, text_height) + 20 +nextX
+    hoursVertical(nextX, start_bottom, black, tall/5, 0.85, 1, 1, 1, 1)
+    nextX = black:width("_", text_height/5) + 40 + nextX
+
+    dayStr = "Since Last Accident"
+    arial:write(nextX, start_y, dayStr, text_height*.5,.8,.8,.8,1 )
+    xx = align_right(black, streak.." Days", text_height)
+    --black:write(xx, start_y, streak.." Days", text_height, 1,0,0,.6)
+    --daysVertical(1000, start_bottom, black, tall/4, 1.00, 1, 1, 1, 1)
+    --daysVertical(1050, start_bottom, black, tall/4, 0.90, 1, 1, 1, 1)
+    --daysVertical(1100, start_bottom, black, tall/4, 0.80, 1, 1, 1, 1)
+    --daysVertical(1150, start_bottom, black, tall/4, 0.70, 1, 1, 1, 1)
+    --daysVertical(1200, start_bottom, black, tall/4, 0.60, 1, 1, 1, 1)
+    --daysVertical(1250, start_bottom, black, tall/4, 0.50, 1, 1, 1, 1)
+    --daysVertical(1300, start_bottom, black, tall/4, 0.40, 1, 1, 1, 1)
+    --daysVertical(1350, start_bottom, black, tall/4, 0.30, 1, 1, 1, 1)
+
+    --daysVertical(1450, start_bottom, black, tall/4, 0.85, 1, 1, 1, 1)
+    --daysVertical(1450, start_bottom, black, tall/4, 0.10, 1, 1, 1, 1)
+end
+
+function daysVertical(x_pos, y_pos, font, text_height, correction, rdV, grV, blV, alphaV)
+    --vertical stack of days letters
+    text_scaled = text_height / correction
+    spacing = (text_height * correction)
+    font:write(x_pos, y_pos+(spacing*0)/correction, "D", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*1)/correction, "A", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*2)/correction, "Y", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*3)/correction, "S", text_scaled, rdV,grV,blV,alphaV)
+end
+
+function hoursVertical(x_pos, y_pos, font, text_height, correction, rdV, grV, blV, alphaV)
+    --vertical stack of hourss letters
+    text_scaled = text_height / correction
+    spacing = (text_height * correction)
+    font:write(x_pos, y_pos+(spacing*0)/correction, "H", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*1)/correction, "O", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*2)/correction, "U", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*3)/correction, "R", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*4)/correction, "S", text_scaled, rdV,grV,blV,alphaV)
+
+end
+function round(num, numDecimalPlaces)
+  return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
 end
 
 function node.render()
@@ -61,6 +115,7 @@ function node.render()
     secondsSince = timeNow - injurySec
     daysSince = math.floor((timeNow - injurySec) / 86400 )
     hoursSince = math.floor(((timeNow - injurySec) % 86400) / 3600)
+    daysSinceDecimal = round( ((timeNow - injurySec ) / 86400), 2)
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
     black:write(24, 54, "SAFETY STARTS WITH YOU!", 100, 0,0,0,.4)
@@ -76,7 +131,7 @@ function node.render()
     black:write(xx, 600, streak.." Days", 180, .3,0,0,.95)
     impact:write(324, 804, "STAY SAFE. THINK SAFETY!", 100, 0,0,0,.6)
     impact:write(320, 800, "STAY SAFE. THINK SAFETY!", 100, 1,1,1,1)
-    --banner(120, secondsSince)
+    --banner(120, daysSinceDecimal)
     --resource.render_child(""):draw(50, 200, 300, 400)
 
 end
