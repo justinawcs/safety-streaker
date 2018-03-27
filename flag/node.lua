@@ -63,10 +63,23 @@ function banner(tall, daysSinceDecimal)
     nextX = black:width(hoursSince, text_height) + 20 +nextX
     hoursVertical(nextX, start_bottom, black, tall/5, 0.85, 1, 1, 1, 1)
     nextX = black:width("_", text_height/5) + 40 + nextX
-
+    --since text
     dayStr = "Since Last Accident"
-    arial:write(nextX, start_y, dayStr, text_height*.5,.8,.8,.8,1 )
-    xx = align_right(black, streak.." Days", text_height)
+    arial:write(nextX, start_y, dayStr, text_height*.6,.8,.8,.8,1 )
+    xx = align_right(black, streak.." Days", text_height*.6)
+    nextX = arial:width(dayStr, text_height*.6) + 30 + nextX
+    --start other side: days
+    nextR = WIDTH - marginX
+    rr = black:width("_", text_height/4)
+    daysVertical(nextR-rr, start_bottom, black, tall/4, 0.85, 1, 1, 1, 1)
+    nextR = nextR - rr - black:width(streak, text_height) - 20
+    black:write(nextR, start_y, streak, text_height,.8,.8,.8,1 )
+    rr = black:width(streak, text_height)
+    --best record text
+    bestStr = "Best Record"
+    nextR = nextR - arial:width(bestStr, text_height*.6) - 30
+    floor_y = HEIGHT - (text_height *.6)
+    arial:write(nextR, floor_y, bestStr,text_height*.6,.8,.8,.8,1 )
     --black:write(xx, start_y, streak.." Days", text_height, 1,0,0,.6)
     --daysVertical(1000, start_bottom, black, tall/4, 1.00, 1, 1, 1, 1)
     --daysVertical(1050, start_bottom, black, tall/4, 0.90, 1, 1, 1, 1)
@@ -132,6 +145,6 @@ function node.render()
     impact:write(324, 804, "STAY SAFE. THINK SAFETY!", 100, 0,0,0,.6)
     impact:write(320, 800, "STAY SAFE. THINK SAFETY!", 100, 1,1,1,1)
     --banner(120, daysSinceDecimal)
-    --resource.render_child(""):draw(50, 200, 300, 400)
+    --resource.render_child("HI"):draw(50, 200, 300, 400)
 
 end
