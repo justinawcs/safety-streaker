@@ -51,18 +51,18 @@ function banner(tall, daysSinceDecimal)
     text_padding = (tall * 0.15)
     start_y = start_bottom + text_padding
     split_lines = text_height / 2.3
-
+    --shadow box
     shadow:draw(0, start_bottom, WIDTH, start_bottom+tall, .80)
     --days
     black:write(marginX, start_y, daysSince, text_height,.8,.8,.8,1 )
-    nextX = black:width(daysSince, text_height) + 20+ marginX
-    daysVertical(nextX, start_bottom, black, tall/4, 0.85, 1, 1, 1, 1)
-    nextX = black:width("_", text_height/4) + 40 + nextX
+    nextX = black:width(daysSince, text_height) + 15+ marginX
+    daysVertical(nextX, start_bottom, black, tall, 0.85, 1, 1, 1, 1)
+    nextX = black:width("_", text_height/4) + 30 + nextX
     --hours
     black:write(nextX, start_y, hoursSince, text_height,.8,.8,.8,1 )
-    nextX = black:width(hoursSince, text_height) + 20 +nextX
-    hoursVertical(nextX, start_bottom, black, tall/5, 0.85, 1, 1, 1, 1)
-    nextX = black:width("_", text_height/5) + 40 + nextX
+    nextX = black:width(hoursSince, text_height) + 15 +nextX
+    hoursVertical(nextX, start_bottom, black, tall, 0.85, 1, 1, 1, 1)
+    nextX = black:width("_", text_height/5) + 35 + nextX
     --since text
     dayStr = "Since Last Accident"
     arial:write(nextX, start_y, dayStr, text_height*.6,.8,.8,.8,1 )
@@ -71,33 +71,21 @@ function banner(tall, daysSinceDecimal)
     --start other side: days
     nextR = WIDTH - marginX
     rr = black:width("_", text_height/4)
-    daysVertical(nextR-rr, start_bottom, black, tall/4, 0.85, 1, 1, 1, 1)
+    daysVertical(nextR-rr, start_bottom, black, tall, 0.85, 1, 1, 1, 1)
     nextR = nextR - rr - black:width(streak, text_height) - 20
     black:write(nextR, start_y, streak, text_height,.8,.8,.8,1 )
     rr = black:width(streak, text_height)
     --best record text
     bestStr = "Best Record"
-    nextR = nextR - arial:width(bestStr, text_height*.6) - 30
+    nextR = nextR - arial:width(bestStr, text_height*.6) - 20
     floor_y = HEIGHT - (text_height *.6)
     arial:write(nextR, floor_y, bestStr,text_height*.6,.8,.8,.8,1 )
-    --black:write(xx, start_y, streak.." Days", text_height, 1,0,0,.6)
-    --daysVertical(1000, start_bottom, black, tall/4, 1.00, 1, 1, 1, 1)
-    --daysVertical(1050, start_bottom, black, tall/4, 0.90, 1, 1, 1, 1)
-    --daysVertical(1100, start_bottom, black, tall/4, 0.80, 1, 1, 1, 1)
-    --daysVertical(1150, start_bottom, black, tall/4, 0.70, 1, 1, 1, 1)
-    --daysVertical(1200, start_bottom, black, tall/4, 0.60, 1, 1, 1, 1)
-    --daysVertical(1250, start_bottom, black, tall/4, 0.50, 1, 1, 1, 1)
-    --daysVertical(1300, start_bottom, black, tall/4, 0.40, 1, 1, 1, 1)
-    --daysVertical(1350, start_bottom, black, tall/4, 0.30, 1, 1, 1, 1)
-
-    --daysVertical(1450, start_bottom, black, tall/4, 0.85, 1, 1, 1, 1)
-    --daysVertical(1450, start_bottom, black, tall/4, 0.10, 1, 1, 1, 1)
 end
 
 function daysVertical(x_pos, y_pos, font, text_height, correction, rdV, grV, blV, alphaV)
     --vertical stack of days letters
-    text_scaled = text_height / correction
-    spacing = (text_height * correction)
+    text_scaled = (text_height/4) / correction
+    spacing = (text_height/4 * correction)
     font:write(x_pos, y_pos+(spacing*0)/correction, "D", text_scaled, rdV,grV,blV,alphaV)
     font:write(x_pos, y_pos+(spacing*1)/correction, "A", text_scaled, rdV,grV,blV,alphaV)
     font:write(x_pos, y_pos+(spacing*2)/correction, "Y", text_scaled, rdV,grV,blV,alphaV)
@@ -106,8 +94,8 @@ end
 
 function hoursVertical(x_pos, y_pos, font, text_height, correction, rdV, grV, blV, alphaV)
     --vertical stack of hourss letters
-    text_scaled = text_height / correction
-    spacing = (text_height * correction)
+    text_scaled = text_height / (5 * correction)
+    spacing = (text_height/5) * correction
     font:write(x_pos, y_pos+(spacing*0)/correction, "H", text_scaled, rdV,grV,blV,alphaV)
     font:write(x_pos, y_pos+(spacing*1)/correction, "O", text_scaled, rdV,grV,blV,alphaV)
     font:write(x_pos, y_pos+(spacing*2)/correction, "U", text_scaled, rdV,grV,blV,alphaV)
