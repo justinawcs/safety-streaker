@@ -7,6 +7,7 @@ local arial = resource.load_font("Arial.ttf")
 local black = resource.load_font("Arial_Black.ttf")
 local impact = resource.load_font("Impact.ttf")
 local type = resource.load_font("silkscreen.ttf")
+local shadow = resource.create_colored_texture(0,.02,0,1)
 
 -- FILES
 -- local file = resource.load_file(filename)
@@ -47,6 +48,75 @@ function align_center(font, str, size)
     return ( WIDTH - wide ) / 2
 end
 
+function banner(tall, daysSinceDecimal)
+    start_bottom = HEIGHT - tall
+    text_height = tall * 0.85
+    text_padding = (tall * 0.15)
+    start_y = start_bottom + text_padding
+    split_lines = text_height / 2.3
+    --shadow box
+    shadow:draw(0, start_bottom, WIDTH, start_bottom+tall, .70)
+    --days
+    black:write(marginX+4, start_y+4, daysSince, text_height, .1, 1,.1, .70)
+    black:write(marginX, start_y, daysSince, text_height,.8,.8,.8, 1)
+    nextX = black:width(daysSince, text_height) + 20+ marginX
+    daysVertical(nextX+3, start_bottom+3, black, tall, 0.85, .1, 1, .1, .70)
+    daysVertical(nextX, start_bottom, black, tall, 0.85, 1, 1, 1, 1)
+    nextX = black:width("_", text_height/4) + 30 + nextX
+    --hours
+    black:write(nextX+4, start_y+4, hoursSince, text_height, .1, 1,.1, .70)
+    black:write(nextX, start_y, hoursSince, text_height,.8,.8,.8, 1)
+    nextX = black:width(hoursSince, text_height) + 15 +nextX
+    hoursVertical(nextX+3, start_bottom+3, black, tall, 0.85, .1, 1, .1, .70)
+    hoursVertical(nextX, start_bottom, black, tall, 0.85, 1, 1, 1, 1)
+    nextX = black:width("_", text_height/5) + 35 + nextX
+    --since text
+    dayStr = "Since Last Accident"
+    arial:write(nextX, start_y, dayStr, text_height*.6,.8,.8,.8, 1)
+    xx = align_right(black, streak.." Days", text_height*.6)
+    nextX = arial:width(dayStr, text_height*.6) + 30 + nextX
+    --start other side: days
+    nextR = WIDTH - marginX
+    rr = black:width("_", text_height/4)
+    daysVertical(nextR-rr+3, start_bottom+3, black, tall, 0.85, .1, 1, .1, .70)
+    daysVertical(nextR-rr, start_bottom, black, tall, 0.85, 1, 1, 1, 1)
+    nextR = nextR - rr - black:width(streak, text_height) - 20
+    --streak days
+    black:write(nextR+4, start_y+4, streak, text_height, .1, 1,.1, .70)
+    black:write(nextR, start_y, streak, text_height,.8,.8,.8, 1)
+    rr = black:width(streak, text_height)
+    --best record text
+    bestStr = "Best Record"
+    nextR = nextR - arial:width(bestStr, text_height*.6) - 20
+    floor_y = HEIGHT - (text_height *.6)
+    arial:write(nextR, floor_y, bestStr,text_height*.6,.8,.8,.8,1 )
+end
+
+function daysVertical(x_pos, y_pos, font, text_height, correction, rdV, grV, blV, alphaV)
+    --vertical stack of days letters
+    text_scaled = (text_height/4) / correction
+    spacing = (text_height/4 * correction)
+    font:write(x_pos, y_pos+(spacing*0)/correction, "D", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*1)/correction, "A", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*2)/correction, "Y", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*3)/correction, "S", text_scaled, rdV,grV,blV,alphaV)
+end
+
+function hoursVertical(x_pos, y_pos, font, text_height, correction, rdV, grV, blV, alphaV)
+    --vertical stack of hourss letters
+    text_scaled = text_height / (5 * correction)
+    spacing = (text_height/5) * correction
+    font:write(x_pos, y_pos+(spacing*0)/correction, "H", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*1)/correction, "O", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*2)/correction, "U", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*3)/correction, "R", text_scaled, rdV,grV,blV,alphaV)
+    font:write(x_pos, y_pos+(spacing*4)/correction, "S", text_scaled, rdV,grV,blV,alphaV)
+
+end
+function round(num, numDecimalPlaces)
+  return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", num))
+end
+
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
@@ -70,10 +140,10 @@ function node.render()
     black:write(xx+4, 404, perr.."%", 180, 0,1,0,.6)
     black:write(xx, 400, perr.."%", 180, 0,.3,0,.5)
     --black:write(xx-4, 396, perr.."%", 180, .1,.5,.1,.3)
-    impact:write(224, 804, "CONGRATULATIONS! WE DID IT!", 100, 0,0,0,.6)
-    impact:write(220, 800, "CONGRATULATIONS! WE DID IT!", 100, 1,1,1,1)
-
-
+    x_align = align_center(impact, "CONGRATULATIONS! WE DID IT!", 60)
+    impact:write(x_align+4, 724, "CONGRATULATIONS! WE DID IT!", 60, 0,0,0,.8)
+    impact:write(x_align, 720, "CONGRATULATIONS! WE DID IT!", 60, 1,1,1,1)
+    banner(120, daysSinceDecimal)
     --resource.render_child(""):draw(50, 200, 300, 400)
 
 end
