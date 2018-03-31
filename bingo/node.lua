@@ -174,10 +174,10 @@ function node.render()
 
     --Add percentage width fixed from right side to size
     safeX, safeY = safety:size()
-    safety:draw(720, 20, 720+(.85*safeX), 20+(.85*safeY), 1)
+    --image:draw(xpos, ypos, xpos_end, ypos_end, alphaV)
+    safety:draw(680, marginY, 680+(.85*safeX), 20+(.85*safeY), 1)
     bingX, bingY = bingo:size()
     bingo:draw(700, 160, 700+(.93*bingX), 160+(.80*bingY), 1)
-
     --num:draw(40, 40, (40+489), (40+712), .3)
 
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
