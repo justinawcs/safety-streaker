@@ -34,11 +34,11 @@ def formatBingo(number):
 class BingoGame:
     'Controller for a bingo game, does not pick  numbers'
     date = "" ## os.popen("date").read().rstrip() ## date created
-    date_int = None 
+    date_int = None
     game_count = 0
     ##os.popen("date +%s").read().rstrip() ##date in seconds(unix-time)
     pickedList = []
-    
+
 #    def __init__(self):
 #        #self.date = date
 #        #self.date_int = date_int
@@ -47,23 +47,23 @@ class BingoGame:
 
     def add_item(self, num):
         number = int(num)
-        if 1 <= int(number) <= 75: 
+        if 1 <= int(number) <= 75:
             if number in self.pickedList: #remove if already on list
                 self.pickedList.remove(number)
                 return(formatBingo(number) + " was removed from list.")
             else: #add to list
-                self.pickedList.append(number)  
+                self.pickedList.append(number)
                 return(formatBingo(number) + " was added to list.")
         else:
             return "Number out of range!"
     #end add
-    
+
     def add(self, string):
         if string.find("+") > 0:
             result = string.split("+") #numpad implem. may use + for multi entry
         else:
             result = string.split() #will split at whitespace chars
-        for i in result: 
+        for i in result:
             #print int(i)
             try:
                 print self.add_item(int(i))
@@ -75,16 +75,19 @@ class BingoGame:
 
     def length(self):
         return len(self.pickedList)
-    
+
     def save(self):
         save_data = { "date":self.date, \
                     "date_int":self.date_int, \
                     "game_count":self.game_count, \
                     "pickedList":self.pickedList}
         #print "Save Data: ", save_data
-        json.dump( save_data, open( "bingo/bingo.json", "wb" ) )
+        try:
+            json.dump( save_data, open( "bingo/bingo.json", "wb" ) )
+        except IOError: #unable to save file
+            print "ERROR. File NOT SAVED!"
     #end save
-    
+
     def load(self): #open and read file
         try:
             load_data = json.load( open( "bingo/bingo.json", "rb" ) )
@@ -99,10 +102,10 @@ class BingoGame:
                             self.game_count, self.pickedList
         #print self.pickedList
     #end load
-    
+
     def reset(self): #clears enetered data and saves new file
         blank_date = os.popen("date").read().rstrip() #pulls current time
-        blank_date_int = os.popen("date +%s").read().rstrip() 
+        blank_date_int = os.popen("date +%s").read().rstrip()
         blank_list = []
         self.date = blank_date
         self.date_int = blank_date_int
@@ -112,19 +115,19 @@ class BingoGame:
                             self.game_count, blank_list
         self.save()
     #end reset
-    
+
     def incr_game_count(self):
         self.game_count += 1
         self.save()
-        
+
     def set_game_count(self, given):
         self.game_count = given
         self.save()
-    
+
     def getHeader(self):
         return "Bingo Game #" + str(self.game_count) + " started at: " + self.date
     #end bingoHeader
-    
+
     def getList(self):
         hold_string = ""
         for i in self.pickedList:
@@ -132,6 +135,12 @@ class BingoGame:
         add_period = hold_string[:-2] + "."
         #print add_period
         return add_period # Replace with period at end
+
+    def getLastNumber(self):
+        #print "List Count: ", len(self.pickedList)
+        last_index = len(self.pickedList)
+        return self.pickedList[last_index -1]
+
 
 
 ## Run/Test Section
@@ -142,7 +151,7 @@ def testing():
 #    ex.load()
 #    ex.reset()
     #print "Current Data: ",  ex.date, ex.date_int, ex.pickedList
-    
+
     #print "Empty List: ",   ex.pickedList
     #print ex.add(4)
     #print ex.add(72)
@@ -168,20 +177,22 @@ def testing():
 
     #ex.save()
     #ex.load()
-    
+
     #ex = BingoGame()
     #print ex.add("23+34+56")
     #print ex.add(1)
 
     one = BingoGame()
-    one.reset()
+    #one.reset()
     print one.add("23+34+56")
+    print one.getLastNumber()
     print one.add("72")
+    print one.getLastNumber()
     print one.add("")
     print one.pickedList
     print one.getList()
-    one.save()
-    
+    #one.save()
+
     two = BingoGame()
     two.load()
 #end testing
