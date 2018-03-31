@@ -139,7 +139,8 @@ class BingoGame:
     def getLastNumber(self):
         #print "List Count: ", len(self.pickedList)
         last_index = len(self.pickedList)
-        return self.pickedList[last_index -1]
+        last_num = self.pickedList[last_index -1]
+        return formatBingo(last_num)
 
 
 

@@ -72,6 +72,7 @@ def controlBingo():
         printDesc("\nSafety BINGO Controls")
         print(game.getHeader())
         print(color('desc', "Current Bingo Numbers: ") + game.getList())
+        print(color('desc', "Last Bingo Number: ") + str(game.getLastNumber()))
         printOption(0, "Go Back")
         printOption(1, "Add/Remove Bingo number")
         printOption(2, "Restart Game")
@@ -108,7 +109,7 @@ def controlBingo():
                 g_count = input(printPrompt())
                 if g_count > 0:
                     game.set_game_count(g_count)
-                else: 
+                else:
                     print "Going back..."
             elif  sel2 == 0:
                 print "Going back to main menu"
