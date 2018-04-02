@@ -6,7 +6,7 @@ marginY = 20
 local arial = resource.load_font("Arial.ttf")
 local black = resource.load_font("Arial_Black.ttf")
 local impact = resource.load_font("Impact.ttf")
-local type = resource.load_font("silkscreen.ttf")
+local typer = resource.load_font("silkscreen.ttf")
 
 -- FILES
 -- local file = resource.load_file(filename)
@@ -39,7 +39,6 @@ util.file_watch("bingo.json", function(content)
       bingo_json = content
   end)
 
-
 function align_right(font, str, size)
     -- aligns text on right of screen with given marginX
     wide = font:width(str, size)
@@ -58,17 +57,18 @@ function align_center_cell(font, str, size, cell_width)
     return (cell_width - wide ) / 2
 end
 
-function outline(font,offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
+function outline(font, offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
     --draws in all four corners of outline
     font:draw(xpos-offset, ypos-offset, text, font_size, red, grn, blu, alpha)
     font:draw(xpos+offset, ypos-offset, text, font_size, red, grn, blu, alpha)
     font:draw(xpos-offset, ypos+offset, text, font_size, red, grn, blu, alpha)
     font:draw(xpos+offset, ypos+offset, text, font_size, red, grn, blu, alpha)
 end
+
 function grid()
     --IDEA this layout should be sliced from image program
     --position each element in a grid
-    areaX = (.36 * WIDTH) --40%
+    areaX = (.35 * WIDTH) --40%
     areaY = HEIGHT - (2 * marginY)
     --return "Width, Height", areaX, areaY
     eachX = (areaX / 5)
@@ -87,11 +87,12 @@ function grid()
     --print(listToString(g_))
     --print(listToString(o_))
     --t = {{b_, i_, n_, g_, o_}}
-    grid_col(marginX, marginY, eachX, eachY, b_)
-    grid_col(marginX+1*(eachX), marginY, eachX, eachY, i_)
-    grid_col(marginX+2*(eachX), marginY, eachX, eachY, n_)
-    grid_col(marginX+3*(eachX), marginY, eachX, eachY, g_)
-    grid_col(marginX+4*(eachX), marginY, eachX, eachY, o_)
+    slimMarginX = 10
+    grid_col(slimMarginX, marginY, eachX, eachY, b_)
+    grid_col(slimMarginX+1*(eachX), marginY, eachX, eachY, i_)
+    grid_col(slimMarginX+2*(eachX), marginY, eachX, eachY, n_)
+    grid_col(slimMarginX+3*(eachX), marginY, eachX, eachY, g_)
+    grid_col(slimMarginX+4*(eachX), marginY, eachX, eachY, o_)
 end
 
 function grid_col(start_x, start_y, each_x, each_y, array)
@@ -137,9 +138,9 @@ end
 
 function readJson(key)
     local json = require('json')
-    code = json.encode{1, 23, 34}
-    local value = json.decode(code)
-    local file = json.decode(resource.load_file("bingo.json"))
+    --code = json.encode{1, 23, 34}
+    --local value = json.decode(code)
+    file = json.decode(resource.load_file("bingo.json"))
     return file[key]
 end
 
@@ -162,6 +163,30 @@ function membership(list, item)
     return false
 end
 
+function formatBingo(number)
+    if (1 <= number and number <= 15) then
+        return "B-" .. tostring(number)
+    elseif (16 <= number and number <= 30) then
+        return "I-" .. tostring(number)
+    elseif (31 <= number and number <= 45) then
+        return "N-" .. tostring(number)
+    elseif (46 <= number and number <= 60) then
+        return "G-" .. tostring(number)
+    elseif (61 <= number and number <= 75) then
+        return "O-" .. tostring(number)
+    else
+        return "None."
+    end
+end
+
+function last_number()
+    --returns last item in list
+--TODO !!!!add bingo formatting code
+    list = readJson("pickedList")
+    formated = formatBingo(list[#list])
+    return formated
+end
+
 function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
@@ -179,6 +204,7 @@ function node.render()
     bingX, bingY = bingo:size()
     bingo:draw(700, 160, 700+(.93*bingX), 160+(.80*bingY), 1)
     --num:draw(40, 40, (40+489), (40+712), .3)
+    grid()
 
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
@@ -191,6 +217,9 @@ function node.render()
     --arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
     --arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
     arial:write(750, 500, "Coming Soon...",120, .7,.75,.7,1)
+    --outline(font,offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
+    arial:write(750, 650, last_number(),120, .7,.75,.7,1)
+    --outline(arial, 4, 750, 650, last_number(), 120, 1, 0, 0, 1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
     --xx = align_right(black, streak.." days.", 180)
     --black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
@@ -203,8 +232,8 @@ function node.render()
     --local fakeList = {2, 3, 4, 12}
     --impact:write(320, 800, "3 "..listToString(fakeList), 48, 1,1,1,1)
     --test_member = tostring(membership(fakeList, 11))
-    --impact:write(320, 850, "4 "..test_member, 48, 1,1,1,1)
+    --arial:write(320, 850, "4 "..test_member, 78, 1,1,1,1)
     --resource.render_child(""):draw(50, 200, 300, 400)
     --if(safety:state())
-    grid()
+
 end
