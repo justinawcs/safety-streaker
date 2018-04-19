@@ -9,14 +9,18 @@
 #notes          : Goal: return only integer, float, string 
 #bash_version   : 4.3.30(1)-release [bash version]
 #===============================================================================
-print int("7")
+# print int("7")
 # print int("seven")
-print float("6")
-print str(5+5)
+# print float("6")
+# print str(5+5)
 
 def takeInput(prompt, expectedType):
     if expectedType == int or expectedType == float:
-        sel = input(prompt + "> ") # use input to pre-check types
+        try:
+            sel = input(prompt + "> ") # use input to pre-check types
+        except NameError:
+            print expectedType,  "was expected, not string"
+            return None
     else: # expectedType == string-type
         sel = raw_input(prompt + "> ")
     if isinstance(sel, expectedType):
@@ -26,7 +30,7 @@ def takeInput(prompt, expectedType):
         print expectedType,  "was expected, forced: float"
         return float(sel)
     elif isinstance(sel, float): #force int
-        print expectedType,  "was expected, forced int"
+        print expectedType,  "was expected, forced: int"
         return int(sel)
     else:
         print expectedType,  "was expected, not: ",  type(sel) 
