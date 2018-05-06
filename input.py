@@ -52,13 +52,13 @@ def takeDate(promptMsg):
     result2 = str(os.popen(cmd2).read()).rstrip()
     result_err = str(os.popen(cmdCheck).read()).rstrip()
     get_err = result_err.splitlines()
-    error_code = get_err[-1]
+    error_code = get_err[-1]  #get last line
     #print(error_code, type(error_code))
     if(error_code == "0"): #Zero is success
         print "Date Accecpted: "+ result1+"  "+result2
         return result1, result2
     else:
-        print "Date Rejected: "+ result_err
+        print "Date Rejected: "+ result1
         return None
     
 def testInput():
