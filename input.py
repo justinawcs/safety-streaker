@@ -59,7 +59,7 @@ def takeDate(promptMsg):
         return result1, result2
     else:
         print "Date Rejected: "+ result1
-        return None
+        return None, None
     
 def testInput():
     #print takeInput("Int?", int)
