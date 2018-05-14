@@ -11,6 +11,7 @@
 #===============================================================================
 import os
 import json
+import input
 #import pickle
 
 
@@ -28,8 +29,6 @@ def formatBingo(number):
     else:
         return "Error. Not a bingo number"
 #end formatBingo
-
-
 
 class BingoGame:
     'Controller for a bingo game, does not pick  numbers'
@@ -115,7 +114,16 @@ class BingoGame:
                             self.game_count, blank_list
         self.save()
     #end reset
-
+    
+    def set_date(self, date_string=None, date_seconds=None):
+        if date_string is None or date_seconds is None:
+            date_string, date_seconds = input.takeDate( \
+                    "Enter Start Date for this game")
+        self.date = date_string
+        self.date_int = date_seconds
+        return date_string, date_seconds
+        
+    
     def incr_game_count(self):
         self.game_count += 1
         self.save()
@@ -125,7 +133,8 @@ class BingoGame:
         self.save()
 
     def getHeader(self):
-        return "Bingo Game #" + str(self.game_count) + " started at: " + self.date
+        return "Bingo Game #" + str(self.game_count) + " started at: " \
+                + self.date
     #end bingoHeader
 
     def getList(self):
@@ -195,7 +204,10 @@ def testing():
     #one.save()
 
     two = BingoGame()
-    two.load()
+    #two.load()
+    print two.set_date("Sun May  36 00:79:26 UTC 2018", "-00000909")
+    print two.set_date("Sun May  6 00:39:26 UTC 2018", "1525567166")
+    print two.set_date()
 #end testing
 
 #testing()

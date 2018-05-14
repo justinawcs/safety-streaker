@@ -60,6 +60,14 @@ def takeDate(promptMsg):
     else:
         print "Date Rejected: "+ result1
         return None, None
+        
+
+#def checkDate(date_string, unix_time_int):
+    ## implement if given time is unrealiable, not necessary currently
+    # check if date_string is valid
+    # check if unix_time_int is valid
+    # check that the two are equal in unix-time seconds
+    # return true/false, fail first
     
 def testInput():
     #print takeInput("Int?", int)
