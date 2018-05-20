@@ -16,6 +16,7 @@ import os
 import subprocess
 import sys
 import bingo
+import user_input
 #import pickTarget
 
 def pickTarget():
@@ -38,7 +39,7 @@ def pickTarget():
             printOption(index+1, s)
         sel2 = None
         try:
-            sel2 = int(input(printPrompt()))
+            sel2 = get_input(printPrompt(), int)
             #print linelist[sel2 + 1]
             if(sel2 != 0):
                 #ends function if yes
@@ -79,7 +80,7 @@ def controlBingo():
         printOption(3, "Set Game Count")
         #opt, sel2 = None
         try:
-            opt = input(printPrompt())
+            opt = get_input(printPrompt(), int)
             sel2 = int(opt)
             if sel2 == 1:
                 #Add Remove Bingo numbers
@@ -87,7 +88,7 @@ def controlBingo():
                             "Example '1' For 'B-1' or '16' for 'I-16'")
                 printDesc("Speed tip: you can enter multiple numbers with " \
                         "spaces or plus(+) Example: 12+34+56")
-                add_input = raw_input(printPrompt())
+                add_input = get_input(printPrompt(), basestring)
                 #game.load()
                 game.add(str(add_input))
                 print game.getList()
@@ -97,7 +98,7 @@ def controlBingo():
                     "increase the game count by 1 and clear all bingo numbers.")
                 printOption(0, "Go Back")
                 printOption(1, "Reset game")
-                confirm = input(printPrompt())
+                confirm = get_input(printPrompt(), int)
                 if confirm == 1:
                     printDesc("The game has just been reset.")
                     game.reset()
@@ -106,7 +107,7 @@ def controlBingo():
                 printDesc("Set Game count to different number.")
                 printOption(0, "Go back")
                 printOption('?', "New Game count number")
-                g_count = input(printPrompt())
+                g_count = get_input(printPrompt(), int)
                 if g_count > 0:
                     game.set_game_count(g_count)
                 else:
@@ -147,10 +148,19 @@ def printDesc(string):
     print color('desc', string)
 #end printDesc
 
-def getInput():
-    # asks question, takes input, checks if valid, returns int, or null
-    print ""
-#end getInput
+def get_input(prompt, expectedType):
+    # shortcut for user_input.takeInput(String, type)
+    ## TODO (jaw, before general user access) add validation
+    ## asks question, takes input, checks if valid, returns int, or null
+    return user_input.takeInput(prompt, expectedType)
+    #end getInput
+
+def get_date(prompt):
+    # shortcut for user_input.takeInput(String, type)
+    ## TODO (jaw, before general user access) add validation
+    ## asks question, takes input, checks if valid, returns int, or null
+    return user_input.takeDate(prompt)
+    #end getInput
 
 ##Main Menu
 # 1 Control Info-beamer ->
@@ -172,6 +182,7 @@ print os.getcwd()
 print os.popen("./linkData.sh lastInjury.data").read()
 print os.popen("./linkData.sh bestStreak.data").read()
 #start visual
+#TODO (jaw) replace with config file update, delete this file.
 print os.popen("./startShow.sh").read()
 #after visual
 ## this prompt is needed to clear the input line for the menu, [bug]
@@ -198,14 +209,14 @@ while running == True:
     printOption(0, "Exit / Restart / Shutdown")
     sel = ""
     try:
-        option = str(input(printPrompt()))
-        sel = int(option)
+        sel = get_input(printPrompt(), int)
+        #sel = int(option)
     except NameError:
-        print "Bad input, try again.\n"
+        print "Bad input, try again."
     except SyntaxError:
-        print "Bad input, try again.\n"
+        print "Bad input, try again."
     except Exception:
-        print "General Exepected Error, try again.\n"
+        print "General Exepected Error, try again."
     if sel == 1:
         # Info-beamer block
         print "Starting Info-Beamer"
@@ -228,15 +239,23 @@ while running == True:
         vis = trgt[ind+1:]
         secs = int(os.popen("./secondsSince.sh").read().rstrip())
         hours = (secs / 3600) - int(days)
-        temp = os.popen("cat /sys/class/thermal/thermal_zone0/temp") \
+        #temp_str, temp_val = "N/A", 0.0
+        try:
+            temp_str = os.popen("cat /sys/class/thermal/thermal_zone0/temp") \
                 .read().rstrip()
-        temp2 = float(temp) / 1000
+            temp_val = float(temp_str) / 1000
+            #write over temp_str the formatted percentage
+            temp_str = str(temp_val) + " degrees Celcius"
+        except IOError: # file not there, so create blank
+            temp_str, temp_val = "N/A", 0.0
+        except ValueError:
+            temp_str, temp_val = "N/A", 0.0
         uptm = os.popen("uptime -p").read().rstrip()
         perc = os.popen("cat kermit/percent.data").read().rstrip()
         printDesc("\nCurrent System Status:")
         print " Current Time:\t\t", curr
         print " System Uptime:\t\t", uptm
-        print " CPU Temp:    \t\t", temp2, "degrees Celcius"
+        print " CPU Temp:    \t\t", temp_str
         print " Last Injury: \t\t", last
         print " Since Injury:\t\t", days, "days ",hours, "hours"
         print "              \t\t", secs, "total seconds"
@@ -252,7 +271,7 @@ while running == True:
         printOption(0, "Go Back")
         printOption(1, "Set Last Injury time to now")
         try:
-            opt = input(printPrompt())
+            opt = get_input(printPrompt(), int)
             sel2 = int(opt)
         except NameError:
             print "Bad input, try again.\n"
@@ -275,7 +294,7 @@ while running == True:
         printOption(0, "Go Back")
         printOption(1, "Set Time")
         try:
-            opt = input(printPrompt())
+            opt = get_input(printPrompt(), int)
             sel2 = int(opt)
         except NameError:
             print "Bad input, try again.\n"
@@ -284,22 +303,15 @@ while running == True:
         except Exception:
             print "General Exepected Error, try again.\n"
         if sel2 == 1:
-            # print os.popen("./injuryTime.sh").read()
-            # rebuilt from injuryTime.sh
-            print "Enter Date of injury in MM/DD/YYYY then press [ENTER]"
-            print "example: 02/14/2001"
-            day  = str(raw_input("Enter Date > "))
-            print "Enter Time of injury, example: 1340 OR 1:40pm " + \
-                    "then press [ENTER]"
-            print "AM: 00  1   2   3   4   5   6   7   8   9   10   11"
-            print "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
-            time = str(raw_input("Enter Time > "))
+            date_str, unix_sec = get_date("Enter Time of injury")
             print os.popen("./updateStreak.sh").read()
-            cmd1 = "date -d '" + day +" "+ time + "' +%s > lastInjury.data"
-            cmd2 = "date -d '" + day +" "+ time + "' >> lastInjury.data"
+            #TODO (jaw, before next live update) change to python/json code
+            cmd1 = "echo '" + unix_sec + "' > lastInjury.data"
+            cmd2 = "echo '" + date_str + "' >> lastInjury.data"
             #print cmd1, cmd2
             os.popen(cmd1).read()
             os.popen(cmd2).read()
+            #display data and touch link files to update them
             print os.popen("cat lastInjury.data").read().rstrip()
             print os.popen("find . -name lastInjury.data | xargs touch").read()
         # print "custom time"
@@ -310,7 +322,7 @@ while running == True:
         printOption(0, "Go Back")
         printOption(1, "Set Time")
         try:
-            opt = input(printPrompt())
+            opt = get_input(printPrompt(), int)
             sel2 = int(opt)
         except NameError:
             print "Bad input, try again.\n"
@@ -319,15 +331,15 @@ while running == True:
         except Exception:
             print "General Exepected Error, try again.\n"
         if sel2 == 1:
-            print "Enter Correct Date in MM/DD/YYYY then press [ENTER]"
-            print "example: 02/14/2001"
-            day  = str(raw_input("Enter Date > "))
-            print "Enter Time, example: 1:40pm OR 1340 then press [ENTER]"
-            print "AM: 00  1   2   3   4   5   6   7   8   9   10   11"
-            print "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
-            time = str(raw_input("Enter Time > "))
+            # print "Enter Correct Date in MM/DD/YYYY then press [ENTER]"
+            # print "example: 02/14/2001"
+            day, unix_sec  = get_date("Enter Correct Date")
+            #print "Enter Time, example: 1:40pm OR 1340 then press [ENTER]"
+            #print "AM: 00  1   2   3   4   5   6   7   8   9   10   11"
+            #print "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
+            #time = str(raw_input("Enter Time > "))
             # print os.popen("date -s '", day, time, "'").read()
-            cmd1 = "date -s '" + day +" "+ time + "'"
+            cmd1 = "date -s '" + day + "'"
             # print cmd1
             print "New time:", os.popen(cmd1).read().rstrip()
             print "System clock: ", os.popen("date").read().rstrip()
@@ -339,7 +351,7 @@ while running == True:
         printDesc("Enter New Best Streak Without Injury")
         try:
             newBest = -1
-            newBest  = int(input(color('prompt', "Enter > ") +" "))
+            newBest = get_input(printPrompt(), int)
         except NameError:
             print "Bad input, try again.\n"
         except SyntaxError:
@@ -359,7 +371,7 @@ while running == True:
         printDesc("Enter New Percent(program will add % symbol): ")
         try:
             perc = -1
-            perc = input(color('prompt', "Enter > ") +" ")
+            perc = get_input(printPrompt(), float)
         except NameError:
             print "Bad input, try again.\n"
         except SyntaxError:
@@ -380,7 +392,7 @@ while running == True:
         printOption(1, "Exit, (close Control Menu, Expert users only!!)")
         printOption(2, "Restart")
         printOption(9, "Shutdown, (need power cycle to turn back on)")
-        opt = input(printPrompt())
+        opt = get_input(printPrompt(), int)
         sel2 = int(opt)
         if sel2 == 1:
             print "Exiting..."
@@ -396,11 +408,11 @@ while running == True:
             printDesc("turn on again. Are you sure you wish to continue??")
             printOption(0, "Go back")
             printOption(9, "Shutdown")
-            sel3 = int(input(printPrompt()))
+            sel3 = get_input(printPrompt(), int)
             if sel3 == 9:
                 print "Shutting down now..."
                 running = False
                 os.popen("sudo shutdown -H now")
     else:
-        print "Unknown option. Please try again "
+        print "Unknown option. Please try again."
 print "Goodbye. \nPro-tip: typing 00 at command line will open Control Menu"
