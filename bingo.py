@@ -11,7 +11,7 @@
 #===============================================================================
 import os
 import json
-import input
+import user_input
 #import pickle
 
 
@@ -117,7 +117,7 @@ class BingoGame:
     
     def set_date(self, date_string=None, date_seconds=None):
         if date_string is None or date_seconds is None:
-            date_string, date_seconds = input.takeDate( \
+            date_string, date_seconds = user_input.takeDate( \
                     "Enter Start Date for this game")
         self.date = date_string
         self.date_int = date_seconds

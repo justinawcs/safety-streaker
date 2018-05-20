@@ -1,11 +1,11 @@
 #!/usr/bin/python
 # Takes and verifies type of general user inputs.
-#title          : input.py
+#title          : user_input.py
 #description    : see above
 #author         : Justin A. Williams
 #date           : 20180505 [year-month-day]
 #version        : 0.9
-#usage          : python input.py
+#usage          : python user_input.py
 #notes          : Goal: return only integer, float, string 
 #bash_version   : 4.3.30(1)-release [bash version]
 #===============================================================================
