@@ -59,10 +59,10 @@ end
 
 function outline(font, offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
     --draws in all four corners of outline
-    font:draw(xpos-offset, ypos-offset, text, font_size, red, grn, blu, alpha)
-    font:draw(xpos+offset, ypos-offset, text, font_size, red, grn, blu, alpha)
-    font:draw(xpos-offset, ypos+offset, text, font_size, red, grn, blu, alpha)
-    font:draw(xpos+offset, ypos+offset, text, font_size, red, grn, blu, alpha)
+    font:write(xpos - offset, ypos - offset, text, font_size, red, grn, blu, alpha)
+    font:write(xpos + offset, ypos - offset, text, font_size, red, grn, blu, alpha)
+    font:write(xpos - offset, ypos + offset, text, font_size, red, grn, blu, alpha)
+    font:write(xpos + offset, ypos + offset, text, font_size, red, grn, blu, alpha)
 end
 
 function grid()
@@ -218,8 +218,8 @@ function node.render()
     --arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
     arial:write(750, 500, "Coming Soon...",120, .7,.75,.7,1)
     --outline(font,offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
+    outline(arial, 4, 750, 650, last_number(), 120, 1, 0, 0, 1)
     arial:write(750, 650, last_number(),120, .7,.75,.7,1)
-    --outline(arial, 4, 750, 650, last_number(), 120, 1, 0, 0, 1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
     --xx = align_right(black, streak.." days.", 180)
     --black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
