@@ -238,7 +238,7 @@ while running == True:
         ind = trgt.rfind("/")
         vis = trgt[ind+1:]
         secs = int(os.popen("./secondsSince.sh").read().rstrip())
-        hours = (secs / 3600) - int(days)
+        hours = (secs / 3600) - int(days)*24 
         #temp_str, temp_val = "N/A", 0.0
         try:
             temp_str = os.popen("cat /sys/class/thermal/thermal_zone0/temp") \
@@ -257,11 +257,11 @@ while running == True:
         print " System Uptime:\t\t", uptm
         print " CPU Temp:    \t\t", temp_str
         print " Last Injury: \t\t", last
-        print " Since Injury:\t\t", days, "days ",hours, "hours"
+        print " Since Injury:\t\t", days, "days, ",hours, "hours"
         print "              \t\t", secs, "total seconds"
         print " Best Streak: \t\t", best, "days"
-        print " ForEvergreen %:\t", perc, "%"
-        print " Visual:      \t\t", vis , " (",trgt, ")"
+        print " ForEvergreen %:\t", perc + "%"
+        print " Visual:      \t\t", vis , " ("+trgt+")"
         raw_input(color('prompt', "Press Enter to continue..."))
         # print ""
     elif sel == 4:
