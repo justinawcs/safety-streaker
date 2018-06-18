@@ -33,12 +33,12 @@ class PickleTester:
         
     def save(self):
         #save
-        pickle.dump( self.about_me, open( "me.data", "wb" ) )
+        pickle.dump( self.about_me, open( "pickleTester.data", "wb" ) )
         ##print os.popen("cat me.data").read()
     
     def load(self):
         #load
-        load_me = pickle.load( open( "me.data", "rb" ) )
+        load_me = pickle.load( open( "pickleTester.data", "rb" ) )
         print "OUT: "
         print load_me
         self.name = load_me["name"]
