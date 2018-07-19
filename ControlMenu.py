@@ -19,6 +19,10 @@ import bingo
 import user_input
 #import pickTarget
 
+##Define Globals
+version_number = 0.9
+
+
 def pickTarget():
     looking = True
     while looking:
@@ -176,6 +180,8 @@ if(len(sys.argv) > 1 and sys.argv[1] == "--test"):
 else:
     print "Using standard directory:"
     os.chdir('/home/pi/safety-streaker')
+    #Fix assumed directory location
+    #Fix testing,  
 
 print os.getcwd()
 #start dataLink cascade on: lastInjury.dat, bestStreak
@@ -206,7 +212,7 @@ while running == True:
     printOption(7, "Set Best Streak")
     printOption(8, "Set ForEvergreen/Kermit Percent")
     printOption(9, "Show Safety BINGO Controls")
-    printOption(0, "Exit / Restart / Shutdown")
+    printOption(0, "About / Exit / Restart / Shutdown")
     sel = ""
     try:
         sel = get_input(printPrompt(), int)
@@ -389,22 +395,34 @@ while running == True:
     elif sel == 0:
         printDesc("\nAre you sure you want to exit/restart/shutdown?")
         printOption(0, "Go Back")
-        printOption(1, "Exit, (close Control Menu, Expert users only!!)")
-        printOption(2, "Restart")
+        printOption(1, "About")
+        printOption(2, "Exit, (close Control Menu, Expert users only!!)")
+        printOption(3, "Restart")
         printOption(9, "Shutdown, (need power cycle to turn back on)")
         opt = get_input(printPrompt(), int)
         sel2 = int(opt)
         if sel2 == 1:
+            #sub menu for Help and About
+            ##version, name and contact email, name of progam, special thanks
+            printDesc("About Safety-Streaker")
+            print("Version:\t{}".format(version_number) ) 
+            print("Author:\t\t{}".format("Justin A. Williams") )
+            print("Email:\t\t{}".format("justinawcs@gmail.com") )
+            print("Special Thanks:\t{}" \
+                .format("Courtney, Leola, Russell, JR, and Pepo. "\
+                + "\nThis wouldn't have been possible without you!!") )
+            raw_input("Press Enter to continue...")
+        elif sel2 == 2:
             print "Exiting..."
             running = False
-            # should close
-        elif sel2 == 2:
+            # ends loop, should close
+        elif sel2 == 3:
             print "Restarting system now..."
             running = False
             os.popen("sudo shutdown -r now")
         elif sel2 == 9:
-            printDesc("\nWARNING - Shutdown for this device requires this device")
-            printDesc("be DISCONNECTED from power and THEN RECONNNECTED to ")
+            printDesc("\nWARNING - Shutdown requires this device to be")
+            printDesc("DISCONNECTED from power and THEN RECONNNECTED to ")
             printDesc("turn on again. Are you sure you wish to continue??")
             printOption(0, "Go back")
             printOption(9, "Shutdown")
