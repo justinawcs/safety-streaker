@@ -431,6 +431,9 @@ while running == True:
                 print "Shutting down now..."
                 running = False
                 os.popen("sudo shutdown -H now")
+        elif sel2 == 167:
+            printDesc("Password Control")
+            #
     else:
         print "Unknown option. Please try again."
 print "Goodbye. \nPro-tip: typing 00 at command line will open Control Menu"
