@@ -17,6 +17,10 @@ def convert_seconds(seconds, time_unit="days"):
     """ Supported units: minutes, hours, days, weeks, years.
         NOTE: this function DOES NOT take any leap days into account
     """
+    try:
+        seconds = int(seconds)
+    except ValueError:
+        raise ValueError("Value for seconds should be a number.", seconds)
     if seconds < 0:
         raise ValueError("Value for seconds should be positive", seconds)
     if time_unit == "minutes":
@@ -55,6 +59,15 @@ def cascade_units(seconds, depth=2):
     result += ", %d seconds" % seconds 
     return result.lstrip(', ').strip() + "." 
 
+def verify_date(unix_date):
+    now_date = int( os.popen("date +%s").read().rstrip())
+    unix_date = int(unix_date)
+    print unix_date, now_date, "Future: ", (unix_date > now_date)
+    if unix_date > now_date:
+        raise ValueError("DENIED. Given date is newer than system time.")
+    else:
+        return True
+
 class Configuration:
     """Loads and saves data to config.json"""
     cfg = {
@@ -80,12 +93,12 @@ class Configuration:
     def load(self):
         with open('config.json') as cfg_file:
             self.cfg = json.load(cfg_file)
-            print str(self.cfg)
+            return str(self.cfg)
     
     def save(self):
         with open("config.json", "w") as cfg_file:
             json.dump(self.cfg, cfg_file, sort_keys = True, indent = 4 )
-            print str(self.cfg)
+            #print str(self.cfg)
             #touch all same-name files in folders below to update for I.Beamer
             os.popen("find . -name config.json | xargs touch")
     
@@ -101,9 +114,10 @@ class Configuration:
     
     def update_streak(self, new_streak=None):
         """Updates best streak. Takes number of days in new steak"""
-        curr_streak = self.cfg["last_injury"]["unix_time"]
-        best_streak = self.cfg["best_streak"]
+        curr_streak = int(self.time_since_injury())
+        best_streak = int(self.cfg["best_streak"])
         print "Current Streak: ", curr_streak, "  Best Streak: ", best_streak 
+        print (curr_streak > best_streak)
         if new_streak:
             try:
                 self.cfg["best_streak"] = int(new_streak)
@@ -137,10 +151,12 @@ class Configuration:
            to current time. Pass a date string and unix_time to set to that 
            time."""
         if date and unix_time: 
+            print "Date check:  ", verify_date(unix_time)
             given_time={
                 "date": date,
                 "unix_time": unix_time
             }
+            self.update_streak()
             self.cfg["last_injury"] = given_time
             self.save()
         elif date or unix_time:
@@ -151,6 +167,7 @@ class Configuration:
                 "date": os.popen("date").read().rstrip(),
                 "unix_time": os.popen("date +%s").read().rstrip()
             }
+            self.update_streak()
             self.cfg["last_injury"] = now_time
             self.save()
         else:
@@ -185,18 +202,18 @@ class Configuration:
         
 def testing():
     #Convert seconds
-    print 61, convert_seconds(61, "minutes")
-    print 3601, convert_seconds( 3601, "hours")
-    print 86401, convert_seconds(86401, "days")
-    print 604801, convert_seconds(604801, "weeks")
-    print 31536001, convert_seconds(31536001, "years")
+    # print 61, convert_seconds(61, "minutes")
+    # print 3601, convert_seconds( 3601, "hours")
+    # print 86401, convert_seconds(86401, "days")
+    # print 604801, convert_seconds(604801, "weeks")
+    # print 31536001, convert_seconds(31536001, "years")
     #Cascade units
     #print cascade_units(65)
-    print cascade_units(4500)
-    print cascade_units(40000000)
+    # print cascade_units(4500)
+    # print cascade_units(40000000)
     #Get and set
     alpha = Configuration()
-    #print alpha.get("bestStreak"), " -> ", alpha.set("bestStreak", 12)
+    print alpha.get("best_streak"), " -> ", alpha.set("best_streak", 30)
     #load
     #alpha.load()
     #Small change
@@ -207,7 +224,7 @@ def testing():
     #print alpha.check_streak()
     #Update Streak
     #alpha.update_streak()
-    #alpha.update_streak(43)
+    print alpha.update_streak(43)
     #Update Injury
     #alpha.update_injury("Monday, January 1, 2018 12:00:01 AM", 1514764801) 
     #alpha.update_injury()
@@ -219,4 +236,11 @@ def testing():
     print alpha.time_since_injury("hours")
     print alpha.time_since_injury(depth=0)
     alpha.import_old_data()
+    print alpha.get("last_injury")["date"]
+    #print verify_date("1535898180") #future
+    print "Date verify past: ",  verify_date(1524925800) #past
+    try:
+        print "Date verify future: ", alpha.update_injury("Future", 1535898180)
+    except ValueError:
+        print "Future date failed as expected."
 #testing()
