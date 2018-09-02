@@ -17,10 +17,11 @@ import subprocess
 import sys
 import bingo
 import user_input
+import config
 #import pickTarget
 
 ##Define Globals
-version_number = 0.9
+version_number = 0.91
 
 
 def pickTarget():
@@ -33,7 +34,8 @@ def pickTarget():
         #print linelist
         #print linelist[0]
         printDesc("\nChoose which visual from below.")
-        visual = os.popen("cat target.data").read().rstrip()
+        #visual = os.popen("cat target.data").read().rstrip()
+        visual = cfg.get("target")
         ind = visual.rfind("/")
         vis = visual[ind+1:]
         printDesc("Current visual: " + vis +" ( "+visual+" )")
@@ -48,11 +50,14 @@ def pickTarget():
             if(sel2 != 0):
                 #ends function if yes
                 target = linelist[sel2 - 1]
-                pwd = os.popen("pwd").read().rstrip()
+                pwd = os.getcwd()
                 tgt = target.replace(".", pwd, 1).replace("/node.lua", "")
                 print "Target updated: " + tgt
-                os.popen("echo " + tgt + " > target.data")
-                print os.popen("cat target.data").read().rstrip()
+                #os.popen("echo " + tgt + " > target.data")
+                cfg.set("target", tgt)
+                cfg.save()
+                #print os.popen("cat target.data").read().rstrip()
+                print cfg.get("target")
                 looking = False
             else:
                 print "Going back to Control Menu..."
@@ -166,6 +171,12 @@ def get_date(prompt):
     return user_input.takeDate(prompt)
     #end getInput
 
+def start_show(configuration):
+    configuration.load()
+    target = configuration.get("target")
+    return os.popen("sudo info-beamer %s" % target).read().rstrip()
+    
+
 ##Main Menu
 # 1 Control Info-beamer ->
 # 2 Show Status: last injury, best streak, days since
@@ -183,13 +194,18 @@ else:
     #Fix assumed directory location
     #Fix testing,  
 
+cfg = config.Configuration()
+cfg.load()
 print os.getcwd()
 #start dataLink cascade on: lastInjury.dat, bestStreak
-print os.popen("./linkData.sh lastInjury.data").read()
-print os.popen("./linkData.sh bestStreak.data").read()
+#print os.popen("./linkData.sh lastInjury.data").read()
+#print os.popen("./linkData.sh bestStreak.data").read()
+print os.popen("./linkData.sh config.json").read()
 #start visual
 #TODO (jaw) replace with config file update, delete this file.
-print os.popen("./startShow.sh").read()
+#print os.popen("./startShow.sh").read()
+print start_show(cfg)
+
 #after visual
 ## this prompt is needed to clear the input line for the menu, [bug]
 raw_input("Press Enter to continue...")
@@ -226,7 +242,8 @@ while running == True:
     if sel == 1:
         # Info-beamer block
         print "Starting Info-Beamer"
-        print os.popen("./startShow.sh").read()
+        #print os.popen("./startShow.sh").read()
+        print start_show(cfg)
         raw_input("Press Enter to return to menu...")
         #print "contro
     elif sel == 2:
@@ -235,15 +252,22 @@ while running == True:
     elif sel == 3:
         # Status block
         curr = os.popen("date").read().rstrip()
-        last = os.popen("cat lastInjury.data").read().rstrip()
-        index = last.find("\n")
-        last = last[index+1:]
-        best = os.popen("cat bestStreak.data").read().rstrip()
-        days = os.popen("./daysSince.sh").read().rstrip()
-        trgt = os.popen("cat target.data").read().rstrip()
+        #last = os.popen("cat lastInjury.data").read().rstrip()
+        last = cfg.get("last_injury")["date"]
+        #index = last.find("\n")
+        #last = last[index+1:]
+        #best = os.popen("cat bestStreak.data").read().rstrip()
+        best_secs = cfg.get("best_streak")
+        best_days = config.convert_seconds(int(cfg.get("best_streak")), "days")
+        #days = os.popen("./daysSince.sh").read().rstrip()
+        days = cfg.time_since_injury(time_units="days", depth=1)[0]
+        #trgt = os.popen("cat target.data").read().rstrip()
+        trgt = cfg.get("target")
         ind = trgt.rfind("/")
         vis = trgt[ind+1:]
-        secs = int(os.popen("./secondsSince.sh").read().rstrip())
+        #secs = int(os.popen("./secondsSince.sh").read().rstrip())
+        secs = cfg.time_since_injury(time_units="seconds", depth=1)
+        print "secs: ", secs, "  days:", days
         hours = (secs / 3600) - int(days)*24 
         #temp_str, temp_val = "N/A", 0.0
         try:
@@ -265,7 +289,8 @@ while running == True:
         print " Last Injury: \t\t", last
         print " Since Injury:\t\t", days, "days, ",hours, "hours"
         print "              \t\t", secs, "total seconds"
-        print " Best Streak: \t\t", best, "days"
+        print " Best Streak: \t\t", best_days, "days"
+        print "              \t\t", best_secs, "total seconds"
         print " ForEvergreen %:\t", perc + "%"
         print " Visual:      \t\t", vis , " ("+trgt+")"
         raw_input(color('prompt', "Press Enter to continue..."))
@@ -286,15 +311,17 @@ while running == True:
         except Exception:
             print "General Exepected Error, try again.\n"
         if sel2 == 1:
-            print os.popen("./injuryNow.sh").read()
+            #print os.popen("./injuryNow.sh").read()
+            print cfg.update_injury(now=True)
         else:
             print "Bad input."
         # print "injury now"
     elif sel == 5:
         # reset injury custom time
-        last = os.popen("cat lastInjury.data").read().rstrip()
-        index = last.find("\n")
-        last = last[index+1:]
+        # last = os.popen("cat lastInjury.data").read().rstrip()
+        # index = last.find("\n")
+        # last = last[index+1:]
+        last = cfg.get("last_injury")["date"]
         printDesc("Last Injury: " + last)
         printDesc("Set Last Injury to custom time?")
         printOption(0, "Go Back")
@@ -310,16 +337,24 @@ while running == True:
             print "General Exepected Error, try again.\n"
         if sel2 == 1:
             date_str, unix_sec = get_date("Enter Time of injury")
-            print os.popen("./updateStreak.sh").read()
-            #TODO (jaw, before next live update) change to python/json code
-            cmd1 = "echo '" + unix_sec + "' > lastInjury.data"
-            cmd2 = "echo '" + date_str + "' >> lastInjury.data"
+            #print os.popen("./updateStreak.sh").read()
+            print cfg.update_streak()
+            #cmd1 = "echo '" + unix_sec + "' > lastInjury.data"
+            #cmd2 = "echo '" + date_str + "' >> lastInjury.data"
             #print cmd1, cmd2
-            os.popen(cmd1).read()
-            os.popen(cmd2).read()
+            #os.popen(cmd1).read()
+            #os.popen(cmd2).read()
+            new_inj = {
+                "date": date_str,
+                "unix_time": unix_sec
+            }
+            print cfg.set("last_injury", new_inj)
+            print cfg.save()
             #display data and touch link files to update them
-            print os.popen("cat lastInjury.data").read().rstrip()
-            print os.popen("find . -name lastInjury.data | xargs touch").read()
+            #print os.popen("cat lastInjury.data").read().rstrip()
+            print cfg.get("last_injury")
+            print cfg.save()
+            #print os.popen("find . -name lastInjury.data | xargs touch").read()
         # print "custom time"
     elif sel == 6:
         # set system time
@@ -352,9 +387,12 @@ while running == True:
         # print "new time"
     elif sel == 7:
         # set streak
-        best = os.popen("cat bestStreak.data").read().rstrip()
-        printDesc("Best Streak: " + best)
-        printDesc("Enter New Best Streak Without Injury")
+        #best = os.popen("cat bestStreak.data").read().rstrip()
+        best = config.convert_seconds(int(cfg.get("best_streak")), "days" )
+        tsecs= cfg.get("best_streak")
+        printDesc("Best Streak:   " + str(best) +  " days" )
+        printDesc("Total Seconds: " + str(tsecs))
+        printDesc("Enter New Best Streak Without Injury, in Days")
         try:
             newBest = -1
             newBest = get_input(printPrompt(), int)
@@ -365,8 +403,10 @@ while running == True:
         except Exception:
             print "General Exepected Error, try again.\n"
         if newBest >= 0:
-            cmd1 = "./updateStreak.sh " + str(newBest)
-            print os.popen(cmd1).read().rstrip()
+            #cmd1 = "./updateStreak.sh " + str(newBest)
+            #print os.popen(cmd1).read().rstrip()
+            best_sec = newBest * 86400 #(60 * 60 * 24)
+            cfg.update_streak(new_streak=best_sec)
             # print "set streak"
         else:
             print "Number must be positive!"
