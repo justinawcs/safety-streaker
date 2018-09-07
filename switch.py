@@ -14,6 +14,7 @@
 import RPi.GPIO as GPIO
 import os
 import time
+import config
 
 GPIO.setmode(GPIO.BCM)
 
@@ -26,4 +27,6 @@ while True:
     if input_state == False:
         print('Injury Now Button Pressed!')
         print os.popen("/home/pi/safety-streaker/injuryNow.sh").read()
+        print config.update_injury(now=True)
+        #TODO (jaw, remove bash script when done with transistion)
         time.sleep(1)
