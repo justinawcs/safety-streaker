@@ -82,7 +82,8 @@ class BingoGame:
                     "pickedList":self.pickedList}
         #print "Save Data: ", save_data
         try:
-            json.dump( save_data, open( "bingo/bingo.json", "wb" ) )
+            json.dump( save_data, open( "bingo/bingo.json", "wb"), \
+                        sort_keys=True, indent = 4)
         except IOError: #unable to save file
             print "ERROR. File NOT SAVED!"
     #end save

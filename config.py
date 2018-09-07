@@ -91,9 +91,13 @@ class Configuration:
         return self.cfg[key]
     
     def load(self):
-        with open('config.json') as cfg_file:
-            self.cfg = json.load(cfg_file)
-            return str(self.cfg)
+        try:
+            with open('config.json') as cfg_file:
+                self.cfg = json.load(cfg_file)
+                return str(self.cfg)
+        except IOError:
+            print "No config.json file found. Creating blank."
+            self.save()
     
     def save(self):
         with open("config.json", "w") as cfg_file:
