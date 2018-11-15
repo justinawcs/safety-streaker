@@ -26,8 +26,9 @@ while True:
     time.sleep(.1)
     if input_state == False:
         print('Injury Now Button Pressed!')
-        print os.popen("/home/pi/safety-streaker/injuryNow.sh").read()
+        #print os.popen("/home/pi/safety-streaker/injuryNow.sh").read()
         cfg = config.Configuration()
+        cfg.load()
         print cfg.update_injury(now=True)
         #TODO (jaw, remove bash script when done with transistion)
         time.sleep(1)
