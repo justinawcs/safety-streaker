@@ -6,7 +6,7 @@
 #date           : 20180505 [year-month-day]
 #version        : 0.9
 #usage          : python user_input.py
-#notes          : Goal: return only integer, float, string 
+#notes          : Goal: return only integer, float, string
 #bash_version   : 4.3.30(1)-release [bash version]
 #===============================================================================
 import os
@@ -30,20 +30,26 @@ def takeInput(prompt, expectedType):
         print expectedType,  "was expected, forced: int"
         return int(sel)
     else:
-        print expectedType,  "was expected, not: ",  type(sel) 
+        print expectedType,  "was expected, not: ",  type(sel)
         return None
 
 def takeDate(promptMsg):
     #take date
     print "%s using MM/DD/YYYY then press [ENTER]" % promptMsg
+    print "Tip: Leave blank to exit."
     print "example: 02/14/2001"
     day  = str(takeInput("Enter Date", basestring))
+    if day == "":
+        return None, None
     #take time
     print "Enter Time in HHMM or HH:MM(am/pm) then press [ENTER]"
+    print "Tip: Leave blank to exit."
     print "example: 1:40pm -> 1340"
     print "AM: 00  01  02  03  04  05  06  07  08  09  10  11"
     print "PM: 12  13  14  15  16  17  18  19  20  21  22  23"
     time = str(takeInput("Enter Time", basestring))
+    if time == "":
+        return None, None
     #check date and time as valid
     cmd1 = "date -d '" + day +" "+ time + "'"
     cmd2 = "date -d '" + day +" "+ time + "' +%s"
@@ -60,7 +66,6 @@ def takeDate(promptMsg):
     else:
         print "Date Rejected: "+ result1
         return None, None
-        
 
 #def checkDate(date_string, unix_time_int):
     ## implement if given time is unrealiable, not necessary currently
@@ -68,7 +73,7 @@ def takeDate(promptMsg):
     # check if unix_time_int is valid
     # check that the two are equal in unix-time seconds
     # return true/false, fail first
-    
+
 def testInput():
     #print takeInput("Int?", int)
     #print takeInput("Float?", float)

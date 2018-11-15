@@ -175,7 +175,7 @@ def start_show(configuration):
     configuration.load()
     target = configuration.get("target")
     return os.popen("sudo info-beamer %s" % target).read().rstrip()
-    
+
 
 ##Main Menu
 # 1 Control Info-beamer ->
@@ -192,7 +192,7 @@ else:
     print "Using standard directory:"
     os.chdir('/home/pi/safety-streaker')
     #Fix assumed directory location
-    #Fix testing,  
+    #Fix testing,
 
 cfg = config.Configuration()
 cfg.load()
@@ -268,7 +268,7 @@ while running == True:
         #secs = int(os.popen("./secondsSince.sh").read().rstrip())
         secs = cfg.time_since_injury(time_units="seconds", depth=1)
         print "secs: ", secs, "  days:", days
-        hours = (secs / 3600) - int(days)*24 
+        hours = (secs / 3600) - int(days)*24
         #temp_str, temp_val = "N/A", 0.0
         try:
             temp_str = os.popen("cat /sys/class/thermal/thermal_zone0/temp") \
@@ -338,24 +338,25 @@ while running == True:
         if sel2 == 1:
             date_str, unix_sec = get_date("Enter Time of injury")
             #print os.popen("./updateStreak.sh").read()
-            print cfg.update_streak()
+            #print cfg.update_streak()
             #cmd1 = "echo '" + unix_sec + "' > lastInjury.data"
             #cmd2 = "echo '" + date_str + "' >> lastInjury.data"
             #print cmd1, cmd2
             #os.popen(cmd1).read()
             #os.popen(cmd2).read()
-            new_inj = {
-                "date": date_str,
-                "unix_time": unix_sec
-            }
-            print cfg.set("last_injury", new_inj)
-            print cfg.save()
-            #display data and touch link files to update them
-            #print os.popen("cat lastInjury.data").read().rstrip()
-            print cfg.get("last_injury")
-            print cfg.save()
-            #print os.popen("find . -name lastInjury.data | xargs touch").read()
-        # print "custom time"
+            if (date_str == None) or (unix_sec == None):
+                print "Date not accecpted."
+            else:
+                new_inj = {
+                    "date": date_str,
+                    "unix_time": unix_sec
+                    }
+                print cfg.set("last_injury", new_inj)
+                print cfg.save()
+                #display data and touch link files to update them
+                #print os.popen("cat lastInjury.data").read().rstrip()
+                print cfg.get("last_injury")
+                print cfg.save()
     elif sel == 6:
         # set system time
         printDesc("System Time " + os.popen("date").read().rstrip())
@@ -380,11 +381,14 @@ while running == True:
             #print "PM: 12  13  14  15  16  17  18  19  20  21  22   23"
             #time = str(raw_input("Enter Time > "))
             # print os.popen("date -s '", day, time, "'").read()
-            cmd1 = "date -s '" + day + "'"
-            # print cmd1
-            print "New time:", os.popen(cmd1).read().rstrip()
-            print "System clock: ", os.popen("date").read().rstrip()
-        # print "new time"
+            if (day == None) or (unix_sec == None):
+                print "Date not accecpted."
+            else:
+                cmd1 = "date -s '" + day + "'"
+                # print cmd1
+                print "New time:", os.popen(cmd1).read().rstrip()
+                print "System clock: ", os.popen("date").read().rstrip()
+                # print "new time"
     elif sel == 7:
         # set streak
         #best = os.popen("cat bestStreak.data").read().rstrip()
@@ -445,7 +449,7 @@ while running == True:
             #sub menu for Help and About
             ##version, name and contact email, name of progam, special thanks
             printDesc("About Safety-Streaker")
-            print("Version:\t{}".format(version_number) ) 
+            print("Version:\t{}".format(version_number) )
             print("Author:\t\t{}".format("Justin A. Williams") )
             print("Email:\t\t{}".format("justinawcs@gmail.com") )
             print("Special Thanks:\t{}" \
