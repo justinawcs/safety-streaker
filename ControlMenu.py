@@ -338,7 +338,6 @@ while running == True:
         if sel2 == 1:
             date_str, unix_sec = get_date("Enter Time of injury")
             #print os.popen("./updateStreak.sh").read()
-            print cfg.update_streak()
             #cmd1 = "echo '" + unix_sec + "' > lastInjury.data"
             #cmd2 = "echo '" + date_str + "' >> lastInjury.data"
             #print cmd1, cmd2
@@ -348,8 +347,9 @@ while running == True:
                 "date": date_str,
                 "unix_time": unix_sec
             }
-            print cfg.set("last_injury", new_inj)
-            print cfg.save()
+            print cfg.update_injury(date=date_str, unix_time=unix_sec, 
+                    now=False)
+            #print cfg.save()
             #display data and touch link files to update them
             #print os.popen("cat lastInjury.data").read().rstrip()
             print cfg.get("last_injury")
