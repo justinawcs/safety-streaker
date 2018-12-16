@@ -144,7 +144,7 @@ class Configuration:
         last = int( self.cfg["last_injury"]["unix_time"] )
         now = int( os.popen("date +%s").read().rstrip() )
         since = now - last
-        print("Last: %d  Now: %d  Since: %d seconds" % (last, now, since))
+        #print("Last: %d  Now: %d  Since: %d seconds" % (last, now, since))
         if depth != 1:
             return cascade_units(since, depth)
         elif time_units != "seconds":
