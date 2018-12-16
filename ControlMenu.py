@@ -23,6 +23,7 @@ import config
 ##Define Globals
 version_number = 0.91
 
+cfg = None
 
 def pickTarget():
     looking = True
@@ -240,6 +241,7 @@ def main():
         #Fix assumed directory location
         #Fix testing,
 
+    global cfg
     cfg = config.Configuration()
     cfg.load()
     print os.getcwd()
@@ -297,7 +299,7 @@ def main():
             pickTarget()
         elif sel == 3:
             # Status block
-            print_status(stop=True)
+            print_status(cfg, stop=True)
             # print ""
         elif sel == 4:
             # reset injury now
