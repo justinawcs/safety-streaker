@@ -403,6 +403,7 @@ def main():
             printDesc("Best Streak:   " + str(best) +  " days" )
             printDesc("Total Seconds: " + str(tsecs))
             printDesc("Enter New Best Streak Without Injury, in Days")
+            printDesc("Tip: To leave this menu, leave prompt blank.")
             try:
                 newBest = -1
                 newBest = get_input(printPrompt(), int)
@@ -413,8 +414,6 @@ def main():
             except Exception:
                 print "General Exepected Error, try again.\n"
             if newBest >= 0:
-                #cmd1 = "./updateStreak.sh " + str(newBest)
-                #print os.popen(cmd1).read().rstrip()
                 best_sec = newBest * 86400 #(60 * 60 * 24)
                 cfg.update_streak(new_streak=best_sec)
                 # print "set streak"

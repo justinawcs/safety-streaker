@@ -124,7 +124,7 @@ class Configuration:
         best_streak = int(self.cfg["best_streak"])
         print "Current Streak: ", curr_streak, "  Best Streak: ", best_streak
         # print "Is new streak longer?", (curr_streak > best_streak)
-        if new_streak:
+        if type(new_streak) == int:
             try:
                 self.cfg["best_streak"] = int(new_streak)
             except TypeError:
