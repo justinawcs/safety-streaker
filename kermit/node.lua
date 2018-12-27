@@ -11,7 +11,7 @@ local shadow = resource.create_colored_texture(0,.02,0,1)
 
 -- FILES
 -- local file = resource.load_file(filename)
-local background = resource.load_image("flag.jpg")
+--local background = resource.load_image("flag.jpg")
 local usa = resource.load_video{
     file = "redance.mp4";
     looped = true;}
@@ -22,19 +22,26 @@ end
 
 --function checkFiles()
 --watch bestStreak.data file
-util.file_watch("bestStreak.data", function(content)
-      streak = trim(content)
-  end)
---watch lastInjury.data file and calc timeSince
-util.file_watch("lastInjury.data", function(content)
-      injuryFile = trim(content)
-      position = string.find(injuryFile, "\n")
-      injurySec = injuryFile:sub(1, position - 1)
-  end)
+-- util.file_watch("bestStreak.data", function(content)
+--       streak = trim(content)
+--   end)
+-- --watch lastInjury.data file and calc timeSince
+-- util.file_watch("lastInjury.data", function(content)
+--       injuryFile = trim(content)
+--       position = string.find(injuryFile, "\n")
+--       injurySec = injuryFile:sub(1, position - 1)
+--   end)
 util.file_watch("percent.data", function(content)
-      perr = trim(content)
-  end)
+       perr = trim(content)
+   end)
 --end
+
+-- LOAD JSON DATA
+util.json_watch("config.json", function(settings)
+    --cfg = settings
+    streak = settings["best_streak"]
+    injurySec = settings["last_injury"]["unix_time"]
+  end)
 
 function align_right(font, str, size)
     -- aligns text on right of screen with given marginX
@@ -49,6 +56,7 @@ function align_center(font, str, size)
 end
 
 function banner(tall, daysSinceDecimal)
+    streakDays = math.floor( streak / 86400 )
     start_bottom = HEIGHT - tall
     text_height = tall * 0.85
     text_padding = (tall * 0.15)
@@ -73,18 +81,18 @@ function banner(tall, daysSinceDecimal)
     --since text
     dayStr = "Since Last Accident"
     arial:write(nextX, start_y, dayStr, text_height*.6,.8,.8,.8, 1)
-    xx = align_right(black, streak.." Days", text_height*.6)
+    xx = align_right(black, streakDays.." Days", text_height*.6)
     nextX = arial:width(dayStr, text_height*.6) + 30 + nextX
     --start other side: days
     nextR = WIDTH - marginX
     rr = black:width("_", text_height/4)
     daysVertical(nextR-rr+3, start_bottom+3, black, tall, 0.85, .1, 1, .1, .70)
     daysVertical(nextR-rr, start_bottom, black, tall, 0.85, 1, 1, 1, 1)
-    nextR = nextR - rr - black:width(streak, text_height) - 20
+    nextR = nextR - rr - black:width(streakDays, text_height) - 20
     --streak days
-    black:write(nextR+4, start_y+4, streak, text_height, .1, 1,.1, .70)
-    black:write(nextR, start_y, streak, text_height,.8,.8,.8, 1)
-    rr = black:width(streak, text_height)
+    black:write(nextR+4, start_y+4, streakDays, text_height, .1, 1,.1, .70)
+    black:write(nextR, start_y, streakDays, text_height,.8,.8,.8, 1)
+    rr = black:width(streakDays, text_height)
     --best record text
     bestStr = "Best Record"
     nextR = nextR - arial:width(bestStr, text_height*.6) - 20

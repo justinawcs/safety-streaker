@@ -33,6 +33,7 @@ end
 --  end)
 --end
 
+-- LOAD JSON DATA
 util.json_watch("config.json", function(settings)
     --cfg = settings
     streak = settings["best_streak"]

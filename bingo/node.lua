@@ -24,16 +24,24 @@ end
 
 --function checkFiles()
 --watch bestStreak.data file
-util.file_watch("bestStreak.data", function(content)
-      streak = trim(content)
-  end)
---watch lastInjury.data file and calc timeSince
-util.file_watch("lastInjury.data", function(content)
-      injuryFile = trim(content)
-      position = string.find(injuryFile, "\n")
-      injurySec = injuryFile:sub(1, position - 1)
-  end)
+-- util.file_watch("bestStreak.data", function(content)
+--       streak = trim(content)
+--   end)
+-- --watch lastInjury.data file and calc timeSince
+-- util.file_watch("lastInjury.data", function(content)
+--       injuryFile = trim(content)
+--       position = string.find(injuryFile, "\n")
+--       injurySec = injuryFile:sub(1, position - 1)
+--   end)
 --end
+
+-- LOAD JSON DATA
+util.json_watch("config.json", function(settings)
+    --cfg = settings
+    streak = settings["best_streak"]
+    injurySec = settings["last_injury"]["unix_time"]
+  end)
+
 --watch bingo.json
 util.file_watch("bingo.json", function(content)
       bingo_json = content
@@ -218,6 +226,7 @@ function node.render()
     secondsSince = timeNow - injurySec
     daysSince = math.floor((timeNow - injurySec) / 86400 )
     hoursSince = math.floor(((timeNow - injurySec) % 86400) / 3600)
+    streakDays = math.floor( streak / 86400 )
 
     --Add percentage width fixed from right side to size
     safeX, safeY = safety:size()
@@ -243,9 +252,9 @@ function node.render()
     --outline(font,offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
 
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
-    --xx = align_right(black, streak.." days.", 180)
-    --black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
-    --black:write(xx, 600, streak.." days.", 180, .3,0,0,.95)
+    --xx = align_right(black, streakDays.." days.", 180)
+    --black:write(xx+4, 604, streakDays.." days.", 180, 1,0,0,1)
+    --black:write(xx, 600, streakDays.." days.", 180, .3,0,0,.95)
 
     --impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
     --impact:write(320, 700, "1 "..readJson("date_int"), 48, 1,1,1,1)

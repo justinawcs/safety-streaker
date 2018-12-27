@@ -18,16 +18,23 @@ end
 
 --function checkFiles()
 --watch bestStreak.data file
-util.file_watch("bestStreak.data", function(content)
-      streak = trim(content)
-  end)
---watch lastInjury.data file and calc timeSince
-util.file_watch("lastInjury.data", function(content)
-      injuryFile = trim(content)
-      position = string.find(injuryFile, "\n")
-      injurySec = injuryFile:sub(1, position - 1)
-  end)
+-- util.file_watch("bestStreak.data", function(content)
+--       streak = trim(content)
+--   end)
+-- --watch lastInjury.data file and calc timeSince
+-- util.file_watch("lastInjury.data", function(content)
+--       injuryFile = trim(content)
+--       position = string.find(injuryFile, "\n")
+--       injurySec = injuryFile:sub(1, position - 1)
+--   end)
 --end
+
+-- LOAD JSON DATA
+util.json_watch("config.json", function(settings)
+    --cfg = settings
+    streak = settings["best_streak"]
+    injurySec = settings["last_injury"]["unix_time"]
+  end)
 
 function align_right(font, str, size)
     -- aligns text on right of screen with given marginX
@@ -49,6 +56,7 @@ function node.render()
     secondsSince = timeNow - injurySec
     daysSince = math.floor((timeNow - injurySec) / 86400 )
     hoursSince = math.floor(((timeNow - injurySec) % 86400) / 3600)
+    streakDays = math.floor( streak / 86400 )
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
     black:write(24, 54, "SAFETY STARTS WITH YOU!", 100, 0,0,0,.4)
@@ -60,9 +68,9 @@ function node.render()
     arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
     arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
-    xx = align_right(black, streak.." days.", 180)
-    black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
-    black:write(xx, 600, streak.." days.", 180, .3,0,0,.95)
+    xx = align_right(black, streakDays.." days.", 180)
+    black:write(xx+4, 604, streakDays.." days.", 180, 1,0,0,1)
+    black:write(xx, 600, streakDays.." days.", 180, .3,0,0,.95)
     impact:write(320, 800, "STAY SAFE. THINK SAFETY!", 100, 1,1,1,1)
 
     --resource.render_child(""):draw(50, 200, 300, 400)

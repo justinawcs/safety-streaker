@@ -31,16 +31,23 @@ end
 
 --function checkFiles()
 --watch bestStreak.data file
-util.file_watch("bestStreak.data", function(content)
-      streak = trim(content)
-  end)
---watch lastInjury.data file and calc timeSince
-util.file_watch("lastInjury.data", function(content)
-      injuryFile = trim(content)
-      position = string.find(injuryFile, "\n")
-      injurySec = injuryFile:sub(1, position - 1)
-  end)
+-- util.file_watch("bestStreak.data", function(content)
+--       streak = trim(content)
+--   end)
+-- --watch lastInjury.data file and calc timeSince
+-- util.file_watch("lastInjury.data", function(content)
+--       injuryFile = trim(content)
+--       position = string.find(injuryFile, "\n")
+--       injurySec = injuryFile:sub(1, position - 1)
+--   end)
 --end
+
+-- LOAD JSON DATA
+util.json_watch("config.json", function(settings)
+    --cfg = settings
+    streak = settings["best_streak"]
+    injurySec = settings["last_injury"]["unix_time"]
+  end)
 
 function align_right(font, str, size)
     -- aligns text on right of screen with given marginX
@@ -126,6 +133,7 @@ function node.render()
     minutesSince = math.floor((timeNow - injurySec) / 60 )
     secsSince = math.floor(((timeNow - injurySec) % 60) / 1)
     daysSinceDecimal = round( ((timeNow - injurySec ) / 86400), 2)
+    streakDays = math.floor( streak / 86400 )
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
     black:write(50, 20, "Telnet Tester", 50, .5,.5,.5,1)
