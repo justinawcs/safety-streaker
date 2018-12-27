@@ -15,7 +15,7 @@ local grid_lines = resource.load_image("grid-lines.png")
 local safety = resource.load_image("safety.png")
 local bingo = resource.load_image("bingo.png")
 local ball = resource.load_image("ball.png")
-local num = resource.load_image("numbers.png")
+--local num = resource.load_image("numbers.png")
 
 --TODO What is purpore of this function?
 function trim(s)
@@ -68,7 +68,7 @@ end
 function grid()
     --IDEA this layout should be sliced from image program
     --position each element in a grid
-    areaX = (.35 * WIDTH) --40%
+    areaX = (.35 * WIDTH)
     areaY = HEIGHT - (2 * marginY)
     --return "Width, Height", areaX, areaY
     eachX = (areaX / 5)
@@ -191,6 +191,28 @@ function node.render()
     --checkFiles()
     --gl.clear(.2, .37, 0, 1) -- set background sage green
     background:draw(0, 0, WIDTH, HEIGHT, .25)
+    baldict = {
+      ['sized'] = 650 * .70, --IMG_Size * Scale
+      ['scale'] = .75,
+      ['x'] = 570,
+      ['y'] = 330,
+    }
+    baldict['x_'] = (baldict.sized) + baldict.x
+    baldict['y_'] = (baldict.sized) + baldict.y
+    baldict['centerX'] = (baldict.sized / 2) + baldict.x
+    baldict['centerY'] = (baldict.sized / 2) + baldict.y
+    --draw ball
+    ball:draw(baldict.x, baldict.y, baldict.x_, baldict.y_, 1)
+    --draw last called number
+    ali_last = align_center_cell(black, "Latest", 90, baldict.sized)
+    black:write(baldict.x+ ali_last, baldict.y + 85, "Latest", 90, .75, .75, .75, 1)
+    ali_number = align_center_cell(black, "Number", 90, baldict.sized)
+    black:write(baldict.x+ ali_number, baldict.y + 165, "Number", 90, .75, .75, .75, 1)
+
+    ali_num = align_center_cell(arial, last_number(), 120, baldict.sized)
+    outline(arial, 2, baldict.x + ali_num, baldict.centerY + 40, last_number(), 120, 0, .7, 0, 1)
+    arial:write(baldict.x + ali_num, baldict.centerY + 40, last_number(),120, .7,.75,.7,1)
+
     --grid_lines:draw(0, 0, WIDTH, HEIGHT, .5)
     timeNow = math.floor(os.time())
     secondsSince = timeNow - injurySec
@@ -205,7 +227,8 @@ function node.render()
     bingo:draw(700, 160, 700+(.93*bingX), 160+(.80*bingY), 1)
     --num:draw(40, 40, (40+489), (40+712), .3)
     grid()
-
+    --status line
+    arial:write(0, 0, baldict.centerX, 20, 1, 1, 1, 0.8)
     -- type:write(0, 0, injuryFile.." "..timeSince, 20, 1, 1, 1, 1)
     -- font:write(XPOS, YPOS, "TEXT", SCALE, R,G,B,Alpha)
     --black:write(24, 54, "SAFETY STARTS WITH YOU!", 100, 0,0,0,.4)
@@ -216,10 +239,9 @@ function node.render()
     --black:write(30, 250, daysSince.." Days, "..hoursSince.." Hours", 150, .3,0,0,1)
     --arial:write(600, 400, "without a lost time accident.", 80, .7,.75,.7,1)
     --arial:write(25, 500, "The best previous record was", 80, .7,.75,.7,1)
-    arial:write(750, 500, "Coming Soon...",120, .7,.75,.7,1)
+    --arial:write(750, 500, "Coming Soon...",120, .7,.75,.7,1)
     --outline(font,offset, xpos, ypos, text, font_size, red, grn, blu, alpha)
-    outline(arial, 4, 750, 650, last_number(), 120, 1, 0, 0, 1)
-    arial:write(750, 650, last_number(),120, .7,.75,.7,1)
+
     --black:write(618, 598, "123 DAYS", 180, 1,0,0,1)
     --xx = align_right(black, streak.." days.", 180)
     --black:write(xx+4, 604, streak.." days.", 180, 1,0,0,1)
@@ -228,6 +250,7 @@ function node.render()
     --impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
     --impact:write(320, 700, "1 "..readJson("date_int"), 48, 1,1,1,1)
     --impact:write(320, 750, "2 "..readJson("game_count"), 48, 1,1,1,1)
+    impact:write(600, 795, "PLAY IT SAFE. PLAY TO WIN!", 97, 1,1,1,1)
     --local pList = readJson("pickedList")
     --local fakeList = {2, 3, 4, 12}
     --impact:write(320, 800, "3 "..listToString(fakeList), 48, 1,1,1,1)
