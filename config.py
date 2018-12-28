@@ -70,18 +70,32 @@ def verify_date(unix_date):
 
 class Configuration:
     """Loads and saves data to config.json"""
-    cfg = {
-        "best_streak" : 0,
-        "last_injury": {
-            "date": "", 
-            "unix_time": 0,
-        }, 
-        "target"  : "",
-        "password" : {
-            "activated" : False,
-            "code" : "8899",
+    def __init__(self, 
+            best_streak=0,
+            last_injury=None,
+            target=None,
+            password=None
+    ):
+        if last_injury == None:
+            last_injury = {
+                #TODO set times to current time
+                "date": "", 
+                "unix_time": 0,
+            }
+        if target == None:
+            pass
+            #TODO later add default directory, 
+        if password == None:
+            password = {
+                "activated" : False,
+                "code" : "8899",
+            }
+        self.cfg = {
+            "best_streak" : best_streak,
+            "last_injury": last_injury, 
+            "target"  : target,
+            "password" : password
         }
-    }
     
     def get(self, key):
         return self.cfg[key]
