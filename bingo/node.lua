@@ -15,7 +15,7 @@ local typer = resource.load_font("silkscreen.ttf")
 -- local background = resource.load_image("flag.jpg")
 local grid_lines = resource.load_image("grid-lines.png")
 local safety = resource.load_image("safety.png")
-local bingo = resource.load_image("bingo.png")
+local bingo = resource.load_image("bingo2.png")
 local ball = resource.load_image("ball.png")
 local b_pink = resource.load_image("ball_pink.png")
 local b_green = resource.load_image("ball_green.png")
@@ -56,7 +56,7 @@ do
       ["xpos"] = col_xpos,
       ["ypos"] = marginY,
       ["xspacing"] = (tbl.eachX - black:width(header[col+1], tbl.eachY) ) / 2,
-      ["alpha"] = 1.0,
+      ["alpha"] = 0.06,
     }
     --Rows
     for row=1, 15, 1
@@ -69,7 +69,9 @@ do
         --["xwide"] = nil,
         --["yhigh"] = nil,
         ["xspacing"] = (tbl.eachX - black:width(i, tbl.eachY)) / 2,
-        ["alpha"] = 0.06, -- TODO add if statement that check mebership
+        ["alpha"] = 0.06,
+        -- TODO BUG called bingo numbers will not be fully dehightlighted until
+        -- the visual is restarted, lacking a way to reset table to defaults
         -- black:write(tbl[i]["xpos"+tbl[i]["spacing"],
         --    tbl[i]["ypos"], i, tbl.eachY, 1,1,1,tbl[i][alpha])
       }
@@ -81,7 +83,7 @@ end
 function draw_table()
   for i, v in ipairs(picked) do
     tbl[v]["alpha"] = 1.0
-    black:write(tbl[v]["xpos"]+tbl[v]["xspacing"]+3, tbl[v]["ypos"]+3, v,
+    black:write(tbl[v]["xpos"]+tbl[v]["xspacing"]+5, tbl[v]["ypos"]+2, v,
         tbl.eachY, color.r, color.g, color.b, .75)
     --outline(black, 1.5, tbl[v]["xpos"]+tbl[v]["xspacing"], tbl[v]["ypos"],
     --       v, tbl.eachY,.1,.1,1,.5)
@@ -91,8 +93,7 @@ function draw_table()
      tbl[header[i]]["ypos"], tbl[header[i]]["id"], tbl.eachY,
      color.r, color.g, color.b,.75)
     black:write(tbl[header[i]]["xpos"]+tbl[header[i]]["xspacing"],
-        tbl[header[i]]["ypos"], tbl[header[i]]["id"], tbl.eachY, 1,1,1,
-        tbl[header[i]]["alpha"])
+        tbl[header[i]]["ypos"], tbl[header[i]]["id"], tbl.eachY, 1,1,1, 1.0)
   end
   for i=1, 75, 1  do
     black:write(tbl[i]["xpos"]+tbl[i]["xspacing"], tbl[i]["ypos"], i,
@@ -418,7 +419,9 @@ function membership(list, item)
 end
 
 function formatBingo(number)
-    if (1 <= number and number <= 15) then
+    if number == nil then
+        return "N/A"
+    elseif (1 <= number and number <= 15) then
         return "B-" .. tostring(number)
     elseif (16 <= number and number <= 30) then
         return "I-" .. tostring(number)
@@ -429,7 +432,7 @@ function formatBingo(number)
     elseif (61 <= number and number <= 75) then
         return "O-" .. tostring(number)
     else
-        return "None."
+        return "N/A"
     end
 end
 
@@ -471,9 +474,9 @@ function node.render()
         .15, .15, .15, .86)
 
     ali_num = align_center_cell(arial, last_number(), 120, green.sized)
-    outline(arial, 2, green.x + ali_num, green.centerY + 00, last_number(),
+    outline(arial, 2, green.x + ali_num - 2, green.centerY + 00, last_number(),
         120, 0, .7, 0, 0.6)
-    arial:write(green.x + ali_num, green.centerY + 00, last_number(),
+    arial:write(green.x + ali_num - 2, green.centerY + 00, last_number(),
         120, .8,.85,.8,1)
 
     --winning
@@ -497,7 +500,7 @@ function node.render()
     --Add percentage width fixed from right side to size
     safeX, safeY = safety:size()
     --image:draw(xpos, ypos, xpos_end, ypos_end, alphaV)
-    safety:draw(600, marginY, 600+(.93*safeX), 20+(.80*safeY), 1)
+    safety:draw(600, marginY-21, 600+(.94*safeX), 20+(.80*safeY), 1)
     bingX, bingY = bingo:size()
     bingo:draw(590, 140, 590+(1.03*bingX), 140+(.75*bingY), 1)
     --num:draw(40, 40, (40+489), (40+712), .3)
@@ -514,7 +517,7 @@ function node.render()
     since_text1 = "Together we have enjoyed:"
     since_text2 = "without a lost time accident."
     arial:write(green.centerX+10, areadict.headerY_+20, since_text1, 44,
-        .7,.7,.7,1)
+        .70,.70,.70,1)
     --black:write(32, 252, daysSince.." Days, "..hoursSince.." Hours", 150,
     --    1,0,0,1)
     --black:write(30, 250, daysSince.." Days, "..hoursSince.." Hours", 150,
@@ -526,12 +529,12 @@ function node.render()
     running = daysSince.." Days, "..hoursSince.." Hours"
     pushR = align_right(black, running, 70)
     --outline(black, 2, xpos, ypos, text, font_size, red, grn, blu, alpha)
-    black:write(pushR-1, areadict.headerY_+74+2, running, 70, 0.9,0.15,0.15,.65)
+    black:write(pushR-2, areadict.headerY_+74+4, running, 70, 0.9,0.10,0.10,.75)
     black:write(pushR-4, areadict.headerY_+74, running, 70, 0.85,0.85,0.85,1)
     -- since line 2
     ali_since = align_right(arial, since_text2, 44)
     arial:write(ali_since, areadict.headerY_+94 + 66, since_text2, 44,
-        .7,.7,.7,1)
+        .70,.70,.70,1)
 
     bestLine = "Our best previous record was:"
     arial:write(green.x_+10, areadict.centerY+95, bestLine, 48, .7,.7,.7,1)
@@ -539,7 +542,7 @@ function node.render()
     xx = align_right(black, streakDays.." Days", 80)
     --black:write(xx+4, 604, streakDays.." days", 180, 1,0,0,1)
     black:write(xx-1, areadict.centerY+162, streakDays.." Days", 80,
-        .85,.15,.15,0.65)
+        .9,.10,.10,0.75)
     black:write(xx-5, areadict.centerY+160, streakDays.." Days", 80,
         .85,.85,.85,1.0)
 
@@ -556,7 +559,12 @@ function node.render()
     --impact:write(320, 650, "0 "..readJson("date"), 48, 1,1,1,1)
     --impact:write(320, 700, "1 "..readJson("date_int"), 48, 1,1,1,1)
     --impact:write(320, 750, "2 "..readJson("game_count"), 48, 1,1,1,1)
-    impact:write(585, HEIGHT-95, "PLAY IT SAFE. PLAY TO WIN!", 97, .8,.8,.8,.9)
+    --outline(impact, 3, 585, HEIGHT-95, "PLAY IT SAFE. PLAY TO WIN!", 97,
+    --    0.0, 0.0, 0.0, 1.0)
+    impact:write(585+5, HEIGHT-95+3, "PLAY IT SAFE. PLAY TO WIN!", 97,
+        0.0, 0.0, 0.0, 0.8)
+    impact:write(585, HEIGHT-95, "PLAY IT SAFE. PLAY TO WIN!", 97,
+        0.8, 0.8, 0.8, 1.0)
     --local pList = readJson("pickedList")
     --local fakeList = {2, 3, 4, 12}
     --impact:write(320, 800, "3 "..listToString(fakeList), 48, 1,1,1,1)
