@@ -118,13 +118,19 @@ class Configuration:
         else:
             return "This Streak is Shorter than Best Streak"
 
-    def update_streak(self, new_streak=None):
+    def update_streak(self, new_streak=None, past_unix_time=None):
         """Updates best streak. Takes number of days in new steak"""
-        curr_streak = int(self.time_since_injury())
+        if past_unix_time:
+            # get current time, streak is now - past_unix_time
+            now = int( os.popen("date +%s").read().rstrip() )
+            since = now - int(past_unix_time)
+            curr_streak = since # assume
+        else:
+            curr_streak = int(self.time_since_injury())
         best_streak = int(self.cfg["best_streak"])
         print "Current Streak: ", curr_streak, "  Best Streak: ", best_streak
-        # print "Is new streak longer?", (curr_streak > best_streak)
-        if type(new_streak) == int:
+        print "Current Streak Longer: ", (curr_streak > best_streak)
+        if new_streak:
             try:
                 self.cfg["best_streak"] = int(new_streak)
             except TypeError:
@@ -162,7 +168,7 @@ class Configuration:
                 "date": date,
                 "unix_time": unix_time
             }
-            self.update_streak()
+            self.update_streak(past_unix_time=unix_time)
             self.cfg["last_injury"] = given_time
             self.save()
         elif date or unix_time:
@@ -219,7 +225,7 @@ def testing():
     # print cascade_units(40000000)
     #Get and set
     alpha = Configuration()
-    print alpha.get("best_streak"), " -> ", alpha.set("best_streak", 30)
+    #print alpha.get("best_streak"), " -> ", alpha.set("best_streak", 30)
     #load
     #alpha.load()
     #Small change
@@ -230,18 +236,18 @@ def testing():
     #print alpha.check_streak()
     #Update Streak
     #alpha.update_streak()
-    print alpha.update_streak(43)
+    #print alpha.update_streak(43)
     #Update Injury
     #alpha.update_injury("Monday, January 1, 2018 12:00:01 AM", 1514764801)
     #alpha.update_injury()
-    alpha.set("last_injury",
-            {"date" : "Monday, January 1, 2018 12:00:01 AM",
-            "unix_time" : 1514764801})
+    #alpha.set("last_injury",
+    #        {"date" : "Monday, January 1, 2018 12:00:01 AM",
+    #        "unix_time" : 1514764801})
     print alpha.time_since_injury()
     print alpha.time_since_injury("minutes")
     print alpha.time_since_injury("hours")
     print alpha.time_since_injury(depth=0)
-    alpha.import_old_data()
+    #alpha.import_old_data()
     print alpha.get("last_injury")["date"]
     #print verify_date("1535898180") #future
     print "Date verify past: ",  verify_date(1524925800) #past
@@ -249,4 +255,5 @@ def testing():
         print "Date verify future: ", alpha.update_injury("Future", 1535898180)
     except ValueError:
         print "Future date failed as expected."
+    #alpha.update_streak(past_unix_time=)
 #testing()
