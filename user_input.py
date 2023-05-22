@@ -11,7 +11,37 @@
 #===============================================================================
 import os
 
-def takeInput(prompt, expectedType):
+def take_int(prompt):
+    """Take integer from user input, loops until found."""
+    while True:
+        try:
+            sel = int(input(prompt+ "> "))
+            return sel 
+            # break
+        except ValueError:
+            print("Integer expected. Try again.")
+            continue
+    #print(sel, type(sel))
+
+        
+def take_float(prompt):
+    """Takes float input from user, loops until found."""
+    while True:
+        try:
+            sel = float(input(prompt + "> "))
+            return sel 
+            # break
+        except ValueError:
+            print("Floating point decimal expected. Try again.")
+            continue
+    #print(sel, type(sel))
+
+def take_str(prompt):
+    """"Takes str from user. Wrapper for built-in input()."""
+    return input(prompt + "> ")
+
+def take_input(prompt, expectedType):
+    '''Do not use. Use take_(int, float, str) instead.'''
     if expectedType == int or expectedType == float:
         try:
             sel = input(prompt + "> ") # use input to pre-check types
@@ -33,17 +63,17 @@ def takeInput(prompt, expectedType):
         print(expectedType,  "was expected, not: ",  type(sel) )
         return None
 
-def takeDate(promptMsg):
+def  take_date(promptMsg):
     #take date
     print("%s using MM/DD/YYYY then press [ENTER]" % promptMsg)
     print("example: 02/14/2001")
-    day  = str(takeInput("Enter Date", basestring))
+    day = take_str("Enter Date")
     #take time
     print("Enter Time in HHMM or HH:MM(am/pm) then press [ENTER]")
     print("example: 1:40pm -> 1340")
     print("AM: 00  01  02  03  04  05  06  07  08  09  10  11")
     print("PM: 12  13  14  15  16  17  18  19  20  21  22  23")
-    time = str(takeInput("Enter Time", basestring))
+    time = take_str("Enter Time")
     #check date and time as valid
     cmd1 = "date -d '" + day +" "+ time + "'"
     cmd2 = "date -d '" + day +" "+ time + "' +%s"
@@ -69,7 +99,7 @@ def takeDate(promptMsg):
     # check that the two are equal in unix-time seconds
     # return true/false, fail first
     
-def testInput():
+def test_input():
     #print(takeInput("Int?", int))
     #print(takeInput("Float?", float))
     #print(takeInput("String?", basestring))
