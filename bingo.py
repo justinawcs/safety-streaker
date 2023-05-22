@@ -63,11 +63,11 @@ class BingoGame:
         else:
             result = string.split() #will split at whitespace chars
         for i in result:
-            #print int(i)
+            #print(int(i))
             try:
-                print self.add_item(int(i))
+                print(self.add_item(int(i)))
             except ValueError:
-                print "Not a valid number. "
+                print("Not a valid number. ")
         self.save()
         return result
     #end tokenizer
@@ -80,11 +80,11 @@ class BingoGame:
                     "date_int":self.date_int, \
                     "game_count":self.game_count, \
                     "pickedList":self.pickedList}
-        #print "Save Data: ", save_data
+        #print("Save Data: ", save_data)
         try:
             json.dump( save_data, open( "bingo/bingo.json", "wb" ) )
         except IOError: #unable to save file
-            print "ERROR. File NOT SAVED!"
+            print("ERROR. File NOT SAVED!")
     #end save
 
     def load(self): #open and read file
@@ -96,10 +96,10 @@ class BingoGame:
             self.pickedList = load_data["pickedList"]
         except IOError: # file not there, so create blank
             self.reset()
-        #print data
-        print "Load Data: ", self.date, self.date_int, \
-                            self.game_count, self.pickedList
-        #print self.pickedList
+        #print(data)
+        print("Load Data: ", self.date, self.date_int, \
+                            self.game_count, self.pickedList)
+        #print(self.pickedList)
     #end load
 
     def reset(self): #clears enetered data and saves new file
@@ -110,8 +110,8 @@ class BingoGame:
         self.date_int = blank_date_int
         self.pickedList = blank_list
         self.incr_game_count()
-        print "Reset Data: ",  blank_date, blank_date_int, \
-                            self.game_count, blank_list
+        print("Reset Data: ",  blank_date, blank_date_int, \
+                            self.game_count, blank_list)
         self.save()
     #end reset
     
@@ -142,11 +142,11 @@ class BingoGame:
         for i in self.pickedList:
             hold_string += formatBingo(i) + ", "
         add_period = hold_string[:-2] + "."
-        #print add_period
+        #print(add_period)
         return add_period # Replace with period at end
 
     def getLastNumber(self):
-        #print "List Count: ", len(self.pickedList)
+        #print("List Count: ", len(self.pickedList))
         last_index = len(self.pickedList)
         last_num = self.pickedList[last_index -1]
         return formatBingo(last_num)
@@ -155,59 +155,59 @@ class BingoGame:
 
 ## Run/Test Section
 def testing():
-    #print formatBingo(1) +", "+ formatBingo(16) +", "+ formatBingo(32) \
+    #print(formatBingo(1) +", "+ formatBingo(16) +", "+ formatBingo(32) \)
     #        +", "+ formatBingo(47) +", "+ formatBingo(64)
     #ex = BingoGame()
 #    ex.load()
 #    ex.reset()
-    #print "Current Data: ",  ex.date, ex.date_int, ex.pickedList
+    #print("Current Data: ",  ex.date, ex.date_int, ex.pickedList)
 
-    #print "Empty List: ",   ex.pickedList
-    #print ex.add(4)
-    #print ex.add(72)
-    #print ex.add(ex.add("16+23"))
-    #print ex.pickedList
-    #print ex.save()
+    #print("Empty List: ",   ex.pickedList)
+    #print(ex.add(4))
+    #print(ex.add(72))
+    #print(ex.add(ex.add("16+23")))
+    #print(ex.pickedList)
+    #print(ex.save())
 
-    #print ex.date
-    #print ex.add(4)
-    #print ex.pickedList
-    #print ex.add(32)
-    #print ex.pickedList
-    #print ex.add("4")
-    #print ex.pickedList
-    #print ex.add("74")
-    #print ex.pickedList
+    #print(ex.date)
+    #print(ex.add(4))
+    #print(ex.pickedList)
+    #print(ex.add(32))
+    #print(ex.pickedList)
+    #print(ex.add("4"))
+    #print(ex.pickedList)
+    #print(ex.add("74"))
+    #print(ex.pickedList)
 
     #given1 = "23+45+90"
     #given2 = "23 45 90"
-    #print tokenizer(given1)
-    #print tokenizer(given2)
-    #print add(tokenizer(given1))  #add does not currently accept lists
+    #print(tokenizer(given1))
+    #print(tokenizer(given2))
+    #print(add(tokenizer(given1))  #add does not currently accept lists)
 
     #ex.save()
     #ex.load()
 
     #ex = BingoGame()
-    #print ex.add("23+34+56")
-    #print ex.add(1)
+    #print(ex.add("23+34+56"))
+    #print(ex.add(1))
 
     one = BingoGame()
     #one.reset()
-    print one.add("23+34+56")
-    print one.getLastNumber()
-    print one.add("72")
-    print one.getLastNumber()
-    print one.add("")
-    print one.pickedList
-    print one.getList()
+    print(one.add("23+34+56"))
+    print(one.getLastNumber())
+    print(one.add("72"))
+    print(one.getLastNumber())
+    print(one.add(""))
+    print(one.pickedList)
+    print(one.getList())
     #one.save()
 
     two = BingoGame()
     #two.load()
-    print two.set_date("Sun May  36 00:79:26 UTC 2018", "-00000909")
-    print two.set_date("Sun May  6 00:39:26 UTC 2018", "1525567166")
-    print two.set_date()
+    print(two.set_date("Sun May  36 00:79:26 UTC 2018", "-00000909"))
+    print(two.set_date("Sun May  6 00:39:26 UTC 2018", "1525567166"))
+    print(two.set_date())
 #end testing
 
 #testing()

@@ -52,24 +52,24 @@ def pickTarget():
                 target = linelist[sel2 - 1]
                 pwd = os.getcwd()
                 tgt = target.replace(".", pwd, 1).replace("/node.lua", "")
-                print "Target updated: " + tgt
+                print("Target updated: " + tgt)
                 #os.popen("echo " + tgt + " > target.data")
                 cfg.set("target", tgt)
                 cfg.save()
                 #print os.popen("cat target.data").read().rstrip()
-                print cfg.get("target")
+                print(cfg.get("target"))
                 looking = False
             else:
-                print "Going back to Control Menu..."
+                print("Going back to Control Menu...")
                 looking = False
         except NameError:
-                print "Bad input, try again.\n"
+                print("Bad input, try again.\n")
         except SyntaxError:
-                print "Bad input, try again.\n"
+                print("Bad input, try again.\n")
         except IndexError:
-                print "That number is not valid, try again.\n"
+                print("That number is not valid, try again.\n")
         except Exception:
-                print "General Exepected Error, try again.\n"
+                print("General Exepected Error, try again.\n")
 #end pickTarget
 
 def controlBingo():
@@ -100,7 +100,7 @@ def controlBingo():
                 add_input = get_input(printPrompt(), basestring)
                 #game.load()
                 game.add(str(add_input))
-                print game.getList()
+                print(game.getList())
             elif sel2 == 2:
                 #Restart Bingo game
                 printDesc("Warning: Reset will reset time to present time, " +
@@ -120,20 +120,20 @@ def controlBingo():
                 if g_count > 0:
                     game.set_game_count(g_count)
                 else:
-                    print "Going back..."
+                    print("Going back...")
             elif  sel2 == 0:
-                print "Going back to main menu"
+                print("Going back to main menu")
                 working = False
             else:
-                print "Bad input, try again.\n"
+                print("Bad input, try again.\n")
         except NameError:
-                print "Bad input, try again.\n"
+                print("Bad input, try again.\n")
         except SyntaxError:
-                print "Bad input, try again.\n"
+                print("Bad input, try again.\n")
         except IndexError:
-                print "That number is not valid, try again.\n"
+                print("That number is not valid, try again.\n")
         except Exception:
-                print "General Exepected Error, try again.\n"
+                print("General Exepected Error, try again.\n")
 #end control Bingo
 
 def color(col, string):
@@ -146,7 +146,7 @@ def color(col, string):
 #end color()
 
 def printOption(index, string):
-    print " " + color('num', str(index)) +" "+ string
+    print(" " + color('num', str(index)) +" "+ string)
 #end option
 
 def printPrompt():
@@ -154,7 +154,7 @@ def printPrompt():
 #end printPrompt
 
 def printDesc(string):
-    print color('desc', string)
+    print(color('desc', string))
 #end printDesc
 
 def get_input(prompt, expectedType):
@@ -187,36 +187,39 @@ def start_show(configuration):
 
 ## Startup
 if(len(sys.argv) > 1 and sys.argv[1] == "--test"):
-    print "Testing Directory in use!"
+    print("Testing Directory in use!")
 else:
-    print "Using standard directory:"
+    print("Using standard directory:")
     os.chdir('/home/pi/safety-streaker')
     #Fix assumed directory location
     #Fix testing,  
 
 cfg = config.Configuration()
 cfg.load()
-print os.getcwd()
+print(os.getcwd())
 #start dataLink cascade on: lastInjury.dat, bestStreak
 #print os.popen("./linkData.sh lastInjury.data").read()
 #print os.popen("./linkData.sh bestStreak.data").read()
-print os.popen("./linkData.sh config.json").read()
+print(os.popen("./linkData.sh config.json").read())
 #start visual
 #TODO (jaw) replace with config file update, delete this file.
 #print os.popen("./startShow.sh").read()
-print start_show(cfg)
+print(start_show(cfg))
 
 #after visual
 ## this prompt is needed to clear the input line for the menu, [bug]
-raw_input("Press Enter to continue...")
+try:
+    get_input("Press Enter to continue...")
+except Exception:
+    pass
 running = True
 
 ## Loop -- Main Menu
 while running == True:
-    print "\n\n" + color('head', "Safety-Streaker")
-    print color('subhead',"Digital Signage Controller Main Menu")
+    print("\n\n" + color('head', "Safety-Streaker"))
+    print(color('subhead',"Digital Signage Controller Main Menu"))
     h_date = os.popen("date").read().rstrip()
-    print color('subhead', "Current Time is: ") + h_date
+    print(color('subhead', "Current Time is: ") + h_date)
     printDesc("Choose a option from below:")
     printOption(1, "Start the visual")
     printOption(2, "Choose which visual")
@@ -234,16 +237,16 @@ while running == True:
         sel = get_input(printPrompt(), int)
         #sel = int(option)
     except NameError:
-        print "Bad input, try again."
+        print("Bad input, try again.")
     except SyntaxError:
-        print "Bad input, try again."
+        print("Bad input, try again.")
     except Exception:
-        print "General Exepected Error, try again."
+        print("General Exepected Error, try again.")
     if sel == 1:
         # Info-beamer block
-        print "Starting Info-Beamer"
+        print("Starting Info-Beamer")
         #print os.popen("./startShow.sh").read()
-        print start_show(cfg)
+        print(start_show(cfg))
         raw_input("Press Enter to return to menu...")
         #print "contro
     elif sel == 2:
@@ -267,7 +270,7 @@ while running == True:
         vis = trgt[ind+1:]
         #secs = int(os.popen("./secondsSince.sh").read().rstrip())
         secs = cfg.time_since_injury(time_units="seconds", depth=1)
-        print "secs: ", secs, "  days:", days
+        print("secs: ", secs, "  days:", days)
         hours = (secs / 3600) - int(days)*24 
         #temp_str, temp_val = "N/A", 0.0
         try:
@@ -283,16 +286,16 @@ while running == True:
         uptm = os.popen("uptime -p").read().rstrip()
         perc = os.popen("cat kermit/percent.data").read().rstrip()
         printDesc("\nCurrent System Status:")
-        print " Current Time:\t\t", curr
-        print " System Uptime:\t\t", uptm
-        print " CPU Temp:    \t\t", temp_str
-        print " Last Injury: \t\t", last
-        print " Since Injury:\t\t", days, "days, ",hours, "hours"
-        print "              \t\t", secs, "total seconds"
-        print " Best Streak: \t\t", best_days, "days"
-        print "              \t\t", best_secs, "total seconds"
-        print " ForEvergreen %:\t", perc + "%"
-        print " Visual:      \t\t", vis , " ("+trgt+")"
+        print(" Current Time:\t\t", curr)
+        print(" System Uptime:\t\t", uptm)
+        print(" CPU Temp:    \t\t", temp_str)
+        print(" Last Injury: \t\t", last)
+        print(" Since Injury:\t\t", days, "days, ",hours, "hours")
+        print("              \t\t", secs, "total seconds")
+        print(" Best Streak: \t\t", best_days, "days")
+        print("              \t\t", best_secs, "total seconds")
+        print(" ForEvergreen %:\t", perc + "%")
+        print(" Visual:      \t\t", vis , " ("+trgt+")")
         raw_input(color('prompt', "Press Enter to continue..."))
         # print ""
     elif sel == 4:
@@ -305,16 +308,16 @@ while running == True:
             opt = get_input(printPrompt(), int)
             sel2 = int(opt)
         except NameError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except SyntaxError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except Exception:
-            print "General Exepected Error, try again.\n"
+            print("General Exepected Error, try again.\n")
         if sel2 == 1:
             #print os.popen("./injuryNow.sh").read()
-            print cfg.update_injury(now=True)
+            print(cfg.update_injury(now=True))
         else:
-            print "Bad input."
+            print("Bad input.")
         # print "injury now"
     elif sel == 5:
         # reset injury custom time
@@ -330,15 +333,15 @@ while running == True:
             opt = get_input(printPrompt(), int)
             sel2 = int(opt)
         except NameError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except SyntaxError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except Exception:
-            print "General Exepected Error, try again.\n"
+            print("General Exepected Error, try again.\n")
         if sel2 == 1:
             date_str, unix_sec = get_date("Enter Time of injury")
             #print os.popen("./updateStreak.sh").read()
-            print cfg.update_streak()
+            print(cfg.update_streak())
             #cmd1 = "echo '" + unix_sec + "' > lastInjury.data"
             #cmd2 = "echo '" + date_str + "' >> lastInjury.data"
             #print cmd1, cmd2
@@ -348,12 +351,12 @@ while running == True:
                 "date": date_str,
                 "unix_time": unix_sec
             }
-            print cfg.set("last_injury", new_inj)
-            print cfg.save()
+            print(cfg.set("last_injury", new_inj))
+            print(cfg.save())
             #display data and touch link files to update them
             #print os.popen("cat lastInjury.data").read().rstrip()
-            print cfg.get("last_injury")
-            print cfg.save()
+            print(cfg.get("last_injury"))
+            print(cfg.save())
             #print os.popen("find . -name lastInjury.data | xargs touch").read()
         # print "custom time"
     elif sel == 6:
@@ -366,11 +369,11 @@ while running == True:
             opt = get_input(printPrompt(), int)
             sel2 = int(opt)
         except NameError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except SyntaxError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except Exception:
-            print "General Exepected Error, try again.\n"
+            print("General Exepected Error, try again.\n")
         if sel2 == 1:
             # print "Enter Correct Date in MM/DD/YYYY then press [ENTER]"
             # print "example: 02/14/2001"
@@ -382,8 +385,8 @@ while running == True:
             # print os.popen("date -s '", day, time, "'").read()
             cmd1 = "date -s '" + day + "'"
             # print cmd1
-            print "New time:", os.popen(cmd1).read().rstrip()
-            print "System clock: ", os.popen("date").read().rstrip()
+            print("New time:", os.popen(cmd1).read().rstrip())
+            print("System clock: ", os.popen("date").read().rstrip())
         # print "new time"
     elif sel == 7:
         # set streak
@@ -397,11 +400,11 @@ while running == True:
             newBest = -1
             newBest = get_input(printPrompt(), int)
         except NameError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except SyntaxError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except Exception:
-            print "General Exepected Error, try again.\n"
+            print("General Exepected Error, try again.\n")
         if newBest >= 0:
             #cmd1 = "./updateStreak.sh " + str(newBest)
             #print os.popen(cmd1).read().rstrip()
@@ -409,7 +412,7 @@ while running == True:
             cfg.update_streak(new_streak=best_sec)
             # print "set streak"
         else:
-            print "Number must be positive!"
+            print("Number must be positive!")
     elif sel == 8:
         #set ForEvergreen/Kermit Percent
         old = os.popen("cat kermit/percent.data").read().rstrip()
@@ -419,16 +422,16 @@ while running == True:
             perc = -1
             perc = get_input(printPrompt(), float)
         except NameError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except SyntaxError:
-            print "Bad input, try again.\n"
+            print("Bad input, try again.\n")
         except Exception:
-            print "General Exepected Error, try again.\n"
+            print("General Exepected Error, try again.\n")
         if perc >= 0:
             cmd1 = "echo '" + str(perc) + "' > kermit/percent.data"
             os.popen(cmd1).read().rstrip()
-            print "New ForEvergreen percent set: ", perc, "%"
-            print os.popen("cat kermit/percent.data").read().rstrip()
+            print("New ForEvergreen percent set: ", perc, "%")
+            print(os.popen("cat kermit/percent.data").read().rstrip())
     elif sel == 9:
         #Show Safety Bingo Controls
         controlBingo()
@@ -453,11 +456,11 @@ while running == True:
                 + "\nThis wouldn't have been possible without you!!") )
             raw_input("Press Enter to continue...")
         elif sel2 == 2:
-            print "Exiting..."
+            print("Exiting...")
             running = False
             # ends loop, should close
         elif sel2 == 3:
-            print "Restarting system now..."
+            print("Restarting system now...")
             running = False
             os.popen("sudo shutdown -r now")
         elif sel2 == 9:
@@ -468,12 +471,12 @@ while running == True:
             printOption(9, "Shutdown")
             sel3 = get_input(printPrompt(), int)
             if sel3 == 9:
-                print "Shutting down now..."
+                print("Shutting down now...")
                 running = False
                 os.popen("sudo shutdown -H now")
         elif sel2 == 167:
             printDesc("Password Control")
             #
     else:
-        print "Unknown option. Please try again."
-print "Goodbye. \nPro-tip: typing 00 at command line will open Control Menu"
+        print("Unknown option. Please try again.")
+print("Goodbye. \nPro-tip: typing 00 at command line will open Control Menu")
