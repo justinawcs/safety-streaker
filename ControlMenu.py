@@ -45,7 +45,7 @@ def pickTarget():
             printOption(index+1, s)
         sel2 = None
         try:
-            sel2 = get_input(printPrompt(), int)
+            sel2 = get_int(printPrompt())
             #print linelist[sel2 + 1]
             if(sel2 != 0):
                 #ends function if yes
@@ -89,7 +89,7 @@ def controlBingo():
         printOption(3, "Set Game Count")
         #opt, sel2 = None
         try:
-            opt = get_input(printPrompt(), int)
+            opt = get_int(printPrompt())
             sel2 = int(opt)
             if sel2 == 1:
                 #Add Remove Bingo numbers
@@ -97,7 +97,7 @@ def controlBingo():
                             "Example '1' For 'B-1' or '16' for 'I-16'")
                 printDesc("Speed tip: you can enter multiple numbers with " \
                         "spaces or plus(+) Example: 12+34+56")
-                add_input = get_input(printPrompt(), basestring)
+                add_input = get_int(printPrompt())
                 #game.load()
                 game.add(str(add_input))
                 print(game.getList())
@@ -107,7 +107,7 @@ def controlBingo():
                     "increase the game count by 1 and clear all bingo numbers.")
                 printOption(0, "Go Back")
                 printOption(1, "Reset game")
-                confirm = get_input(printPrompt(), int)
+                confirm = get_int(printPrompt())
                 if confirm == 1:
                     printDesc("The game has just been reset.")
                     game.reset()
@@ -116,7 +116,7 @@ def controlBingo():
                 printDesc("Set Game count to different number.")
                 printOption(0, "Go back")
                 printOption('?', "New Game count number")
-                g_count = get_input(printPrompt(), int)
+                g_count = get_int(printPrompt())
                 if g_count > 0:
                     game.set_game_count(g_count)
                 else:
@@ -157,18 +157,29 @@ def printDesc(string):
     print(color('desc', string))
 #end printDesc
 
-def get_input(prompt, expectedType):
-    # shortcut for user_input.takeInput(String, type)
-    ## TODO (jaw, before general user access) add validation
+def get_int(prompt):
+    # shortcut for user_input.take_int(String, type)
     ## asks question, takes input, checks if valid, returns int, or null
-    return user_input.takeInput(prompt, expectedType)
+    return user_input.take_int(prompt)
+    #end getInput
+
+def get_float(prompt):
+    # shortcut for user_input.taken(String, type)
+    ## asks question, takes input, checks if valid, returns int, or null
+    return user_input.take_float(prompt)
+    #end getInput
+
+def get_str(prompt):
+    # shortcut for user_input.take_str(String, type)
+    ## asks question, takes input, checks if valid, returns int, or null
+    return user_input.take_str(prompt)
     #end getInput
 
 def get_date(prompt):
     # shortcut for user_input.takeInput(String, type)
     ## TODO (jaw, before general user access) add validation
     ## asks question, takes input, checks if valid, returns int, or null
-    return user_input.takeDate(prompt)
+    return user_input.take_date(prompt)
     #end getInput
 
 def start_show(configuration):
@@ -209,7 +220,7 @@ print(start_show(cfg))
 #after visual
 ## this prompt is needed to clear the input line for the menu, [bug]
 try:
-    get_input("Press Enter to continue...")
+    get_str("Press Enter to continue...")
 except Exception:
     pass
 running = True
@@ -234,7 +245,7 @@ while running == True:
     printOption(0, "About / Exit / Restart / Shutdown")
     sel = ""
     try:
-        sel = get_input(printPrompt(), int)
+        sel = get_int(printPrompt())
         #sel = int(option)
     except NameError:
         print("Bad input, try again.")
@@ -247,7 +258,7 @@ while running == True:
         print("Starting Info-Beamer")
         #print os.popen("./startShow.sh").read()
         print(start_show(cfg))
-        raw_input("Press Enter to return to menu...")
+        get_str("Press Enter to return to menu...")
         #print "contro
     elif sel == 2:
         # default visual block
@@ -296,7 +307,7 @@ while running == True:
         print("              \t\t", best_secs, "total seconds")
         print(" ForEvergreen %:\t", perc + "%")
         print(" Visual:      \t\t", vis , " ("+trgt+")")
-        raw_input(color('prompt', "Press Enter to continue..."))
+        get_str(color('prompt', "Press Enter to continue..."))
         # print ""
     elif sel == 4:
         # reset injury now
@@ -305,7 +316,7 @@ while running == True:
         printOption(0, "Go Back")
         printOption(1, "Set Last Injury time to now")
         try:
-            opt = get_input(printPrompt(), int)
+            opt = get_int(printPrompt())
             sel2 = int(opt)
         except NameError:
             print("Bad input, try again.\n")
@@ -330,7 +341,7 @@ while running == True:
         printOption(0, "Go Back")
         printOption(1, "Set Time")
         try:
-            opt = get_input(printPrompt(), int)
+            opt = get_int(printPrompt())
             sel2 = int(opt)
         except NameError:
             print("Bad input, try again.\n")
@@ -366,7 +377,7 @@ while running == True:
         printOption(0, "Go Back")
         printOption(1, "Set Time")
         try:
-            opt = get_input(printPrompt(), int)
+            opt = get_int(printPrompt())
             sel2 = int(opt)
         except NameError:
             print("Bad input, try again.\n")
@@ -398,7 +409,7 @@ while running == True:
         printDesc("Enter New Best Streak Without Injury, in Days")
         try:
             newBest = -1
-            newBest = get_input(printPrompt(), int)
+            newBest = get_int(printPrompt())
         except NameError:
             print("Bad input, try again.\n")
         except SyntaxError:
@@ -420,7 +431,7 @@ while running == True:
         printDesc("Enter New Percent(program will add % symbol): ")
         try:
             perc = -1
-            perc = get_input(printPrompt(), float)
+            perc = get_int(printPrompt())
         except NameError:
             print("Bad input, try again.\n")
         except SyntaxError:
@@ -442,7 +453,7 @@ while running == True:
         printOption(2, "Exit, (close Control Menu, Expert users only!!)")
         printOption(3, "Restart")
         printOption(9, "Shutdown, (need power cycle to turn back on)")
-        opt = get_input(printPrompt(), int)
+        opt = get_int(printPrompt())
         sel2 = int(opt)
         if sel2 == 1:
             #sub menu for Help and About
@@ -454,7 +465,7 @@ while running == True:
             print("Special Thanks:\t{}" \
                 .format("Courtney, Leola, Russell, JR, and Pepo. "\
                 + "\nThis wouldn't have been possible without you!!") )
-            raw_input("Press Enter to continue...")
+            get_str("Press Enter to continue...")
         elif sel2 == 2:
             print("Exiting...")
             running = False
@@ -469,7 +480,7 @@ while running == True:
             printDesc("turn on again. Are you sure you wish to continue??")
             printOption(0, "Go back")
             printOption(9, "Shutdown")
-            sel3 = get_input(printPrompt(), int)
+            sel3 = get_int(printPrompt())
             if sel3 == 9:
                 print("Shutting down now...")
                 running = False
